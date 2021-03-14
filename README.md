@@ -8,10 +8,15 @@ Program takes a mix as parameter
 The letter means turning a single turn, (90°), clockwise, the corresponding face.
 
 F (front): the face facing the solver.
+
 B (back): the back face.
+
 R (right): the right face.
+
 L (left): the left face.
+
 U (up): the upper face.
+
 D (down): the face opposite to the upper face.
 
 ### Parameters
