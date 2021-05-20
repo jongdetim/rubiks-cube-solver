@@ -1,0 +1,9 @@
+# Ignore object files
+obj/
+
+# Ignore program name
+rubik
+
+*.o
+.vscode
+a.out
