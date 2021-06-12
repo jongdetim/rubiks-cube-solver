@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/04/12 17:23:10 by kpereira      ########   odam.nl         */
+/*   Updated: 2021/06/12 18:58:02 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,35 +54,10 @@ vector<char>    parse_args(const string args)
 	return (moves);
 }
 
-/*
-**	@desc:	Function applies moves to cube
-**	@param:	vector<char> moves: moves to be made
-*/
-Cube	applyMoves(vector<char> moves)
-{
-	Cube c;
-
-	for (auto move : moves)
-	{
-		if (move == 'U')
-			c.u();
-		if (move == 'L')
-			c.l();
-		if (move == 'F')
-			c.f();
-		if (move == 'R')
-			c.r();
-		if (move == 'B')
-			c.b();
-		if (move == 'D')
-			c.d();
-	}
-	return (c);
-}
-
 int main(int ac, char **av)
 {
 	vector<char>	moves;
+	Cube			c;
 	if (ac < 2)
 		exit(1);
 	try {
@@ -90,7 +65,10 @@ int main(int ac, char **av)
 	} catch (const char *msg) {
 		std::cerr << msg << std::endl;
 	}
-	Solver s(applyMoves(moves));
+	for (auto move : moves) {
+		c.applyMove(move);
+	}
+	Solver s(c);
 	s.printCube();
 	return (0);
 }

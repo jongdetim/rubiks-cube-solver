@@ -26,17 +26,26 @@ using std::next;
 using std::swap;
 using std::memcpy;
 using std::vector;
+using std::array;
 
 
 //							  0      1     2     3     4       5
-enum class Color : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+enum class COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum class FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum class EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
+enum class CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, DRB, DBL};
+
 class Cube
 {
 	private:
-		array<Color, 48> cube;
-		array<Color, 6> centers;
+		array<COLOR, 48> cube;
+		array<COLOR, 6> centers;
 
+		uint8_t	cornerOrientation[8] = {1, 1, 1, 1, 1, 1, 1, 1};
+		uint8_t edgeOrientation[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+		using edge_t = array<COLOR, 2>;
+		using corner_t = array<COLOR, 3>;
 		Cube *parent;
 		int cost;
 		int weight;
@@ -47,7 +56,7 @@ class Cube
 		void rot180(FACE f);
 		void rot270(FACE f);
 
-        void rotSides90(int* arr);
+		void rotSides90(int* arr);
 		void rotSides180(int* arr);
 	public:
 		Cube( void );
@@ -55,7 +64,7 @@ class Cube
 
 		uint64_t getFace(FACE f) const;
 		bool isSolved() const;
-        void printCube() const;
+		void printCube() const;
 
 		// Compare cube
 		bool operator==(const Cube& c) const;
@@ -64,7 +73,9 @@ class Cube
 		Cube& operator=(const Cube* c);
 
 		// Moves
-        Cube& u();
+		void applyMove(char move);
+		void reverseMove(char move);
+		Cube& u();
 		Cube& u2();
 		Cube& uPrime();
 
