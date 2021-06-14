@@ -130,20 +130,44 @@ Cube &Cube::operator=(const Cube *c)
 	return *this;
 }
 
-void	Cube::applyMove(char move)
+void	Cube::applyMove(string move)
 {
-	if (move == 'U')
+	if (move == "U")
 		u(1);
-	else if (move == 'L')
+	else if (move == "L")
 		l(1);
-	else if (move == 'F')
+	else if (move == "F")
 		f(1);
-	else if (move == 'R')
+	else if (move == "R")
 		r(1);
-	else if (move == 'B')
+	else if (move == "B")
 		b(1);
-	else if (move == 'D')
+	else if (move == "D")
 		d(1);
+	else if (move == "U2")
+		u(2);
+	else if (move == "L2")
+		l(2);
+	else if (move == "F2")
+		f(2);
+	else if (move == "R2")
+		r(2);
+	else if (move == "B2")
+		b(2);
+	else if (move == "D2")
+		d(2);
+	else if (move == "U'")
+		u(3);
+	else if (move == "L'")
+		l(3);
+	else if (move == "F'")
+		f(3);
+	else if (move == "R'")
+		r(3);
+	else if (move == "B'")
+		b(3);
+	else if (move == "D'")
+		d(3);
 }
 
 void	Cube::reverseMove(char move)

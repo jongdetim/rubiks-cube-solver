@@ -27,6 +27,7 @@ using std::swap;
 using std::memcpy;
 using std::vector;
 using std::array;
+using std::string;
 
 
 //							  0      1     2     3     4       5
@@ -73,7 +74,7 @@ class Cube
 		Cube& operator=(const Cube* c);
 
 		// Moves
-		void applyMove(char move);
+		void applyMove(string move);
 		void reverseMove(char move);
 		Cube& u(uint8_t amount);
 
