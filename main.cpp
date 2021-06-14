@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/12 19:55:27 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/14 20:14:11 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,11 @@ int main(int ac, char **av)
 		std::cerr << msg << std::endl;
 	}
 	for (auto move : moves) {
+		std::cout << move << std::endl;
 		c.applyMove(move);
 	}
 	Solver s(c);
 	s.printCube();
+	std::cout << c.get_id_phase1();
 	return (0);
 }

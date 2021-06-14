@@ -37,6 +37,16 @@ bool Cube::isSolved() const
 		(this->getFace(FACE::DOWN) == 0x0505050505050505));
 }
 
+uint64_t	Cube::get_id_phase1(){
+	uint64_t id = 0; 
+	for (int edge = 0; edge < 11; edge++)
+	{
+		id <<= 1;
+		id += this->edgeOrientation[edge];
+	}
+	return id;
+}
+
 /*	
 **	@desc	Fill cube at creation constructor function
 */
@@ -123,31 +133,31 @@ Cube &Cube::operator=(const Cube *c)
 void	Cube::applyMove(char move)
 {
 	if (move == 'U')
-		u();
+		u(1);
 	else if (move == 'L')
-		l();
+		l(1);
 	else if (move == 'F')
-		f();
+		f(1);
 	else if (move == 'R')
-		r();
+		r(1);
 	else if (move == 'B')
-		b();
+		b(1);
 	else if (move == 'D')
-		d();
+		d(1);
 }
 
 void	Cube::reverseMove(char move)
 {
 	if (move == 'U')
-		uPrime();
+		u(3);
 	else if (move == 'L')
-		lPrime();
+		l(3);
 	else if (move == 'F')
-		fPrime();
+		f(3);
 	else if (move == 'R')
-		rPrime();
+		r(3);
 	else if (move == 'B')
-		bPrime();
+		b(3);
 	else if (move == 'D')
-		dPrime();
+		d(3);
 }

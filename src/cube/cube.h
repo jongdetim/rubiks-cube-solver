@@ -30,10 +30,10 @@ using std::array;
 
 
 //							  0      1     2     3     4       5
-enum class COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-enum class FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum class EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-enum class CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, DRB, DBL};
+enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, LB, FR, FL, RB};
+enum CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, DRB, DBL};
 
 class Cube
 {
@@ -75,29 +75,19 @@ class Cube
 		// Moves
 		void applyMove(char move);
 		void reverseMove(char move);
-		Cube& u();
-		Cube& u2();
-		Cube& uPrime();
+		Cube& u(uint8_t amount);
 
-		Cube& l();
-		Cube& l2();
-		Cube& lPrime();
+		Cube& l(uint8_t amount);
 
-		Cube& f();
-		Cube& f2();
-		Cube& fPrime();
+		Cube& f(uint8_t amount);
 
-		Cube& r();
-		Cube& r2();
-		Cube& rPrime();
+		Cube& r(uint8_t amount);
 
-		Cube& b();
-		Cube& b2();
-		Cube& bPrime();
+		Cube& b(uint8_t amount);
 
-		Cube& d();
-		Cube& d2();
-		Cube& dPrime();
+		Cube& d(uint8_t amount);
+
+		uint64_t get_id_phase1();
 };
 
 #endif

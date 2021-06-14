@@ -14,7 +14,8 @@ NAME = rubik
 
 SRC_DIR = src
 DIRS =	cube \
-		solver
+		solver \
+		database
 
 SRC_DIRS = $(foreach dir, $(DIRS), $(addprefix $(SRC_DIR)/, $(dir)))
 INC = $(foreach dir, $(SRC_DIRS), $(addprefix -I ,$(dir)))
