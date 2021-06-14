@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/14 21:33:20 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/14 21:36:47 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,15 @@ int main(int ac, char **av)
 	vector<char>	moves;
 	vector<string>	movesstr;
 	Cube			c;
-	movesstr = parse(av[1]);
-
+	
 	if (ac < 2)
 		exit(1);
+	movesstr = parse(av[1]);
 	try {
 		checkMoves(movesstr);
 	} catch (const char *msg) {
 		std::cerr << msg << std::endl;
+		exit(1);
 	}
 	for (auto move : movesstr) {
 		c.applyMove(move);

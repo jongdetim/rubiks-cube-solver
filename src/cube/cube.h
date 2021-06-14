@@ -19,6 +19,7 @@
 # include <cstring>
 # include <algorithm>
 # include <vector>
+# include <string>
 using std::advance;
 using std::array;
 using std::fill;
@@ -89,6 +90,7 @@ class Cube
 		Cube& d(uint8_t amount);
 
 		uint64_t get_id_phase1();
+		string path;
 };
 
 #endif
