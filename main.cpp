@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/12 19:55:27 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/14 21:25:47 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,52 @@ vector<char>    parse_args(const string args)
 	return (moves);
 }
 
+vector<string>	parse(string args)
+{
+	char			*token = std::strtok(const_cast<char*>(args.c_str()), " ");
+	vector<string>	moves;
+	while (token != nullptr) {
+		moves.push_back(string(token));
+		token = std::strtok(nullptr, " ");
+	}
+	return (moves);
+}
+
+bool			checkMoves(vector<string> moves)
+{
+	string			legalChars = "ULFRBD2' ";
+	string			noStart = "2'";
+	for (int i = 0; i < int(moves.size()); i++)
+	{
+		for (int j = 0; j < int(moves[i].size()); j++)
+		{	
+			if (find(legalChars.begin(), legalChars.end(), moves[i][j]) == legalChars.end())
+				throw "Illegal moves detected";
+		}
+		if ((find(noStart.begin(), noStart.end(), moves[i][0]) != noStart.end()) || moves[i].size() > 2)
+			throw "Illegal format detected";
+		if (moves[i].size() > 1 && ((moves[i][0] == '\'' || moves[i][0] == '2') || (moves[i][1] != '\'' || moves[i][1] != '2')))
+			throw "Illegal format detected";
+		std::cout << moves[i] << std::endl;
+	}
+	return true;
+}
+
 int main(int ac, char **av)
 {
 	vector<char>	moves;
+	vector<string>	movesstr;
 	Cube			c;
+	movesstr = parse(av[1]);
+
 	if (ac < 2)
 		exit(1);
 	try {
-		moves = parse_args(av[1]);
+		checkMoves(movesstr);
 	} catch (const char *msg) {
 		std::cerr << msg << std::endl;
 	}
-	for (auto move : moves) {
+	for (auto move : movesstr) {
 		c.applyMove(move);
 	}
 	Solver s(c);
