@@ -42,16 +42,16 @@ bool Cube::isSolved() const
 */
 Cube::Cube(void)
 {
-	array<Color, 48>::iterator start = this->cube.begin();
-	array<Color, 48>::iterator end = next(start, 8);
+	array<COLOR, 48>::iterator start = this->cube.begin();
+	array<COLOR, 48>::iterator end = next(start, 8);
 
 	this->cost = 0;
 	this->weight = 0;
 	this->parent = NULL;
 	for (int i = 0; i < 6; i++)
 	{
-		fill(start, end, (Color)i);
-		centers[i] = (Color)i;
+		fill(start, end, (COLOR)i);
+		centers[i] = (COLOR)i;
 		start = end;
 		advance(end, 8);
 	}
@@ -118,4 +118,36 @@ Cube &Cube::operator=(const Cube *c)
 	memcpy((void *)&this->cube[0], (void *)&c->cube[0], 48);
 	memcpy((void *)&this->centers[0], (void *)&c->centers[0], 6);
 	return *this;
+}
+
+void	Cube::applyMove(char move)
+{
+	if (move == 'U')
+		u();
+	else if (move == 'L')
+		l();
+	else if (move == 'F')
+		f();
+	else if (move == 'R')
+		r();
+	else if (move == 'B')
+		b();
+	else if (move == 'D')
+		d();
+}
+
+void	Cube::reverseMove(char move)
+{
+	if (move == 'U')
+		uPrime();
+	else if (move == 'L')
+		lPrime();
+	else if (move == 'F')
+		fPrime();
+	else if (move == 'R')
+		rPrime();
+	else if (move == 'B')
+		bPrime();
+	else if (move == 'D')
+		dPrime();
 }
