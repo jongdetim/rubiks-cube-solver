@@ -6,11 +6,11 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:15:52 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/04/12 17:19:19 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/12 20:06:49 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube.h"
+#include "./cube.h"
 
 /*
 **	@desc	Function rotates face 90 degrees
@@ -68,7 +68,7 @@ void Cube::rotSides180(int *arr)
 */
 void Cube::rotSides90(int *arr)
 {
-	Color tmp[3];
+	COLOR tmp[3];
 
 	for (int i = 0; i < 3; i++)
 		tmp[i] = this->cube[arr[9 + i]];
