@@ -47,6 +47,21 @@ uint64_t	Cube::get_id_phase1(){
 	return id;
 }
 
+uint64_t	Cube::get_id_phase2(){
+	uint64_t id = 0; 
+	for (int corner = 0; corner < 8; corner++)
+	{
+		id <<= 2;
+		id += this->cornerOrientation[corner];
+	}
+	for (int edge = 0; edge < 12; edge++){
+		id <<= 2;
+		if (this->edgePosition[edge] < 8)
+			id++;
+	}
+	return id;
+}
+
 /*	
 **	@desc	Fill cube at creation constructor function
 */
