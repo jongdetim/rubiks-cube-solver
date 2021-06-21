@@ -45,14 +45,8 @@ class Cube
 
 		uint8_t	cornerOrientation[8] = {1, 1, 1, 1, 1, 1, 1, 1};
 		uint8_t edgeOrientation[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, LB, FR, FL, RB};
 
-		using edge_t = array<COLOR, 2>;
-		using corner_t = array<COLOR, 3>;
-		Cube *parent;
-		int cost;
-		int weight;
-
-		vector<Cube> children; //possible next moves
 		// Rotations
 		void rot90(FACE f);
 		void rot180(FACE f);
@@ -90,6 +84,7 @@ class Cube
 		Cube& d(uint8_t amount);
 
 		uint64_t get_id_phase1();
+		uint64_t get_id_phase2();
 		string path;
 };
 

@@ -70,9 +70,6 @@ Cube::Cube(void)
 	array<COLOR, 48>::iterator start = this->cube.begin();
 	array<COLOR, 48>::iterator end = next(start, 8);
 
-	this->cost = 0;
-	this->weight = 0;
-	this->parent = NULL;
 	for (int i = 0; i < 6; i++)
 	{
 		fill(start, end, (COLOR)i);
@@ -80,13 +77,6 @@ Cube::Cube(void)
 		start = end;
 		advance(end, 8);
 	}
-}
-
-Cube::Cube(const Cube *parent)
-{
-	this->cost = parent->cost + 1;
-	this->weight = 0;
-	this->parent = (Cube*)parent;
 }
 
 char	getColor(int v)
