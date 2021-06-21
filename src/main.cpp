@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/14 21:36:47 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/21 19:42:06 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool			checkMoves(vector<string> moves)
 		}
 		if ((find(noStart.begin(), noStart.end(), moves[i][0]) != noStart.end()) || moves[i].size() > 2)
 			throw "Illegal format detected";
-		if (moves[i].size() > 1 && ((moves[i][0] == '\'' || moves[i][0] == '2') || (moves[i][1] != '\'' || moves[i][1] != '2')))
+		if (moves[i].size() > 1 && ((moves[i][0] == '\'' && moves[i][0] == '2') || (moves[i][1] != '\'' && moves[i][1] != '2')))
 			throw "Illegal format detected";
 		std::cout << moves[i] << std::endl;
 	}
@@ -108,3 +108,4 @@ int main(int ac, char **av)
 	std::cout << c.get_id_phase1();
 	return (0);
 }
+

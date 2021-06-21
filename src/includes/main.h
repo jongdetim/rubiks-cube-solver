@@ -13,8 +13,8 @@
 #ifndef MAIN_H
 # define MAIN_H
 
-# include "src/includes/cube.h"
-# include "src/includes/solver.h"
+# include "cube.h"
+# include "solver.h"
 using std::find;
 
 #endif
