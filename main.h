@@ -15,6 +15,14 @@
 
 # include "src/includes/cube.h"
 # include "src/includes/solver.h"
+# include "src/includes/database.h"
+
+#include <queue>
+
+using std::queue;
 using std::find;
+
+int create_db();
+void	generate_db(queue<Cube> queue);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/14 21:36:47 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/21 21:28:48 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,25 @@ int main(int ac, char **av)
 	if (ac < 2)
 		exit(1);
 	movesstr = parse(av[1]);
+
+	queue<Cube> queue;
+	queue.push(c);
+	create_db();
+	generate_db(queue);
+	read_db();
+
 	try {
 		checkMoves(movesstr);
 	} catch (const char *msg) {
 		std::cerr << msg << std::endl;
 		exit(1);
 	}
-	for (auto move : movesstr) {
-		c.applyMove(move);
-	}
+	// for (auto move : movesstr) {
+	// 	c.applyMove(move);
+	// }
 	Solver s(c);
 	s.printCube();
 	std::cout << c.get_id_phase1();
+	
 	return (0);
 }
