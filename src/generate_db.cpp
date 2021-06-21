@@ -6,7 +6,7 @@
 /*   By: tide-jon <tide-jon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/06/12 19:02:30 by tide-jon      #+#    #+#                 */
-/*   Updated: 2021/06/14 22:40:47 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/21 17:43:38 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <queue>
 #include <map>
-#include "../cube/cube.h"
+#include "cube.h"
 using std::queue;
 
 std::string moves[6] = {"F","R","U","B","L","D"};
@@ -32,7 +32,7 @@ void	generate_db(int step, queue<Cube> queue){
 	// 	ofs << id << " " << "E" << endl;
 	// 	phaseHash[phase][id] = queue.front().path;
 	// }
-
+	step = 0;
 	// queue<Cube> next;
 	Cube cur;
 	while (!queue.empty())
@@ -58,7 +58,7 @@ void	generate_db(int step, queue<Cube> queue){
 			cur.applyMove(moves[move]);
 		}
 	}
-    for (int i = 0; i < phaseHash[phase].size(); i++)
+    for (size_t i = 0; i < phaseHash[phase].size(); i++)
     {
         std::cout << phaseHash[phase][i] << std::endl;
     }

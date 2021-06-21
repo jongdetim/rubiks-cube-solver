@@ -6,11 +6,11 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:15:52 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/12 20:06:49 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/21 17:39:53 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./cube.h"
+#include "cube.h"
 
 /*
 **	@desc	Function rotates face 90 degrees

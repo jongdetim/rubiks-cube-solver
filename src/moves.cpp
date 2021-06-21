@@ -6,11 +6,11 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:14:57 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/14 21:31:55 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/21 17:39:50 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./cube.h"
+#include "cube.h"
 
 /*
 ** Up turns
