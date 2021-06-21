@@ -1,6 +1,6 @@
 NAME = rubik
 
-SRCS = src/cube src/moves src/rotate src/solver src/generate_db
+SRCS = src/cube src/moves src/rotate src/solver src/generate_db main
 
 INC = src/includes
 CFLAGS = -Wall -Werror -Wextra -std=c++1y -stdlib=libc++
