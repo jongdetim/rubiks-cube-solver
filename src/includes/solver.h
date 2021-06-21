@@ -18,15 +18,15 @@
 
 class Solver
 {
-    private:
-        Cube c;
-    public:
-        Solver(Cube initialState) {
-            c = initialState;
-        }
-        void printCube() {
-            c.printCube();
-        }
+	private:
+		Cube c;
+	public:
+		Solver(Cube initialState) {
+			c = initialState;
+		}
+		void printCube() {
+			c.printCube();
+		}
 };
 
 #endif
