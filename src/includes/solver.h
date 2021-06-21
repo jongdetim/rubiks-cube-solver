@@ -14,7 +14,7 @@
 # define SOLVER_H
 
 # include <string>
-# include "../cube/cube.h"
+# include "cube.h"
 using std::string;
 
 class Solver
