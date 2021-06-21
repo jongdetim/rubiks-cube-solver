@@ -13,9 +13,8 @@
 #ifndef SOLVER_H
 # define SOLVER_H
 
-# include <string>
+# include "main.h"
 # include "cube.h"
-using std::string;
 
 class Solver
 {

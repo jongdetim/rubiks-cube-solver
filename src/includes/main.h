@@ -13,8 +13,23 @@
 #ifndef MAIN_H
 # define MAIN_H
 
-# include "cube.h"
-# include "solver.h"
+# include <iostream>
+# include <cstdio>
+# include <stdint.h>
+# include <array>
+# include <cstring>
+# include <algorithm>
+# include <vector>
+# include <string>
+using std::advance;
+using std::array;
+using std::fill;
+using std::next;
+using std::swap;
+using std::memcpy;
+using std::vector;
+using std::array;
+using std::string;
 using std::find;
 
 #endif

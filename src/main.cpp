@@ -6,11 +6,13 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/21 19:42:06 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/21 20:05:44 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+#include "cube.h"
+#include "solver.h"
 
 /*
 **	@desc:	Function parses arguments given and converts to moves
