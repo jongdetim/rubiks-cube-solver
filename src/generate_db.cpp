@@ -16,9 +16,9 @@
 #include "cube.h"
 
 int phase = 0;
-std::string moves[6] = {"F","R","U","B","L","D"};
+string moves[6] = {"F","R","U","B","L","D"};
 sqlite3* database;
-std::map<int64_t, std::string> phaseHash[2];
+map<int64_t, string> phaseHash[2];
 
 void	open_db()
 {
@@ -26,11 +26,11 @@ void	open_db()
 	rc = sqlite3_open("rubik.db", &database);
 	if (rc)
 	{
-		std::cerr << "Error opening database " << sqlite3_errmsg(database) << std::endl;
+		cout << "Error opening database " << sqlite3_errmsg(database) << endl;
 		exit(1);
 	}
 	else
-		std::cout << "Opened Database Successfully!" << std::endl;
+		cout << "Opened Database Successfully!" << endl;
 }
 
 static int callback(void *data, int argc, char **argv, char **azColName)
@@ -62,7 +62,7 @@ int create_db()
 	open_db();
 	for (int i = 0; i < 4; i++)
 	{
-		std::string sql = "CREATE TABLE PHASE" + std::to_string(i+1) + 
+		string sql = "CREATE TABLE PHASE" + to_string(i+1) + 
 		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT NOT NULL);";
 		execute_sql(sql, false);
 	}
@@ -92,7 +92,7 @@ void	generate_db(Cube solved)
 	cur = queue.front();
 	int64_t id = cur.get_id_phase1();
 	phaseHash[phase][id] = queue.front().path;
-	string sql = "INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + std::to_string(id) + ",'E')";
+	string sql = "INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
 	int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 	if (rc != SQLITE_OK)
 		printf("SQL error: %s\n", messageError);
@@ -113,7 +113,7 @@ void	generate_db(Cube solved)
 					cur.path.insert(cur.path.begin(), '3' - amount);
 					cur.path.insert(cur.path.begin(),  moves[move][0]);
 					// const char *sql = "INSERT INTO PHASE1 VALUES (1, 'abc')";
-					string sql("INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + std::to_string(id) + ",'" + cur.path + "')");
+					string sql("INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + to_string(id) + ",'" + cur.path + "')");
 					int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 					if (rc != SQLITE_OK)
 						fprintf(stderr, "SQL error: %s\n", messageError);
@@ -127,7 +127,7 @@ void	generate_db(Cube solved)
 	}
 	// for (uint i = 0; i < phaseHash[phase].size(); i++)
 	// {
-	//     std::cout << phaseHash[phase][i] << std::endl;
+	//     cout << phaseHash[phase][i] << endl;
 	// }
 	// if (queue.empty())
 	// {

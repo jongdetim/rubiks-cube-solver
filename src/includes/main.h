@@ -36,5 +36,9 @@ using std::array;
 using std::string;
 using std::find;
 using std::queue;
+using std::cout;
+using std::to_string;
+using std::endl;
+using std::map;
 
 #endif
