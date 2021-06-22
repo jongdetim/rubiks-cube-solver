@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:14:57 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/22 20:29:31 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/22 20:50:55 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ Cube &Cube::u(uint8_t amount)
 		this->cornerOrientation[CORNER::UBR] = this->cornerOrientation[CORNER::ULB];
 		this->cornerOrientation[CORNER::ULB] = this->cornerOrientation[CORNER::UFL];
 		this->cornerOrientation[CORNER::UFL] = temp;
+
+		CORNER cTemp = this->cornerPosition[CORNER::URF];
+		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::UBR];
+		this->cornerPosition[CORNER::UBR] = this->cornerPosition[CORNER::ULB];
+		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::UFL];
+		this->cornerPosition[CORNER::UFL] = cTemp;
 
 		EDGE eTemp = this->edgePosition[EDGE::UB];
 		this->edgePosition[EDGE::UB] = this->edgePosition[EDGE::UL];
@@ -67,6 +73,12 @@ Cube &Cube::l(uint8_t amount)
 		this->cornerOrientation[CORNER::ULB] = (1 + this->cornerOrientation[CORNER::DBL]) % 3;
 		this->cornerOrientation[CORNER::DBL] = (2 + temp) % 3;
 
+		CORNER cTemp = this->cornerPosition[CORNER::DLF];
+		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::UFL];
+		this->cornerPosition[CORNER::UFL] = this->cornerPosition[CORNER::ULB];
+		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::DBL];
+		this->cornerPosition[CORNER::DBL] = cTemp;
+
 		EDGE eTemp = this->edgePosition[EDGE::BL];
 		this->edgePosition[EDGE::BL] = this->edgePosition[EDGE::DL];
 		this->edgePosition[EDGE::DL] = this->edgePosition[EDGE::FL];
@@ -98,6 +110,12 @@ Cube &Cube::f(uint8_t amount)
 		this->cornerOrientation[CORNER::UFL] = (1 + this->cornerOrientation[CORNER::DLF]) % 3;
 		this->cornerOrientation[CORNER::DLF] = (2 + this->cornerOrientation[CORNER::DFR]) % 3;
 		this->cornerOrientation[CORNER::DFR] = (1 + temp) % 3;
+
+		CORNER cTemp = this->cornerPosition[CORNER::URF];
+		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::UFL];
+		this->cornerPosition[CORNER::UFL] = this->cornerPosition[CORNER::DLF];
+		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::DFR];
+		this->cornerPosition[CORNER::DFR] = cTemp;
 
 		EDGE eTemp = this->edgePosition[EDGE::UF];
 		this->edgePosition[EDGE::UF] = this->edgePosition[EDGE::FL];
@@ -131,6 +149,12 @@ Cube &Cube::r(uint8_t amount)
 		this->cornerOrientation[CORNER::DRB] = (1 + this->cornerOrientation[CORNER::UBR]) % 3;
 		this->cornerOrientation[CORNER::UBR] = (2 + temp) % 3;
 
+		CORNER cTemp = this->cornerPosition[CORNER::URF];
+		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::DFR];
+		this->cornerPosition[CORNER::DFR] = this->cornerPosition[CORNER::DRB];
+		this->cornerPosition[CORNER::DRB] = this->cornerPosition[CORNER::UBR];
+		this->cornerPosition[CORNER::UBR] = cTemp;
+
 		EDGE eTemp = this->edgePosition[EDGE::FR];
 		this->edgePosition[EDGE::FR] = this->edgePosition[EDGE::DR];
 		this->edgePosition[EDGE::DR] = this->edgePosition[EDGE::BR];
@@ -163,6 +187,12 @@ Cube&		Cube::b(uint8_t amount)
 		this->cornerOrientation[CORNER::DRB] = (2 + this->cornerOrientation[CORNER::DBL]) % 3;
 		this->cornerOrientation[CORNER::DBL] = (1 + temp) % 3;
 
+		CORNER cTemp = this->cornerPosition[CORNER::ULB];
+		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::UBR];
+		this->cornerPosition[CORNER::UBR] = this->cornerPosition[CORNER::DRB];
+		this->cornerPosition[CORNER::DRB] = this->cornerPosition[CORNER::DBL];
+		this->cornerPosition[CORNER::DBL] = cTemp;
+
 		EDGE eTemp = this->edgePosition[EDGE::BR];
 		this->edgePosition[EDGE::BR] = this->edgePosition[EDGE::DB];
 		this->edgePosition[EDGE::DB] = this->edgePosition[EDGE::BL];
@@ -194,6 +224,12 @@ Cube&		Cube::d(uint8_t amount)
 		this->cornerOrientation[CORNER::DLF] = this->cornerOrientation[CORNER::DBL];
 		this->cornerOrientation[CORNER::DBL] = this->cornerOrientation[CORNER::DRB];
 		this->cornerOrientation[CORNER::DRB] = temp;
+
+		CORNER cTemp = this->cornerPosition[CORNER::DFR];
+		this->cornerPosition[CORNER::DFR] = this->cornerPosition[CORNER::DLF];
+		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::DBL];
+		this->cornerPosition[CORNER::DBL] = this->cornerPosition[CORNER::DRB];
+		this->cornerPosition[CORNER::DRB] = cTemp;
 
 		EDGE eTemp = this->edgePosition[EDGE::DF];
 		this->edgePosition[EDGE::DF] = this->edgePosition[EDGE::DL];
