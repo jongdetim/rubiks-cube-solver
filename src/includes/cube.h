@@ -16,8 +16,8 @@
 //							  0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, LB, FR, FL, RB};
-enum CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, DRB, DBL};
+enum EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
+enum CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 
 class Cube
 {
@@ -27,7 +27,8 @@ class Cube
 
 		uint8_t	cornerOrientation[8] = {1, 1, 1, 1, 1, 1, 1, 1};
 		uint8_t edgeOrientation[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, LB, FR, FL, RB};
+		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
+		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
 
 		// Rotations
 		void rot90(FACE f);
