@@ -13,16 +13,28 @@
 #ifndef MAIN_H
 # define MAIN_H
 
-# include "src/includes/cube.h"
-# include "src/includes/solver.h"
-# include "src/includes/database.h"
-
-#include <queue>
-
-using std::queue;
+# include <iostream>
+# include <cstdio>
+# include <stdint.h>
+# include <array>
+# include <cstring>
+# include <algorithm>
+# include <vector>
+# include <string>
+# include <iostream>
+# include <sqlite3.h>
+# include <queue>
+# include <map>
+using std::advance;
+using std::array;
+using std::fill;
+using std::next;
+using std::swap;
+using std::memcpy;
+using std::vector;
+using std::array;
+using std::string;
 using std::find;
-
-int create_db();
-void	generate_db(queue<Cube> queue);
+using std::queue;
 
 #endif

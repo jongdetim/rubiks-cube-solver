@@ -6,11 +6,13 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/11 17:27:16 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/21 21:28:48 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/22 16:38:29 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "cube.h"
+#include "solver.h"
+#include "database.h"
 
 /*
 **	@desc:	Function parses arguments given and converts to moves
@@ -78,7 +80,7 @@ bool			checkMoves(vector<string> moves)
 		}
 		if ((find(noStart.begin(), noStart.end(), moves[i][0]) != noStart.end()) || moves[i].size() > 2)
 			throw "Illegal format detected";
-		if (moves[i].size() > 1 && ((moves[i][0] == '\'' || moves[i][0] == '2') || (moves[i][1] != '\'' || moves[i][1] != '2')))
+		if (moves[i].size() > 1 && ((moves[i][0] == '\'' && moves[i][0] == '2') || (moves[i][1] != '\'' && moves[i][1] != '2')))
 			throw "Illegal format detected";
 		std::cout << moves[i] << std::endl;
 	}
@@ -116,3 +118,4 @@ int main(int ac, char **av)
 	
 	return (0);
 }
+

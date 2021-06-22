@@ -6,20 +6,15 @@
 /*   By: tide-jon <tide-jon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/06/21 19:49:39 by tide-jon      #+#    #+#                 */
-/*   Updated: 2021/06/21 20:30:05 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/06/22 16:38:10 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATABASE_H
 # define DATABASE_H
 
-#include <iostream>
-// using namespace std;
-#include <sqlite3.h>
-#include <queue>
-#include <map>
-#include "cube.h"
-using std::queue;
+# include "main.h"
+# include "cube.h"
 
 extern std::string moves[6];
 extern std::map<int64_t, std::string> phaseHash[2];

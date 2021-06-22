@@ -12,25 +12,7 @@
 #ifndef CUBE_H
 # define CUBE_H
 
-# include <iostream>
-# include <cstdio>
-# include <stdint.h>
-# include <array>
-# include <cstring>
-# include <algorithm>
-# include <vector>
-# include <string>
-using std::advance;
-using std::array;
-using std::fill;
-using std::next;
-using std::swap;
-using std::memcpy;
-using std::vector;
-using std::array;
-using std::string;
-
-
+# include "main.h"
 //							  0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
