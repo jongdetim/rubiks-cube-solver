@@ -80,13 +80,13 @@ int	read_db()
 
 void	generate_db(Cube solved)
 {
-	char* messageError = NULL;
+	char* messageError;
 	Cube cur;
 	queue<Cube> queue;
 
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
-	for (int phase = 1; phase < 5; phase++)
+	for (int phase = 0; phase < 2; phase++)
 	{
 		queue.push(solved);
 		cur = queue.front();
@@ -108,6 +108,7 @@ void	generate_db(Cube solved)
 					cur.applyMove(moves[move]);
 					int64_t id;
 					id = cur.get_id(phase);
+					cout << "22222" << endl;
 					if (phaseHash[phase].find(id) == phaseHash[phase].end())
 					{
 						cur.path.insert(cur.path.begin(), '3' - amount);

@@ -41,14 +41,14 @@ uint64_t	Cube::get_id(int phase)
 {
 	switch (phase)
 	{
-		case 1:
+		case 0:
 			return get_id_phase1();
-		case 2:
+		case 1:
 			return get_id_phase2();
+		case 2:
+			return 0;
 		case 3:
-			;
-		case 4:
-			;
+			return 0;
 	}
 	return (0);
 }
