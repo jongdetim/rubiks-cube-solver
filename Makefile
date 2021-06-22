@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: asulliva <asulliva@student.codam.nl>         +#+                      #
+#                                                    +#+                       #
+#    Created: 2021/04/11 17:24:28 by asulliva      #+#    #+#                  #
+#    Updated: 2021/06/22 17:17:57 by asulliva      ########   odam.nl          #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		=	rubik
 SRCS_FILES	=	cube moves rotate solver generate_db main
 SRC_DIR		=	src/
