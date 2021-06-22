@@ -23,6 +23,6 @@ extern sqlite3* database;
 
 int create_db();
 int	read_db();
-void	generate_db(queue<Cube> queue);
+void	generate_db(Cube solved);
 
 #endif

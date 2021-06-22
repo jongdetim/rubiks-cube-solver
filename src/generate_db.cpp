@@ -20,81 +20,82 @@ std::string moves[6] = {"F","R","U","B","L","D"};
 sqlite3* database;
 std::map<int64_t, std::string> phaseHash[2];
 
-int create_db()
+void	open_db()
 {
-	std::string sql = "CREATE TABLE PHASE1( \
-					  KEY INT PRIMARY KEY     NOT NULL, \
-					  VALUE           TEXT    NOT NULL);";
-	int exit = 0;
-	exit = sqlite3_open("rubik.db", &database);
-	char* messageError;
-	exit = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
-  
-	if (exit != SQLITE_OK) {
-		std::cerr << "Table already exists" << std::endl;
-		sqlite3_free(messageError);
+	int rc = 0;
+	rc = sqlite3_open("rubik.db", &database);
+	if (rc)
+	{
+		std::cerr << "Error opening database " << sqlite3_errmsg(database) << std::endl;
+		exit(1);
 	}
 	else
-		std::cout << "Table created Successfully" << std::endl;
-	// sqlite3_close(database);
-
-
-
-	return (0);
+		std::cout << "Opened Database Successfully!" << std::endl;
 }
 
-static int callback(void *data, int argc, char **argv, char **azColName){
-   int i;
-   printf("%s: ", (const char*)data);
-   
-   for(i = 0; i<argc; i++){
-	  printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-   }
-   
-   printf("\n");
-   return 0;
+static int callback(void *data, int argc, char **argv, char **azColName)
+{
+	int i;
+	(void)data;
+	for(i = 0; i<argc; i++)
+		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+	printf("\n");
+	return 0;
+}
+
+void	execute_sql(string sql, bool read)
+{
+	char *messageError;
+	int rc;
+
+	if (read == true)
+		rc = sqlite3_exec(database, sql.c_str(), callback, 0, &messageError);
+	else
+		rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
+	if (rc != SQLITE_OK)
+		printf("SQL error: %s\n", messageError);
+		sqlite3_free(messageError);
+}
+
+int create_db()
+{
+	open_db();
+	for (int i = 0; i < 4; i++)
+	{
+		std::string sql = "CREATE TABLE PHASE" + std::to_string(i+1) + 
+		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT NOT NULL);";
+		execute_sql(sql, false);
+	}
+	return (0);
 }
   
 int	read_db()
 {
-	int exit = 0;
-	exit = sqlite3_open("rubik.db", &database);
-	char const *data = "CALLBACK FUNCTION";
-	char const *sql = "SELECT * FROM PHASE1";
-  
-	if (exit) {
-		std::cerr << "Error open database " << sqlite3_errmsg(database) << std::endl;
-		return (-1);
-	}
-	else
-		std::cout << "Opened Database Successfully!" << std::endl;
-  
-	int rc = sqlite3_exec(database, sql, callback, (void*)data, NULL);
-  	// rc = sqlite3_exec(db, sql, callback, (void*)data, &zErrMsg);
-	if (rc != SQLITE_OK)
-		std::cerr << "Error SELECT" << std::endl;
-	else {
-		std::cout << "Operation OK!" << std::endl;
-	}
-  
-	sqlite3_close(database);
+	string sql = "SELECT * FROM PHASE1";
+	
+	open_db();
+	execute_sql(sql, true);
 	return (0);
 }
 
 // void	write_db
 
-void	generate_db(queue<Cube> queue){
-	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
-
+void	generate_db(Cube solved)
+{
 	char* messageError = NULL;
 	Cube cur;
+	queue<Cube> queue;
+
+	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
+	// 4x loop
+	queue.push(solved);
 	cur = queue.front();
 	int64_t id = cur.get_id_phase1();
 	phaseHash[phase][id] = queue.front().path;
-	string sql("INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + std::to_string(id) + ",'E')");
+	string sql = "INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + std::to_string(id) + ",'E')";
 	int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 	if (rc != SQLITE_OK)
-		fprintf(stderr, "SQL error: %s\n", messageError);
+		printf("SQL error: %s\n", messageError);
 
 	while (!queue.empty())
 	{

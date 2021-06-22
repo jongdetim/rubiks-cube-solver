@@ -15,7 +15,7 @@ SRCS_FILES	=	cube moves rotate solver generate_db main
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC			=	src/includes
-CFLAGS		=	-Wall -Werror -Wextra -std=c++1y -stdlib=libc++
+CFLAGS		=	-Wall -Werror -Wextra -std=c++17
 CC			=	clang++
 OBJS 		:=	$(SRCS_FILES:%=%.o)
 SRCS		=	$(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -26,7 +26,7 @@ TEST_ARG	=	"U2"
 all: $(NAME)
 
 $(NAME): $(SRCS)
-	@echo "\033[0;33m[ + ] CREATING OBJECT FILES\033[0m"
+	@echo "\033[0;33m[ + ] -CREATING OBJECT FILES\033[0m"
 	@$(CC) -c $(CFLAGS) $(SRCS) -I $(INC)
 	@mkdir -p $(OBJ_DIR)
 	@mv $(OBJS) $(OBJ_DIR)

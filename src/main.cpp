@@ -97,10 +97,8 @@ int main(int ac, char **av)
 		exit(1);
 	movesstr = parse(av[1]);
 
-	queue<Cube> queue;
-	queue.push(c);
 	create_db();
-	generate_db(queue);
+	generate_db(c);
 	read_db();
 
 	try {
