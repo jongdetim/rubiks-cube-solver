@@ -38,6 +38,7 @@ class Cube
 		void rotSides90(int* arr);
 		void rotSides180(int* arr);
 	public:
+		string path;
 		Cube( void );
 		Cube(const Cube *parent);
 
@@ -55,20 +56,16 @@ class Cube
 		void applyMove(string move);
 		void reverseMove(char move);
 		Cube& u(uint8_t amount);
-
 		Cube& l(uint8_t amount);
-
 		Cube& f(uint8_t amount);
-
 		Cube& r(uint8_t amount);
-
 		Cube& b(uint8_t amount);
-
 		Cube& d(uint8_t amount);
 
+		// Unique state ID
+		uint64_t get_id(int phase);
 		uint64_t get_id_phase1();
 		uint64_t get_id_phase2();
-		string path;
 };
 
 #endif
