@@ -37,7 +37,24 @@ bool Cube::isSolved() const
 		(this->getFace(FACE::DOWN) == 0x0505050505050505));
 }
 
-uint64_t	Cube::get_id_phase1(){
+uint64_t	Cube::get_id(int phase)
+{
+	switch (phase)
+	{
+		case 1:
+			return get_id_phase1();
+		case 2:
+			return get_id_phase2();
+		case 3:
+			;
+		case 4:
+			;
+	}
+	return (0);
+}
+
+uint64_t	Cube::get_id_phase1()
+{
 	uint64_t id = 0; 
 	for (int edge = 0; edge < 11; edge++)
 	{
