@@ -97,9 +97,14 @@ int main(int ac, char **av)
 		exit(1);
 	movesstr = parse(av[1]);
 
-	create_db();
-	generate_db(c);
-	read_db();
+	/*
+	** deze functies moeten worden bediend door command line arguments
+	*/
+
+	// create_db();
+	// generate_db(c);
+	read_db(2);
+	// rowcount_db(2);
 
 	try {
 		checkMoves(movesstr);

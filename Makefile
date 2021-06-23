@@ -15,7 +15,7 @@ SRCS_FILES	=	cube moves rotate solver generate_db main
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC			=	src/includes
-CFLAGS		=	-Wall -Werror -Wextra -std=c++17
+CFLAGS		=	-Wall -Wextra -Werror -O3 -std=c++17
 CC			=	clang++
 OBJS 		:=	$(SRCS_FILES:%=%.o)
 SRCS		=	$(addprefix $(SRC_DIR), $(SRCS_FILES))

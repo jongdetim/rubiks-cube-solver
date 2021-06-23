@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:14:57 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/22 21:01:12 by asulliva      ########   odam.nl         */
+/*   Updated: 2021/06/23 21:18:32 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 */
 Cube &Cube::u(uint8_t amount)
 {
-	int arr[] = {16, 17, 18, 8, 9, 10, 32, 33, 34, 24, 25, 26};
+	// int arr[] = {16, 17, 18, 8, 9, 10, 32, 33, 34, 24, 25, 26};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::UP);
-		this->rotSides90((int *)arr);
+		// deze zijn niet nodig om te solven, alleen om te printen
+		
+		// this->rot90(FACE::UP);
+		// this->rotSides90((int *)arr);
 
 		uint8_t temp = this->edgeOrientation[EDGE::UB];
 		this->edgeOrientation[EDGE::UB] = this->edgeOrientation[EDGE::UL];
@@ -55,11 +57,11 @@ Cube &Cube::u(uint8_t amount)
 */
 Cube &Cube::l(uint8_t amount)
 {
-	int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
+	// int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::LEFT);
-		this->rotSides90((int *)arr);
+		// this->rot90(FACE::LEFT);
+		// this->rotSides90((int *)arr);
 
 		uint8_t temp = this->edgeOrientation[EDGE::BL];
 		this->edgeOrientation[EDGE::BL] = this->edgeOrientation[EDGE::DL];
@@ -93,11 +95,11 @@ Cube &Cube::l(uint8_t amount)
 */
 Cube &Cube::f(uint8_t amount)
 {
-	int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
+	// int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::FRONT);
-		this->rotSides90((int *)arr);
+		// this->rot90(FACE::FRONT);
+		// this->rotSides90((int *)arr);
 		
 		uint8_t temp = this->edgeOrientation[EDGE::UF];
 		this->edgeOrientation[EDGE::UF] = 1 - this->edgeOrientation[EDGE::FL];
@@ -131,11 +133,11 @@ Cube &Cube::f(uint8_t amount)
 */
 Cube &Cube::r(uint8_t amount)
 {
-	int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
+	// int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::RIGHT);
-		this->rotSides90((int *)arr);
+		// this->rot90(FACE::RIGHT);
+		// this->rotSides90((int *)arr);
 
 		uint8_t temp = this->edgeOrientation[EDGE::UR];
 		this->edgeOrientation[EDGE::UR] = this->edgeOrientation[EDGE::FR];
@@ -169,11 +171,11 @@ Cube &Cube::r(uint8_t amount)
 */
 Cube&		Cube::b(uint8_t amount)
 {
-	int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
+	// int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::BACK);
-		this->rotSides90((int*)arr);
+		// this->rot90(FACE::BACK);
+		// this->rotSides90((int*)arr);
 		
 		uint8_t temp = this->edgeOrientation[EDGE::BR];
 		this->edgeOrientation[EDGE::BR] = 1 - this->edgeOrientation[EDGE::DB];
@@ -207,11 +209,11 @@ Cube&		Cube::b(uint8_t amount)
 */
 Cube&		Cube::d(uint8_t amount)
 {
-	int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};
+	// int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		this->rot90(FACE::DOWN);
-		this->rotSides90((int*)arr);
+		// this->rot90(FACE::DOWN);
+		// this->rotSides90((int*)arr);
 
 		uint8_t temp = this->edgeOrientation[EDGE::DF];
 		this->edgeOrientation[EDGE::DF] = this->edgeOrientation[EDGE::DL];

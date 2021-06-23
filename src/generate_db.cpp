@@ -16,7 +16,8 @@
 int phase = 0;
 string moves[6] = {"F","R","U","B","L","D"};
 sqlite3* database;
-map<int64_t, string> phaseHash[2];
+map<int64_t, string> phaseHash[5];
+bool allowedMoves[18];
 
 void	open_db()
 {
@@ -29,6 +30,35 @@ void	open_db()
 	}
 	else
 		cout << "Opened Database Successfully!\n";
+}
+
+void	disable_moves(int phase)
+{
+	switch (phase)
+	{
+		case 0:
+			//FB quarter turns
+			allowedMoves[0] = false;
+			allowedMoves[2] = false;
+			allowedMoves[9] = false;
+			allowedMoves[11] = false;
+			break;
+		case 1:
+			// RL quarter turns
+			allowedMoves[3] = false;
+			allowedMoves[5] = false;
+			allowedMoves[12] = false;
+			allowedMoves[14] = false;
+			break;
+		case 2:
+			// UD quarter turns
+			allowedMoves[6] = false;
+			allowedMoves[8] = false;
+			allowedMoves[15] = false;
+			allowedMoves[17] = false;
+		default :
+			break;
+	}
 }
 
 static int callback(void *data, int argc, char **argv, char **azColName)
@@ -67,32 +97,44 @@ int create_db()
 	return (0);
 }
   
-int	read_db()
+int	read_db(int phase)
 {
-	string sql = "SELECT * FROM PHASE1";
+	string sql = "SELECT * FROM PHASE" + to_string(phase);
 	
 	open_db();
 	execute_sql(sql, true);
 	return (0);
 }
 
-// void	write_db
+int	rowcount_db(int phase)
+{
+	string sql = "SELECT COUNT(*) FROM PHASE" + to_string(phase);
+	
+	open_db();
+	execute_sql(sql, true);
+	return (0);
+}
 
 void	generate_db(Cube solved)
 {
 	char* messageError;
 	Cube cur;
 	queue<Cube> queue;
+	uint64_t id;
 
+	for (int i = 0; i < 18; i++)
+		allowedMoves[i] = true;
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
 	for (int phase = 0; phase < 2; phase++)
 	{
+		cout << "generating lookup table for phase" + to_string(phase+1) + "...\n";
 		queue.push(solved);
 		cur = queue.front();
-		int64_t id = cur.get_id(phase);
+		id = cur.get_id(phase);
 		phaseHash[phase][id] = queue.front().path;
-		string sql = "INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
+		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
+		" (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
 		int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 		if (rc != SQLITE_OK)
 			printf("SQL error: %s\n", messageError);
@@ -103,29 +145,29 @@ void	generate_db(Cube solved)
 			queue.pop();
 			for (int move = 0; move < 6; move++)
 			{
-				for (int amount = 0; amount < 3; amount++)
+				for (int times = 0; times < 3; times++)
 				{
 					cur.applyMove(moves[move]);
-					int64_t id;
-					id = cur.get_id(phase);
-					cout << "22222" << endl;
-					if (phaseHash[phase].find(id) == phaseHash[phase].end())
+					if (allowedMoves[((move+1) * (times+1)) - 1])
 					{
-						cur.path.insert(cur.path.begin(), '3' - amount);
-						cur.path.insert(cur.path.begin(),  moves[move][0]);
-						// const char *sql = "INSERT INTO PHASE1 VALUES (1, 'abc')";
-						string sql("INSERT INTO PHASE1 (KEY,VALUE) VALUES(" + to_string(id) + ",'" + cur.path + "')");
-						int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
-						if (rc != SQLITE_OK)
-							fprintf(stderr, "SQL error: %s\n", messageError);
-						phaseHash[phase][id] = cur.path;
-						queue.push(cur);
-						cur.path = cur.path.substr(2);
+						id = cur.get_id(phase);
+						if (phaseHash[phase].find(id) == phaseHash[phase].end())
+						{
+							cur.path.insert(cur.path.begin(), '3' - times);
+							cur.path.insert(cur.path.begin(),  moves[move][0]);
+							string sql("INSERT INTO PHASE" + to_string(phase + 1) +
+							" (KEY,VALUE) VALUES(" + to_string(id) + ",'" + cur.path + "')");
+							execute_sql(sql, false);
+							phaseHash[phase][id] = cur.path;
+							queue.push(cur);
+							cur.path = cur.path.substr(2);
+						}
 					}
 				}
 				cur.applyMove(moves[move]);
 			}
 		}
+		disable_moves(phase);
 	}
 	sqlite3_exec(database, "COMMIT;", NULL, NULL, NULL);
 }
