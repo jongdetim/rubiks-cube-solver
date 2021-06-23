@@ -117,13 +117,13 @@ int	rowcount_db(int phase)
 
 void	generate_db(Cube solved)
 {
-	char* messageError;
 	Cube cur;
 	queue<Cube> queue;
 	uint64_t id;
 
 	for (int i = 0; i < 18; i++)
 		allowedMoves[i] = true;
+	open_db();
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
 	for (int phase = 0; phase < 2; phase++)
@@ -135,9 +135,7 @@ void	generate_db(Cube solved)
 		phaseHash[phase][id] = queue.front().path;
 		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
 		" (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
-		int rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
-		if (rc != SQLITE_OK)
-			printf("SQL error: %s\n", messageError);
+		execute_sql(sql, false);
 
 		while (!queue.empty())
 		{
