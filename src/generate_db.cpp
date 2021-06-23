@@ -25,11 +25,11 @@ void	open_db()
 	rc = sqlite3_open("rubik.db", &database);
 	if (rc)
 	{
-		cout << "Error opening database " << sqlite3_errmsg(database) << endl;
+		cout << "error opening database " << sqlite3_errmsg(database) << endl;
 		exit(1);
 	}
 	else
-		cout << "Opened Database Successfully!\n";
+		cout << "opened database successfully!\n";
 }
 
 void	disable_moves(int phase)
@@ -91,7 +91,7 @@ int create_db()
 	for (int i = 0; i < 4; i++)
 	{
 		string sql = "CREATE TABLE PHASE" + to_string(i+1) + 
-		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT NOT NULL);";
+		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT UNIQUE NOT NULL);";
 		execute_sql(sql, false);
 	}
 	return (0);

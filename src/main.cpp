@@ -102,8 +102,8 @@ int main(int ac, char **av)
 	*/
 
 	// create_db();
-	generate_db(c);
-	// read_db(2);
+	// generate_db(c);
+	read_db(2);
 	// rowcount_db(2);
 
 	try {
