@@ -16,7 +16,7 @@
 //							  0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum EDGE : uint8_t {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
+enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
 enum CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 
 class Cube
@@ -25,10 +25,12 @@ class Cube
 		array<COLOR, 48> cube;
 		array<COLOR, 6> centers;
 
-		uint8_t	cornerOrientation[8] = {1, 1, 1, 1, 1, 1, 1, 1};
-		uint8_t edgeOrientation[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		uint8_t	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+		uint8_t edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
+		string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
+		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 
 		// Rotations
 		void rot90(FACE f);
@@ -66,6 +68,7 @@ class Cube
 		uint64_t get_id(int phase);
 		uint64_t get_id_phase1();
 		uint64_t get_id_phase2();
+		uint64_t get_id_phase3();
 };
 
 #endif

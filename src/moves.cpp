@@ -6,7 +6,7 @@
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:14:57 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/06/23 21:18:32 by anonymous     ########   odam.nl         */
+/*   Updated: 2021/06/26 21:35:08 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,37 @@
 */
 Cube &Cube::u(uint8_t amount)
 {
-	// int arr[] = {16, 17, 18, 8, 9, 10, 32, 33, 34, 24, 25, 26};
+	int arr[] = {16, 17, 18, 8, 9, 10, 32, 33, 34, 24, 25, 26};
 	for (uint8_t i = 0; i < amount; i++)
 	{
 		// deze zijn niet nodig om te solven, alleen om te printen
 		
-		// this->rot90(FACE::UP);
-		// this->rotSides90((int *)arr);
+		rot90(FACE::UP);
+		rotSides90((int *)arr);
 
-		uint8_t temp = this->edgeOrientation[EDGE::UB];
-		this->edgeOrientation[EDGE::UB] = this->edgeOrientation[EDGE::UL];
-		this->edgeOrientation[EDGE::UL] = this->edgeOrientation[EDGE::UF];
-		this->edgeOrientation[EDGE::UF] = this->edgeOrientation[EDGE::UR];
-		this->edgeOrientation[EDGE::UR] = temp;
+		uint8_t temp = edgeOrientation[EDGE::UB];
+		edgeOrientation[EDGE::UB] = edgeOrientation[EDGE::UL];
+		edgeOrientation[EDGE::UL] = edgeOrientation[EDGE::UF];
+		edgeOrientation[EDGE::UF] = edgeOrientation[EDGE::UR];
+		edgeOrientation[EDGE::UR] = temp;
 
-		temp = this->cornerOrientation[CORNER::URF];
-		this->cornerOrientation[CORNER::URF] = this->cornerOrientation[CORNER::UBR];
-		this->cornerOrientation[CORNER::UBR] = this->cornerOrientation[CORNER::ULB];
-		this->cornerOrientation[CORNER::ULB] = this->cornerOrientation[CORNER::UFL];
-		this->cornerOrientation[CORNER::UFL] = temp;
+		temp = cornerOrientation[CORNER::URF];
+		cornerOrientation[CORNER::URF] = cornerOrientation[CORNER::UBR];
+		cornerOrientation[CORNER::UBR] = cornerOrientation[CORNER::ULB];
+		cornerOrientation[CORNER::ULB] = cornerOrientation[CORNER::UFL];
+		cornerOrientation[CORNER::UFL] = temp;
 
-		CORNER cTemp = this->cornerPosition[CORNER::URF];
-		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::UBR];
-		this->cornerPosition[CORNER::UBR] = this->cornerPosition[CORNER::ULB];
-		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::UFL];
-		this->cornerPosition[CORNER::UFL] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::URF];
+		cornerPosition[CORNER::URF] = cornerPosition[CORNER::UBR];
+		cornerPosition[CORNER::UBR] = cornerPosition[CORNER::ULB];
+		cornerPosition[CORNER::ULB] = cornerPosition[CORNER::UFL];
+		cornerPosition[CORNER::UFL] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::UB];
-		this->edgePosition[EDGE::UB] = this->edgePosition[EDGE::UL];
-		this->edgePosition[EDGE::UL] = this->edgePosition[EDGE::UF];
-		this->edgePosition[EDGE::UF] = this->edgePosition[EDGE::UR];
-		this->edgePosition[EDGE::UR] = eTemp;
+		EDGE eTemp = edgePosition[UB];
+		edgePosition[UB] = edgePosition[UL];
+		edgePosition[UL] = edgePosition[UF];
+		edgePosition[UF] = edgePosition[UR];
+		edgePosition[UR] = eTemp;
 	}
 	return *this;
 }
@@ -57,35 +57,35 @@ Cube &Cube::u(uint8_t amount)
 */
 Cube &Cube::l(uint8_t amount)
 {
-	// int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
+	int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		// this->rot90(FACE::LEFT);
-		// this->rotSides90((int *)arr);
+		rot90(FACE::LEFT);
+		rotSides90((int *)arr);
 
-		uint8_t temp = this->edgeOrientation[EDGE::BL];
-		this->edgeOrientation[EDGE::BL] = this->edgeOrientation[EDGE::DL];
-		this->edgeOrientation[EDGE::DL] = this->edgeOrientation[EDGE::FL];
-		this->edgeOrientation[EDGE::FL] = this->edgeOrientation[EDGE::UL];
-		this->edgeOrientation[EDGE::UL] = temp;
+		uint8_t temp = edgeOrientation[EDGE::BL];
+		edgeOrientation[EDGE::BL] = edgeOrientation[EDGE::DL];
+		edgeOrientation[EDGE::DL] = edgeOrientation[EDGE::FL];
+		edgeOrientation[EDGE::FL] = edgeOrientation[EDGE::UL];
+		edgeOrientation[EDGE::UL] = temp;
 
-		temp = this->cornerOrientation[CORNER::DLF];
-		this->cornerOrientation[CORNER::DLF] = (1 + this->cornerOrientation[CORNER::UFL]) % 3;
-		this->cornerOrientation[CORNER::UFL] = (2 + this->cornerOrientation[CORNER::ULB]) % 3;
-		this->cornerOrientation[CORNER::ULB] = (1 + this->cornerOrientation[CORNER::DBL]) % 3;
-		this->cornerOrientation[CORNER::DBL] = (2 + temp) % 3;
+		temp = cornerOrientation[CORNER::DLF];
+		cornerOrientation[CORNER::DLF] = (1 + cornerOrientation[CORNER::UFL]) % 3;
+		cornerOrientation[CORNER::UFL] = (2 + cornerOrientation[CORNER::ULB]) % 3;
+		cornerOrientation[CORNER::ULB] = (1 + cornerOrientation[CORNER::DBL]) % 3;
+		cornerOrientation[CORNER::DBL] = (2 + temp) % 3;
 
-		CORNER cTemp = this->cornerPosition[CORNER::DLF];
-		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::UFL];
-		this->cornerPosition[CORNER::UFL] = this->cornerPosition[CORNER::ULB];
-		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::DBL];
-		this->cornerPosition[CORNER::DBL] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::DLF];
+		cornerPosition[CORNER::DLF] = cornerPosition[CORNER::UFL];
+		cornerPosition[CORNER::UFL] = cornerPosition[CORNER::ULB];
+		cornerPosition[CORNER::ULB] = cornerPosition[CORNER::DBL];
+		cornerPosition[CORNER::DBL] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::BL];
-		this->edgePosition[EDGE::BL] = this->edgePosition[EDGE::DL];
-		this->edgePosition[EDGE::DL] = this->edgePosition[EDGE::FL];
-		this->edgePosition[EDGE::FL] = this->edgePosition[EDGE::UL];
-		this->edgePosition[EDGE::UL] = eTemp;
+		EDGE eTemp = edgePosition[EDGE::BL];
+		edgePosition[EDGE::BL] = edgePosition[EDGE::DL];
+		edgePosition[EDGE::DL] = edgePosition[EDGE::FL];
+		edgePosition[EDGE::FL] = edgePosition[EDGE::UL];
+		edgePosition[EDGE::UL] = eTemp;
 	}
 	return *this;
 }
@@ -95,35 +95,35 @@ Cube &Cube::l(uint8_t amount)
 */
 Cube &Cube::f(uint8_t amount)
 {
-	// int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
+	int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		// this->rot90(FACE::FRONT);
-		// this->rotSides90((int *)arr);
+		rot90(FACE::FRONT);
+		rotSides90((int *)arr);
 		
-		uint8_t temp = this->edgeOrientation[EDGE::UF];
-		this->edgeOrientation[EDGE::UF] = 1 - this->edgeOrientation[EDGE::FL];
-		this->edgeOrientation[EDGE::FL] = 1 - this->edgeOrientation[EDGE::DF];
-		this->edgeOrientation[EDGE::DF] = 1 - this->edgeOrientation[EDGE::FR];
-		this->edgeOrientation[EDGE::FR] = 1 - temp;
+		uint8_t temp = edgeOrientation[EDGE::UF];
+		edgeOrientation[EDGE::UF] = 1 - edgeOrientation[EDGE::FL];
+		edgeOrientation[EDGE::FL] = 1 - edgeOrientation[EDGE::DF];
+		edgeOrientation[EDGE::DF] = 1 - edgeOrientation[EDGE::FR];
+		edgeOrientation[EDGE::FR] = 1 - temp;
 
-		temp = this->cornerOrientation[CORNER::URF];
-		this->cornerOrientation[CORNER::URF] = (2 + this->cornerOrientation[CORNER::UFL]) % 3;
-		this->cornerOrientation[CORNER::UFL] = (1 + this->cornerOrientation[CORNER::DLF]) % 3;
-		this->cornerOrientation[CORNER::DLF] = (2 + this->cornerOrientation[CORNER::DFR]) % 3;
-		this->cornerOrientation[CORNER::DFR] = (1 + temp) % 3;
+		temp = cornerOrientation[CORNER::URF];
+		cornerOrientation[CORNER::URF] = (2 + cornerOrientation[CORNER::UFL]) % 3;
+		cornerOrientation[CORNER::UFL] = (1 + cornerOrientation[CORNER::DLF]) % 3;
+		cornerOrientation[CORNER::DLF] = (2 + cornerOrientation[CORNER::DFR]) % 3;
+		cornerOrientation[CORNER::DFR] = (1 + temp) % 3;
 
-		CORNER cTemp = this->cornerPosition[CORNER::URF];
-		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::UFL];
-		this->cornerPosition[CORNER::UFL] = this->cornerPosition[CORNER::DLF];
-		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::DFR];
-		this->cornerPosition[CORNER::DFR] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::URF];
+		cornerPosition[CORNER::URF] = cornerPosition[CORNER::UFL];
+		cornerPosition[CORNER::UFL] = cornerPosition[CORNER::DLF];
+		cornerPosition[CORNER::DLF] = cornerPosition[CORNER::DFR];
+		cornerPosition[CORNER::DFR] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::UF];
-		this->edgePosition[EDGE::UF] = this->edgePosition[EDGE::FL];
-		this->edgePosition[EDGE::FL] = this->edgePosition[EDGE::DF];
-		this->edgePosition[EDGE::DF] = this->edgePosition[EDGE::FR];
-		this->edgePosition[EDGE::FR] = eTemp;
+		EDGE eTemp = edgePosition[EDGE::UF];
+		edgePosition[EDGE::UF] = edgePosition[EDGE::FL];
+		edgePosition[EDGE::FL] = edgePosition[EDGE::DF];
+		edgePosition[EDGE::DF] = edgePosition[EDGE::FR];
+		edgePosition[EDGE::FR] = eTemp;
 	}
 	return *this;
 }
@@ -133,35 +133,35 @@ Cube &Cube::f(uint8_t amount)
 */
 Cube &Cube::r(uint8_t amount)
 {
-	// int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
+	int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		// this->rot90(FACE::RIGHT);
-		// this->rotSides90((int *)arr);
+		rot90(FACE::RIGHT);
+		rotSides90((int *)arr);
 
-		uint8_t temp = this->edgeOrientation[EDGE::UR];
-		this->edgeOrientation[EDGE::UR] = this->edgeOrientation[EDGE::FR];
-		this->edgeOrientation[EDGE::FR] = this->edgeOrientation[EDGE::DR];
-		this->edgeOrientation[EDGE::DR] = this->edgeOrientation[EDGE::BR];
-		this->edgeOrientation[EDGE::BR] = temp;
+		uint8_t temp = edgeOrientation[EDGE::UR];
+		edgeOrientation[EDGE::UR] = edgeOrientation[EDGE::FR];
+		edgeOrientation[EDGE::FR] = edgeOrientation[EDGE::DR];
+		edgeOrientation[EDGE::DR] = edgeOrientation[EDGE::BR];
+		edgeOrientation[EDGE::BR] = temp;
 
-		temp = this->cornerOrientation[CORNER::URF];
-		this->cornerOrientation[CORNER::URF] = (1 + this->cornerOrientation[CORNER::DFR]) % 3;
-		this->cornerOrientation[CORNER::DFR] = (2 + this->cornerOrientation[CORNER::DRB]) % 3;
-		this->cornerOrientation[CORNER::DRB] = (1 + this->cornerOrientation[CORNER::UBR]) % 3;
-		this->cornerOrientation[CORNER::UBR] = (2 + temp) % 3;
+		temp = cornerOrientation[CORNER::URF];
+		cornerOrientation[CORNER::URF] = (1 + cornerOrientation[CORNER::DFR]) % 3;
+		cornerOrientation[CORNER::DFR] = (2 + cornerOrientation[CORNER::DRB]) % 3;
+		cornerOrientation[CORNER::DRB] = (1 + cornerOrientation[CORNER::UBR]) % 3;
+		cornerOrientation[CORNER::UBR] = (2 + temp) % 3;
 
-		CORNER cTemp = this->cornerPosition[CORNER::URF];
-		this->cornerPosition[CORNER::URF] = this->cornerPosition[CORNER::DFR];
-		this->cornerPosition[CORNER::DFR] = this->cornerPosition[CORNER::DRB];
-		this->cornerPosition[CORNER::DRB] = this->cornerPosition[CORNER::UBR];
-		this->cornerPosition[CORNER::UBR] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::URF];
+		cornerPosition[CORNER::URF] = cornerPosition[CORNER::DFR];
+		cornerPosition[CORNER::DFR] = cornerPosition[CORNER::DRB];
+		cornerPosition[CORNER::DRB] = cornerPosition[CORNER::UBR];
+		cornerPosition[CORNER::UBR] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::FR];
-		this->edgePosition[EDGE::FR] = this->edgePosition[EDGE::DR];
-		this->edgePosition[EDGE::DR] = this->edgePosition[EDGE::BR];
-		this->edgePosition[EDGE::BR] = this->edgePosition[EDGE::UR];
-		this->edgePosition[EDGE::UR] = eTemp;
+		EDGE eTemp = edgePosition[EDGE::FR];
+		edgePosition[EDGE::FR] = edgePosition[EDGE::DR];
+		edgePosition[EDGE::DR] = edgePosition[EDGE::BR];
+		edgePosition[EDGE::BR] = edgePosition[EDGE::UR];
+		edgePosition[EDGE::UR] = eTemp;
 	}
 	return *this;
 }
@@ -171,35 +171,35 @@ Cube &Cube::r(uint8_t amount)
 */
 Cube&		Cube::b(uint8_t amount)
 {
-	// int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
+	int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		// this->rot90(FACE::BACK);
-		// this->rotSides90((int*)arr);
+		rot90(FACE::BACK);
+		rotSides90((int*)arr);
 		
-		uint8_t temp = this->edgeOrientation[EDGE::BR];
-		this->edgeOrientation[EDGE::BR] = 1 - this->edgeOrientation[EDGE::DB];
-		this->edgeOrientation[EDGE::DB] = 1 - this->edgeOrientation[EDGE::BL];
-		this->edgeOrientation[EDGE::BL] = 1 - this->edgeOrientation[EDGE::UB];
-		this->edgeOrientation[EDGE::UB] = 1 - temp;
+		uint8_t temp = edgeOrientation[EDGE::BR];
+		edgeOrientation[EDGE::BR] = 1 - edgeOrientation[EDGE::DB];
+		edgeOrientation[EDGE::DB] = 1 - edgeOrientation[EDGE::BL];
+		edgeOrientation[EDGE::BL] = 1 - edgeOrientation[EDGE::UB];
+		edgeOrientation[EDGE::UB] = 1 - temp;
 
-		temp = this->cornerOrientation[CORNER::ULB];
-		this->cornerOrientation[CORNER::ULB] = (2 + this->cornerOrientation[CORNER::UBR]) % 3;
-		this->cornerOrientation[CORNER::UBR] = (1 + this->cornerOrientation[CORNER::DRB]) % 3;
-		this->cornerOrientation[CORNER::DRB] = (2 + this->cornerOrientation[CORNER::DBL]) % 3;
-		this->cornerOrientation[CORNER::DBL] = (1 + temp) % 3;
+		temp = cornerOrientation[CORNER::ULB];
+		cornerOrientation[CORNER::ULB] = (2 + cornerOrientation[CORNER::UBR]) % 3;
+		cornerOrientation[CORNER::UBR] = (1 + cornerOrientation[CORNER::DRB]) % 3;
+		cornerOrientation[CORNER::DRB] = (2 + cornerOrientation[CORNER::DBL]) % 3;
+		cornerOrientation[CORNER::DBL] = (1 + temp) % 3;
 
-		CORNER cTemp = this->cornerPosition[CORNER::ULB];
-		this->cornerPosition[CORNER::ULB] = this->cornerPosition[CORNER::UBR];
-		this->cornerPosition[CORNER::UBR] = this->cornerPosition[CORNER::DRB];
-		this->cornerPosition[CORNER::DRB] = this->cornerPosition[CORNER::DBL];
-		this->cornerPosition[CORNER::DBL] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::ULB];
+		cornerPosition[CORNER::ULB] = cornerPosition[CORNER::UBR];
+		cornerPosition[CORNER::UBR] = cornerPosition[CORNER::DRB];
+		cornerPosition[CORNER::DRB] = cornerPosition[CORNER::DBL];
+		cornerPosition[CORNER::DBL] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::BR];
-		this->edgePosition[EDGE::BR] = this->edgePosition[EDGE::DB];
-		this->edgePosition[EDGE::DB] = this->edgePosition[EDGE::BL];
-		this->edgePosition[EDGE::BL] = this->edgePosition[EDGE::UB];
-		this->edgePosition[EDGE::UB] = eTemp;
+		EDGE eTemp = edgePosition[EDGE::BR];
+		edgePosition[EDGE::BR] = edgePosition[EDGE::DB];
+		edgePosition[EDGE::DB] = edgePosition[EDGE::BL];
+		edgePosition[EDGE::BL] = edgePosition[EDGE::UB];
+		edgePosition[EDGE::UB] = eTemp;
 	}
 	return *this;
 }
@@ -209,35 +209,35 @@ Cube&		Cube::b(uint8_t amount)
 */
 Cube&		Cube::d(uint8_t amount)
 {
-	// int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};
+	int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};
 	for (uint8_t i = 0; i < amount; i++)
 	{
-		// this->rot90(FACE::DOWN);
-		// this->rotSides90((int*)arr);
+		rot90(FACE::DOWN);
+		rotSides90((int*)arr);
 
-		uint8_t temp = this->edgeOrientation[EDGE::DF];
-		this->edgeOrientation[EDGE::DF] = this->edgeOrientation[EDGE::DL];
-		this->edgeOrientation[EDGE::DL] = this->edgeOrientation[EDGE::DB];
-		this->edgeOrientation[EDGE::DB] = this->edgeOrientation[EDGE::DR];
-		this->edgeOrientation[EDGE::DR] = temp;
+		uint8_t temp = edgeOrientation[EDGE::DF];
+		edgeOrientation[EDGE::DF] = edgeOrientation[EDGE::DL];
+		edgeOrientation[EDGE::DL] = edgeOrientation[EDGE::DB];
+		edgeOrientation[EDGE::DB] = edgeOrientation[EDGE::DR];
+		edgeOrientation[EDGE::DR] = temp;
 
-		temp = this->cornerOrientation[CORNER::DFR];
-		this->cornerOrientation[CORNER::DFR] = this->cornerOrientation[CORNER::DLF];
-		this->cornerOrientation[CORNER::DLF] = this->cornerOrientation[CORNER::DBL];
-		this->cornerOrientation[CORNER::DBL] = this->cornerOrientation[CORNER::DRB];
-		this->cornerOrientation[CORNER::DRB] = temp;
+		temp = cornerOrientation[CORNER::DFR];
+		cornerOrientation[CORNER::DFR] = cornerOrientation[CORNER::DLF];
+		cornerOrientation[CORNER::DLF] = cornerOrientation[CORNER::DBL];
+		cornerOrientation[CORNER::DBL] = cornerOrientation[CORNER::DRB];
+		cornerOrientation[CORNER::DRB] = temp;
 
-		CORNER cTemp = this->cornerPosition[CORNER::DFR];
-		this->cornerPosition[CORNER::DFR] = this->cornerPosition[CORNER::DLF];
-		this->cornerPosition[CORNER::DLF] = this->cornerPosition[CORNER::DBL];
-		this->cornerPosition[CORNER::DBL] = this->cornerPosition[CORNER::DRB];
-		this->cornerPosition[CORNER::DRB] = cTemp;
+		CORNER cTemp = cornerPosition[CORNER::DFR];
+		cornerPosition[CORNER::DFR] = cornerPosition[CORNER::DLF];
+		cornerPosition[CORNER::DLF] = cornerPosition[CORNER::DBL];
+		cornerPosition[CORNER::DBL] = cornerPosition[CORNER::DRB];
+		cornerPosition[CORNER::DRB] = cTemp;
 
-		EDGE eTemp = this->edgePosition[EDGE::DF];
-		this->edgePosition[EDGE::DF] = this->edgePosition[EDGE::DL];
-		this->edgePosition[EDGE::DL] = this->edgePosition[EDGE::DB];
-		this->edgePosition[EDGE::DB] = this->edgePosition[EDGE::DR];
-		this->edgePosition[EDGE::DR] = eTemp;
+		EDGE eTemp = edgePosition[EDGE::DF];
+		edgePosition[EDGE::DF] = edgePosition[EDGE::DL];
+		edgePosition[EDGE::DL] = edgePosition[EDGE::DB];
+		edgePosition[EDGE::DB] = edgePosition[EDGE::DR];
+		edgePosition[EDGE::DR] = eTemp;
 	}
 	return *this;
 }

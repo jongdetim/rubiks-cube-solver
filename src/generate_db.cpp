@@ -126,9 +126,9 @@ void	generate_db(Cube solved)
 	open_db();
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
-	for (int phase = 0; phase < 2; phase++)
+	for (int phase = 0; phase < 3; phase++)
 	{
-		cout << "generating lookup table for phase" + to_string(phase+1) + "...\n";
+		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
 		queue.push(solved);
 		cur = queue.front();
 		id = cur.get_id(phase);

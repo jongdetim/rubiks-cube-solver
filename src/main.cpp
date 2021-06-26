@@ -94,17 +94,20 @@ int main(int ac, char **av)
 	Cube			c;
 	
 	if (ac < 2)
+	{
+		printf("no movestring provided");
 		exit(1);
+	}
 	movesstr = parse(av[1]);
 
 	/*
 	** deze functies moeten worden bediend door command line arguments
 	*/
 
-	// create_db();
-	// generate_db(c);
-	read_db(2);
-	// rowcount_db(2);
+	create_db();
+	generate_db(c);
+	// read_db(3);
+	rowcount_db(3);
 
 	try {
 		checkMoves(movesstr);

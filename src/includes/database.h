@@ -16,8 +16,8 @@
 # include "main.h"
 # include "cube.h"
 
-extern	std::string moves[6];
-extern	std::map<int64_t, std::string> phaseHash[5];
+extern	string moves[6];
+extern	map<int64_t, string> phaseHash[5];
 extern	int phase;
 extern	sqlite3* database;
 
