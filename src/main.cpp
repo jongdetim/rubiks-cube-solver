@@ -87,12 +87,34 @@ bool			checkMoves(vector<string> moves)
 	return true;
 }
 
+vector<string>	read_moves_db(string moves)
+{
+	vector<string>	parsed_moves;
+	string			temp;
+	int n = 0;
+
+	for (size_t i = 0; i < moves.length(); i++)
+	{
+		temp += moves[i];
+		if (temp.length() == 2)
+		{
+			parsed_moves.push_back(temp);
+			cout << parsed_moves[n] << "\n";
+			n++;
+			temp = "";
+		}
+	}
+	return parsed_moves;
+}
+
 int main(int ac, char **av)
 {
 	vector<char>	moves;
 	vector<string>	movesstr;
 	Cube			c;
 	
+	// read_moves_db("F3R2U1L3");
+	// exit(1);
 	if (ac < 2)
 		exit(1);
 	movesstr = parse(av[1]);
@@ -103,9 +125,9 @@ int main(int ac, char **av)
 
 	// create_db();
 	// generate_db(c);
-	read_db(2);
+	read_db(1);
 	// rowcount_db(2);
-
+	exit(1);
 	try {
 		checkMoves(movesstr);
 	} catch (const char *msg) {
