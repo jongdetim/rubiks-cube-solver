@@ -15,22 +15,15 @@
 # include "main.h"
 //							  0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum FACE {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-enum CORNER : uint8_t {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
+enum CORNER {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 
 class Cube
 {
 	private:
 		array<COLOR, 48> cube;
 		array<COLOR, 6> centers;
-
-		uint8_t	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-		uint8_t edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
-		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-		string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
-		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 
 		// Rotations
 		void rot90(FACE f);
@@ -40,6 +33,12 @@ class Cube
 		void rotSides90(int* arr);
 		void rotSides180(int* arr);
 	public:
+		char	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+		char edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
+		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
+		string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
+		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 		string path;
 		Cube( void );
 		Cube(const Cube *parent);
@@ -57,12 +56,12 @@ class Cube
 		// Moves
 		void applyMove(string move);
 		void reverseMove(char move);
-		Cube& u(uint8_t amount);
-		Cube& l(uint8_t amount);
-		Cube& f(uint8_t amount);
-		Cube& r(uint8_t amount);
-		Cube& b(uint8_t amount);
-		Cube& d(uint8_t amount);
+		Cube& u(int amount);
+		Cube& l(int amount);
+		Cube& f(int amount);
+		Cube& r(int amount);
+		Cube& b(int amount);
+		Cube& d(int amount);
 
 		// Unique state ID
 		uint64_t get_id(int phase);

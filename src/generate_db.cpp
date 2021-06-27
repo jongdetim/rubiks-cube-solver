@@ -16,7 +16,7 @@
 int phase = 0;
 string moves[6] = {"F","R","U","B","L","D"};
 sqlite3* database;
-map<int64_t, string> phaseHash[5];
+unordered_map<int64_t, string> phaseHash[5];
 bool allowedMoves[18];
 
 void	open_db()
@@ -126,6 +126,8 @@ void	generate_db(Cube solved)
 	open_db();
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
+
+
 	for (int phase = 0; phase < 3; phase++)
 	{
 		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
@@ -136,9 +138,9 @@ void	generate_db(Cube solved)
 		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
 		" (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
 		execute_sql(sql, false);
-
 		while (!queue.empty())
 		{
+			int count = 0;
 			cur = queue.front();
 			queue.pop();
 			for (int move = 0; move < 6; move++)
@@ -146,10 +148,10 @@ void	generate_db(Cube solved)
 				for (int times = 0; times < 3; times++)
 				{
 					cur.applyMove(moves[move]);
-					if (allowedMoves[((move+1) * (times+1)) - 1])
+					if (allowedMoves[count] == true)
 					{
 						id = cur.get_id(phase);
-						if (phaseHash[phase].find(id) == phaseHash[phase].end())
+						if (phaseHash[phase].count(id) == 0)
 						{
 							cur.path.insert(cur.path.begin(), '3' - times);
 							cur.path.insert(cur.path.begin(),  moves[move][0]);
@@ -161,6 +163,7 @@ void	generate_db(Cube solved)
 							cur.path = cur.path.substr(2);
 						}
 					}
+					count++;
 				}
 				cur.applyMove(moves[move]);
 			}

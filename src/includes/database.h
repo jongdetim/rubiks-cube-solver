@@ -17,7 +17,7 @@
 # include "cube.h"
 
 extern	string moves[6];
-extern	map<int64_t, string> phaseHash[5];
+extern	unordered_map<int64_t, string> phaseHash[5];
 extern	int phase;
 extern	sqlite3* database;
 

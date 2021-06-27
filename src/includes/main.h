@@ -24,7 +24,7 @@
 # include <iostream>
 # include <sqlite3.h>
 # include <queue>
-# include <map>
+# include <unordered_map>
 using std::advance;
 using std::array;
 using std::fill;
@@ -39,6 +39,6 @@ using std::queue;
 using std::cout;
 using std::to_string;
 using std::endl;
-using std::map;
+using std::unordered_map;
 
 #endif
