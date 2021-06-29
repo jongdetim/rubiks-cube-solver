@@ -82,7 +82,7 @@ bool			checkMoves(vector<string> moves)
 			throw "Illegal format detected";
 		if (moves[i].size() > 1 && ((moves[i][0] == '\'' && moves[i][0] == '2') || (moves[i][1] != '\'' && moves[i][1] != '2')))
 			throw "Illegal format detected";
-		std::cout << moves[i] << std::endl;
+		// std::cout << moves[i] << std::endl;
 	}
 	return true;
 }
@@ -104,10 +104,13 @@ int main(int ac, char **av)
 	** deze functies moeten worden bediend door command line arguments
 	*/
 
-	create_db();
-	generate_db(c);
+	open_db();
+	// create_db();
+	// generate_db(c);
 	// read_db(3);
-	rowcount_db(3);
+	// rowcount_db(3);
+	uint64_t key = 2047;
+	cout << get_value(1, key) << endl;
 
 	try {
 		checkMoves(movesstr);
@@ -119,8 +122,8 @@ int main(int ac, char **av)
 	// 	c.applyMove(move);
 	// }
 	Solver s(c);
-	s.printCube();
-	std::cout << c.get_id_phase1();
+	// s.printCube();
+	// std::cout << c.get_id_phase1();
 	
 	return (0);
 }

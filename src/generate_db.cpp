@@ -18,18 +18,25 @@ string moves[6] = {"F","R","U","B","L","D"};
 sqlite3* database;
 unordered_map<int64_t, string> phaseHash[5];
 bool allowedMoves[18];
+bool is_open = false;
 
 void	open_db()
 {
 	int rc = 0;
-	rc = sqlite3_open("rubik.db", &database);
-	if (rc)
+	if (is_open == false)
 	{
-		cout << "error opening database " << sqlite3_errmsg(database) << endl;
-		exit(1);
+		rc = sqlite3_open("rubik.db", &database);
+		if (rc)
+		{
+			cout << "error opening database " << sqlite3_errmsg(database) << endl;
+			exit(1);
+		}
+		else
+		{
+			is_open = true;
+			cout << "opened database successfully!\n";
+		}
 	}
-	else
-		cout << "opened database successfully!\n";
 }
 
 void	disable_moves(int phase)
@@ -113,6 +120,24 @@ int	rowcount_db(int phase)
 	open_db();
 	execute_sql(sql, true);
 	return (0);
+}
+
+string	get_value(int phase, uint64_t key)
+{
+	sqlite3_stmt *stmt;
+	string sql = "SELECT * FROM PHASE" + to_string(phase) + " WHERE KEY = " + to_string(key);
+
+	open_db();
+	int rc = sqlite3_prepare_v2(database, sql.c_str(), sql.length(), &stmt, nullptr);
+	if (rc != SQLITE_OK)
+	{
+		cout << string(sqlite3_errmsg(database)) << endl;
+		exit(1);
+	}
+	sqlite3_step(stmt);
+	string value = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+	sqlite3_finalize(stmt);
+	return value;
 }
 
 void	generate_db(Cube solved)
