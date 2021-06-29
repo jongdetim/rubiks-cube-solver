@@ -14,6 +14,7 @@
 #include "solver.h"
 #include "database.h"
 
+
 /*
 **	@desc:	Function parses arguments given and converts to moves
 **	@param:	const string args: arguments given
@@ -87,12 +88,90 @@ bool			checkMoves(vector<string> moves)
 	return true;
 }
 
+void			apply_moves_db(Cube c, string move)
+{
+	int		amount;
+
+	amount = move[1] - '0';
+	switch (move[0])
+	{
+		case 'U':
+			c.u(amount);
+			printf("U Turn\n");
+			break;
+		case 'L':
+			c.l(amount);
+			printf("L Turn\n");
+			break;
+		case 'F':
+			c.f(amount);
+			printf("F Turn\n");
+			break;
+		case 'R':
+			c.r(amount);
+			printf("R Turn\n");
+			break;
+		case 'B':
+			c.b(amount);
+			printf("B Turn\n");
+			break;
+		case 'D':
+			c.d(amount);
+			printf("D Turn\n");
+			break;
+	}
+}
+
+vector<string>	read_moves_db(Cube c, string moves)
+{
+	vector<string>	parsed_moves;
+	string			temp;
+	int n = 0;
+
+	for (size_t i = 0; i < moves.length(); i++)
+	{
+		temp += moves[i];
+		if (temp.length() == 2)
+		{
+			parsed_moves.push_back(temp);
+			apply_moves_db(c, parsed_moves[n]);
+			n++;
+			temp = "";
+		}
+	}
+	return parsed_moves;
+}
+
+
 int main(int ac, char **av)
 {
 	vector<char>	moves;
 	vector<string>	movesstr;
+	vector<string>	db_moves;
 	Cube			c;
-	
+
+	argparse::ArgumentParser program("rubik");
+	program.add_argument("scramble")
+		.help("Scramble set to use")
+		.action([](const string& value) {return value;});
+	program.add_argument("-g", "--generate")
+		.help("Generate database")
+		.default_value(false)
+		.implicit_value(true);
+	try {
+		program.parse_args(ac, av);
+	} catch (const std::runtime_error& err) {
+		cout << err.what() << endl;
+		cout << program;
+		exit(1);
+	}
+	if (program["-g"] == true)
+		cout << "generate enabled\n";
+	else
+		cout << "solve enabled\n";
+	auto input = program.get<string>("scramble");
+	cout << input << endl;
+	exit(1);
 	if (ac < 2)
 	{
 		printf("no movestring provided");
@@ -105,8 +184,8 @@ int main(int ac, char **av)
 	*/
 
 	open_db();
-	// create_db();
-	// generate_db(c);
+	create_db();
+	generate_db(c);
 	// read_db(3);
 	// rowcount_db(3);
 	uint64_t key = 2047;
