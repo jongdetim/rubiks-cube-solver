@@ -87,7 +87,41 @@ bool			checkMoves(vector<string> moves)
 	return true;
 }
 
-vector<string>	read_moves_db(string moves)
+void			apply_moves_db(Cube c, string move)
+{
+	int		amount;
+
+	amount = move[1] - '0';
+	switch (move[0])
+	{
+		case 'U':
+			c.u(amount);
+			printf("U Turn\n");
+			break;
+		case 'L':
+			c.l(amount);
+			printf("L Turn\n");
+			break;
+		case 'F':
+			c.f(amount);
+			printf("F Turn\n");
+			break;
+		case 'R':
+			c.r(amount);
+			printf("R Turn\n");
+			break;
+		case 'B':
+			c.b(amount);
+			printf("B Turn\n");
+			break;
+		case 'D':
+			c.d(amount);
+			printf("D Turn\n");
+			break;
+	}
+}
+
+vector<string>	read_moves_db(Cube c, string moves)
 {
 	vector<string>	parsed_moves;
 	string			temp;
@@ -99,7 +133,8 @@ vector<string>	read_moves_db(string moves)
 		if (temp.length() == 2)
 		{
 			parsed_moves.push_back(temp);
-			cout << parsed_moves[n] << "\n";
+			// cout << parsed_moves[n] << "\n";
+			apply_moves_db(c, parsed_moves[n]);
 			n++;
 			temp = "";
 		}
@@ -111,10 +146,12 @@ int main(int ac, char **av)
 {
 	vector<char>	moves;
 	vector<string>	movesstr;
+	vector<string>	db_moves;
 	Cube			c;
 	
-	// read_moves_db("F3R2U1L3");
-	// exit(1);
+	db_moves = read_moves_db(c, "F3R2U1L3");
+	c.printCube();
+	exit(1);
 	if (ac < 2)
 		exit(1);
 	movesstr = parse(av[1]);
