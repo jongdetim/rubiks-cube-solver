@@ -97,37 +97,33 @@ void			apply_moves_db(Cube c, string move)
 	{
 		case 'U':
 			c.u(amount);
-			printf("U Turn\n");
 			break;
 		case 'L':
 			c.l(amount);
-			printf("L Turn\n");
 			break;
 		case 'F':
 			c.f(amount);
-			printf("F Turn\n");
 			break;
 		case 'R':
 			c.r(amount);
-			printf("R Turn\n");
 			break;
 		case 'B':
 			c.b(amount);
-			printf("B Turn\n");
 			break;
 		case 'D':
 			c.d(amount);
-			printf("D Turn\n");
 			break;
 	}
 }
 
-vector<string>	read_moves_db(Cube c, string moves)
+void	movestring_split(Cube c, string moves)
 {
 	vector<string>	parsed_moves;
 	string			temp;
 	int n = 0;
 
+	if (moves == "")
+		return;
 	for (size_t i = 0; i < moves.length(); i++)
 	{
 		temp += moves[i];
@@ -135,13 +131,28 @@ vector<string>	read_moves_db(Cube c, string moves)
 		{
 			parsed_moves.push_back(temp);
 			apply_moves_db(c, parsed_moves[n]);
+			c.path.append((parsed_moves[n]) + " ");
 			n++;
 			temp = "";
 		}
 	}
-	return parsed_moves;
 }
 
+void	solver_(Cube c)
+{
+	string moves;
+	uint64_t id;
+
+	for (int phase = 0; phase < 3; phase++)
+	{
+		cout << "hallo" << endl;
+		id = c.get_id(phase);
+		moves = get_value(phase, id);
+		printf("value %s, id %llu\n", moves.c_str(), id);
+		movestring_split(c, moves);
+	}
+	cout << c.path << endl;
+}
 
 int main(int ac, char **av)
 {
@@ -170,8 +181,6 @@ int main(int ac, char **av)
 	else
 		cout << "solve enabled\n";
 	auto input = program.get<string>("scramble");
-	cout << input << endl;
-	exit(1);
 	if (ac < 2)
 	{
 		printf("no movestring provided");
@@ -184,12 +193,10 @@ int main(int ac, char **av)
 	*/
 
 	open_db();
-	create_db();
-	generate_db(c);
+	// create_db();
+	// generate_db(c);
 	// read_db(3);
 	// rowcount_db(3);
-	uint64_t key = 2047;
-	cout << get_value(1, key) << endl;
 
 	try {
 		checkMoves(movesstr);
@@ -197,10 +204,10 @@ int main(int ac, char **av)
 		std::cerr << msg << std::endl;
 		exit(1);
 	}
-	// for (auto move : movesstr) {
-	// 	c.applyMove(move);
-	// }
-	Solver s(c);
+	for (auto move : movesstr) {
+		c.applyMove(move);
+	}
+	solver_(c);
 	// s.printCube();
 	// std::cout << c.get_id_phase1();
 	

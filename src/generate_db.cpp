@@ -125,7 +125,7 @@ int	rowcount_db(int phase)
 string	get_value(int phase, uint64_t key)
 {
 	sqlite3_stmt *stmt;
-	string sql = "SELECT * FROM PHASE" + to_string(phase) + " WHERE KEY = " + to_string(key);
+	string sql = "SELECT * FROM PHASE" + to_string(phase + 1) + " WHERE KEY = " + to_string(key);
 
 	open_db();
 	int rc = sqlite3_prepare_v2(database, sql.c_str(), sql.length(), &stmt, nullptr);
@@ -162,7 +162,7 @@ void	generate_db(Cube solved)
 		id = cur.get_id(phase);
 		phaseHash[phase][id] = queue.front().path;
 		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
-		" (KEY,VALUE) VALUES(" + to_string(id) + ",'E')";
+		" (KEY,VALUE) VALUES(" + to_string(id) + ",'')";
 		execute_sql(sql, false);
 		while (!queue.empty())
 		{
