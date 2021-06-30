@@ -118,6 +118,7 @@ int main(int ac, char **av)
 {
 	vector<string>	moves;
 	Cube			c;
+	Database		db;
 
 	// Argumentparsing bullshit
 	argparse::ArgumentParser program("rubik");
@@ -138,14 +139,14 @@ int main(int ac, char **av)
 	// To generate database
 	if (program["-g"] == true)
 	{
-		cout << "generate enabled\n";
-		open_db();
-		create_db();
-		generate_db(c);
+		cout << "Database generation mode\n";
+		db.open_db();
+		db.create_db();
+		db.generate_db(c);
 		exit(1);
 	}
 	// To solve a cube
-	cout << "solve enabled\n";
+	cout << "Solver mode\n";
 	auto input = program.get<string>("scramble");
 	moves = parse(input);
 	for (auto move : moves)
@@ -156,11 +157,6 @@ int main(int ac, char **av)
 		std::cerr << msg << std::endl;
 		exit(1);
 	}
-	// read_db(3);
-	// rowcount_db(3);
-	uint64_t key = 2047;
-	cout << get_value(1, key) << endl;
-
 	return (0);
 }
 

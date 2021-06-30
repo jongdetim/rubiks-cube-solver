@@ -13,14 +13,7 @@
 #include "database.hpp"
 #include "cube.hpp"
 
-int phase = 0;
-string moves[6] = {"F","R","U","B","L","D"};
-sqlite3* database;
-unordered_map<int64_t, string> phaseHash[5];
-bool allowedMoves[18];
-bool is_open = false;
-
-void	open_db()
+void	Database::open_db()
 {
 	int rc = 0;
 	if (is_open == false)
@@ -39,13 +32,13 @@ void	open_db()
 	}
 }
 
-void	disable_moves(int phase)
+void	Database::disable_moves(int phase)
 {
 	switch (phase)
 	{
 		case 0:
 			//FB quarter turns
-			allowedMoves[0] = false;
+			this->allowedMoves[0] = false;
 			allowedMoves[2] = false;
 			allowedMoves[9] = false;
 			allowedMoves[11] = false;
@@ -78,7 +71,7 @@ static int callback(void *data, int argc, char **argv, char **azColName)
 	return 0;
 }
 
-void	execute_sql(string sql, bool read)
+void	Database::execute_sql(string sql, bool read)
 {
 	char *messageError;
 	int rc;
@@ -92,7 +85,7 @@ void	execute_sql(string sql, bool read)
 		sqlite3_free(messageError);
 }
 
-int create_db()
+int Database::create_db()
 {
 	open_db();
 	for (int i = 0; i < 4; i++)
@@ -104,7 +97,7 @@ int create_db()
 	return (0);
 }
   
-int	read_db(int phase)
+int	Database::read_db(int phase)
 {
 	string sql = "SELECT * FROM PHASE" + to_string(phase);
 	
@@ -113,7 +106,7 @@ int	read_db(int phase)
 	return (0);
 }
 
-int	rowcount_db(int phase)
+int	Database::rowcount_db(int phase)
 {
 	string sql = "SELECT COUNT(*) FROM PHASE" + to_string(phase);
 	
@@ -122,7 +115,7 @@ int	rowcount_db(int phase)
 	return (0);
 }
 
-string	get_value(int phase, uint64_t key)
+string	Database::get_value(int phase, uint64_t key)
 {
 	sqlite3_stmt *stmt;
 	string sql = "SELECT * FROM PHASE" + to_string(phase) + " WHERE KEY = " + to_string(key);
@@ -140,7 +133,7 @@ string	get_value(int phase, uint64_t key)
 	return value;
 }
 
-void	generate_db(Cube solved)
+void	Database::generate_db(Cube solved)
 {
 	Cube cur;
 	queue<Cube> queue;

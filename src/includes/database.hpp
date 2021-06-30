@@ -21,11 +21,24 @@ extern	unordered_map<int64_t, string> phaseHash[5];
 extern	int phase;
 extern	sqlite3* database;
 
-void	open_db();
-int 	create_db();
-int		read_db(int phase);
-void	generate_db(Cube solved);
-int		rowcount_db(int phase);
-string	get_value(int phase, uint64_t key);
+class Database
+{
+	private:
+		bool							allowedMoves[18];
+		bool							is_open;
+		unordered_map<int64_t, string>	phaseHash[5];
+		string							moves[6] = {"F","R","U","B","L","D"};
+		sqlite3*						database;
 
+	public:
+		void	open_db();
+		int		create_db();
+		int		read_db(int phase);
+		void	generate_db(Cube c);
+		int		rowcount_db(int phase);
+		string	get_value(int phase, uint64_t key);
+		void	disable_moves(int phase);
+		void	execute_sql(string sql, bool read);
+
+};
 #endif
