@@ -113,6 +113,17 @@ vector<string>	read_moves_db(Cube c, string moves)
 	return parsed_moves;
 }
 
+vector<string>	random_moves(int len = 10)
+{
+	vector<string>	moves;
+	vector<string>	allowed = {"F","R","U","B","L","D"};
+
+	srand((int)time(nullptr));
+	for (int i = 0; i < len; i++)
+		moves.push_back(allowed[rand() % 6]);
+	return moves;
+}
+
 
 int main(int ac, char **av)
 {
@@ -121,6 +132,10 @@ int main(int ac, char **av)
 	Database		db;
 
 	// Argumentparsing bullshit
+	moves = random_moves();
+	for (auto move : moves)
+		printf("%s\n", move.c_str());
+	exit(1);
 	argparse::ArgumentParser program("rubik");
 	program.add_argument("scramble")
 		.help("Scramble set to use")

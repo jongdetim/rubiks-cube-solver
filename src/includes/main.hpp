@@ -26,6 +26,7 @@
 # include <queue>
 # include <unordered_map>
 # include <unistd.h>
+# include <time.h>
 # include "argparse.hpp"
 using std::advance;
 using std::array;
