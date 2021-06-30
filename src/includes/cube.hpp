@@ -12,8 +12,8 @@
 #ifndef CUBE_H
 # define CUBE_H
 
-# include "main.h"
-//							  0      1     2     3     4       5
+# include "main.hpp"
+//						0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum FACE {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
@@ -34,12 +34,12 @@ class Cube
 		void rotSides180(int* arr);
 	public:
 		char	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-		char edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		char 	edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-		string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
-		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
-		string path;
+		string	cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
+		string	edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
+		string	path;
 		Cube( void );
 		Cube(const Cube *parent);
 
@@ -55,7 +55,6 @@ class Cube
 
 		// Moves
 		void applyMove(string move);
-		void reverseMove(char move);
 		Cube& u(int amount);
 		Cube& l(int amount);
 		Cube& f(int amount);

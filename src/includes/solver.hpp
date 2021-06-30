@@ -13,8 +13,8 @@
 #ifndef SOLVER_H
 # define SOLVER_H
 
-# include "main.h"
-# include "cube.h"
+# include "main.hpp"
+# include "cube.hpp"
 
 class Solver
 {
@@ -23,9 +23,6 @@ class Solver
 	public:
 		Solver(Cube initialState) {
 			c = initialState;
-		}
-		void printCube() {
-			c.printCube();
 		}
 };
 

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "database.h"
-#include "cube.h"
+#include "database.hpp"
+#include "cube.hpp"
 
 int phase = 0;
 string moves[6] = {"F","R","U","B","L","D"};

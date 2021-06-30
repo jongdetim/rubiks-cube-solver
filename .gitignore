@@ -4,6 +4,9 @@ obj/
 # Ignore program name
 rubik
 
+# Ignore db file
+rubik.db
+
 *.o
 .vscode
 a.out

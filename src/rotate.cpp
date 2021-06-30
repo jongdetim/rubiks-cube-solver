@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube.h"
+#include "cube.hpp"
 
 /*
 **	@desc	Function rotates face 90 degrees
