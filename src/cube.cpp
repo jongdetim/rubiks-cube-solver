@@ -48,7 +48,7 @@ uint64_t	Cube::get_id(int phase)
 		case 2:
 			return get_id_phase3();
 		case 3:
-			return 0;
+			return get_id_phase4();
 		default:
 			cout << "error: impossible phase number" << endl;
 			exit(1);
@@ -92,8 +92,7 @@ uint64_t		Cube::get_id_phase3(){
 			if (!(t == this->cornerNames[i][j] ||
 				t == faces[(faces.find(this->cornerNames[i][j]) + 3) % 6]))
 					id++;
-		}
-	// cout << id << endl;		
+		}	
 	}
 	for (int i = 0; i < 11; i++){
 		for (int j = 0; j < 2; j++){
@@ -104,22 +103,44 @@ uint64_t		Cube::get_id_phase3(){
 				id++;
 			}
 		}			
-	}
-	// cout << id << endl;		
+	}	
 	for (int i = 0; i < 8; i++)
 	{
 		id <<= 1;
 		if (this->cornerPosition[i] % 4 != i % 4)
 			id++;
-	}
-	// cout << id << endl;		
+	}	
 	id <<= 1;
 	for (int i = 0; i < 8; i++ )
 	{
 		for(int j = i + 1; j < 8; j++)
 			id ^= this->cornerPosition[i] > this->cornerPosition[j];
+	}	
+	return id;
+}
+
+uint64_t	Cube::get_id_phase4(){
+	string faces = "FRUBLD";
+	
+	uint64_t id = 0; 
+	for (int i = 0; i < 8; i++){
+		for (int j = 0; j < 3; j++){
+			id <<= 1;
+			char t = cornerNames[cornerPosition[i]][(cornerOrientation[i] + j) % 3];
+			if (t == faces[(faces.find(cornerNames[i][j]) + 3) % 6]){
+				id++;
+			}
+		}
 	}
-	// cout << id << endl;		
+	for (int i = 0; i < 12; i++){
+		for (int j = 0; j < 2; j++){
+			id <<= 1;
+			char t = edgeNames[edgePosition[i]][(edgeOrientation[i] + j) % 2];
+			if (t == faces[(faces.find(edgeNames[i][j]) + 3) % 6]){
+				id++;
+			}
+		}			
+	}
 	return id;
 }
 

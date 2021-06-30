@@ -88,7 +88,7 @@ bool			checkMoves(vector<string> moves)
 	return true;
 }
 
-void			apply_moves_db(Cube c, string move)
+void			apply_moves_db(Cube* c, string move)
 {
 	int		amount;
 
@@ -96,27 +96,27 @@ void			apply_moves_db(Cube c, string move)
 	switch (move[0])
 	{
 		case 'U':
-			c.u(amount);
+			c->u(amount);
 			break;
 		case 'L':
-			c.l(amount);
+			c->l(amount);
 			break;
 		case 'F':
-			c.f(amount);
+			c->f(amount);
 			break;
 		case 'R':
-			c.r(amount);
+			c->r(amount);
 			break;
 		case 'B':
-			c.b(amount);
+			c->b(amount);
 			break;
 		case 'D':
-			c.d(amount);
+			c->d(amount);
 			break;
 	}
 }
 
-void	movestring_split(Cube c, string moves)
+void	movestring_split(Cube* c, string moves)
 {
 	vector<string>	parsed_moves;
 	string			temp;
@@ -131,27 +131,27 @@ void	movestring_split(Cube c, string moves)
 		{
 			parsed_moves.push_back(temp);
 			apply_moves_db(c, parsed_moves[n]);
-			c.path.append((parsed_moves[n]) + " ");
+			c->path.append((parsed_moves[n]) + " ");
 			n++;
 			temp = "";
 		}
 	}
 }
 
-void	solver_(Cube c)
+void	solver_(Cube* c)
 {
 	string moves;
 	uint64_t id;
 
-	for (int phase = 0; phase < 3; phase++)
+	for (int phase = 0; phase < 4; phase++)
 	{
 		cout << "hallo" << endl;
-		id = c.get_id(phase);
+		id = c->get_id(phase);
 		moves = get_value(phase, id);
 		printf("value %s, id %llu\n", moves.c_str(), id);
 		movestring_split(c, moves);
 	}
-	cout << c.path << endl;
+	cout << c->path << endl;
 }
 
 int main(int ac, char **av)
@@ -205,12 +205,19 @@ int main(int ac, char **av)
 		exit(1);
 	}
 	for (auto move : movesstr) {
+		cout << move << endl;
 		c.applyMove(move);
 	}
-	solver_(c);
+	solver_(&c);
+	Cube kubus;
+	cout << (c == kubus) << endl;
 	// s.printCube();
 	// std::cout << c.get_id_phase1();
 	
+	// uint64_t id = c.get_id(1);
+	// string ding = get_value(1, id);
+	// cout << ding << endl;
+
 	return (0);
 }
 

@@ -153,7 +153,7 @@ void	generate_db(Cube solved)
 	// 4x loop
 
 
-	for (int phase = 0; phase < 3; phase++)
+	for (int phase = 0; phase < 4; phase++)
 	{
 		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
 		queue.push(solved);
