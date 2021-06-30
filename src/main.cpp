@@ -137,7 +137,7 @@ int main(int ac, char **av)
 		exit(1);
 	}
 	// To generate database
-	if (program["-g"] == true)
+	if (program["-g"] == true || program["--generate"] == true)
 	{
 		cout << "Database generation mode\n";
 		db.open_db();
