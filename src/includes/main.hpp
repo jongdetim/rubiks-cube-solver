@@ -26,6 +26,7 @@
 # include <queue>
 # include <unordered_map>
 # include <unistd.h>
+# include <time.h>
 # include "argparse.hpp"
 using std::advance;
 using std::array;
@@ -42,5 +43,6 @@ using std::cout;
 using std::to_string;
 using std::endl;
 using std::unordered_map;
+
 
 #endif

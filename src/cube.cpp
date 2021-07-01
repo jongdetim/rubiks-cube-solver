@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube.h"
+#include "cube.hpp"
 
 /*	
 **	@desc	Gets cube face as 64-bit int
@@ -19,7 +19,7 @@
 */
 uint64_t Cube::getFace(FACE f) const
 {
-	return *(uint64_t *)&this->cube[(unsigned)f * 8];
+	return *(uint64_t *)&cube[(unsigned)f * 8];
 }
 
 /*	
@@ -29,14 +29,19 @@ uint64_t Cube::getFace(FACE f) const
 bool Cube::isSolved() const
 {
 	return (
-		(this->getFace(FACE::UP) == 0x0000000000000000) &
-		(this->getFace(FACE::LEFT) == 0x0101010101010101) &
-		(this->getFace(FACE::FRONT) == 0x0202020202020202) &
-		(this->getFace(FACE::LEFT) == 0x0303030303030303) &
-		(this->getFace(FACE::BACK) == 0x0404040404040404) &
-		(this->getFace(FACE::DOWN) == 0x0505050505050505));
+		(getFace(FACE::UP) == 0x0000000000000000) &
+		(getFace(FACE::LEFT) == 0x0101010101010101) &
+		(getFace(FACE::FRONT) == 0x0202020202020202) &
+		(getFace(FACE::LEFT) == 0x0303030303030303) &
+		(getFace(FACE::BACK) == 0x0404040404040404) &
+		(getFace(FACE::DOWN) == 0x0505050505050505));
 }
 
+/*
+**	@desc	Controller function for getting phase id
+**	@param	int phase: current phase
+**	@return	phase id for the corresponding phase
+*/
 uint64_t	Cube::get_id(int phase)
 {
 	switch (phase)
@@ -55,32 +60,44 @@ uint64_t	Cube::get_id(int phase)
 	}
 }
 
+/*
+**	@desc	Function for getting id phase 1
+**	@return	phase id
+*/
 uint64_t	Cube::get_id_phase1()
 {
 	uint64_t id = 0; 
 	for (int edge = 0; edge < 11; edge++)
 	{
 		id <<= 1;
-		id += this->edgeOrientation[edge];
+		id += edgeOrientation[edge];
 	}
 	return id;
 }
 
+/*
+**	@desc	Function for getting id phase 2
+**	@return	phase id
+*/
 uint64_t	Cube::get_id_phase2(){
 	uint64_t id = 0; 
 	for (int corner = 0; corner < 8; corner++)
 	{
 		id <<= 2;
-		id += this->cornerOrientation[corner];
+		id += cornerOrientation[corner];
 	}
 	for (int edge = 0; edge < 12; edge++){
 		id <<= 2;
-		if (this->edgePosition[edge] < 8)
+		if (edgePosition[edge] < 8)
 			id++;
 	}
 	return id;
 }
 
+/*
+**	@desc	Function for getting id phase 3
+**	@return	phase id
+*/
 uint64_t		Cube::get_id_phase3(){
 	string faces = "FRUBLD";
 
@@ -88,38 +105,34 @@ uint64_t		Cube::get_id_phase3(){
 	for (int i = 0; i < 7; i++){
 		for (int j = 0; j < 3; j++){
 			id <<= 1;
-			char t = this->cornerNames[this->cornerPosition[i]][(this->cornerOrientation[i] + j) % 3];
-			if (!(t == this->cornerNames[i][j] ||
-				t == faces[(faces.find(this->cornerNames[i][j]) + 3) % 6]))
+			char t = cornerNames[cornerPosition[i]][(cornerOrientation[i] + j) % 3];
+			if (!(t == cornerNames[i][j] ||
+				t == faces[(faces.find(cornerNames[i][j]) + 3) % 6]))
 					id++;
-		}
-	// cout << id << endl;		
+		}		
 	}
 	for (int i = 0; i < 11; i++){
 		for (int j = 0; j < 2; j++){
 			id <<= 1;
-			char t = this->edgeNames[this->edgePosition[i]][(this->edgeOrientation[i] + j) % 2];
-			if (!(t == this->edgeNames[i][j] ||
-				t == faces[(faces.find(this->edgeNames[i][j]) + 3) % 6])){
+			char t = edgeNames[edgePosition[i]][(edgeOrientation[i] + j) % 2];
+			if (!(t == edgeNames[i][j] ||
+				t == faces[(faces.find(edgeNames[i][j]) + 3) % 6])){
 				id++;
 			}
 		}			
-	}
-	// cout << id << endl;		
+	}		
 	for (int i = 0; i < 8; i++)
 	{
 		id <<= 1;
-		if (this->cornerPosition[i] % 4 != i % 4)
+		if (cornerPosition[i] % 4 != i % 4)
 			id++;
-	}
-	// cout << id << endl;		
+	}		
 	id <<= 1;
 	for (int i = 0; i < 8; i++ )
 	{
 		for(int j = i + 1; j < 8; j++)
-			id ^= this->cornerPosition[i] > this->cornerPosition[j];
-	}
-	// cout << id << endl;		
+			id ^= cornerPosition[i] > cornerPosition[j];
+	}	
 	return id;
 }
 
@@ -128,7 +141,7 @@ uint64_t		Cube::get_id_phase3(){
 */
 Cube::Cube(void)
 {
-	array<COLOR, 48>::iterator start = this->cube.begin();
+	array<COLOR, 48>::iterator start = cube.begin();
 	array<COLOR, 48>::iterator end = next(start, 8);
 
 	for (int i = 0; i < 6; i++)
@@ -140,6 +153,11 @@ Cube::Cube(void)
 	}
 }
 
+/*
+**	@desc	function returns first letter of color of sticker
+**	@param	int v, color code
+**	@return	char first letter of color of sticker
+*/
 char	getColor(int v)
 {
 	if (v == 0)
@@ -156,6 +174,7 @@ char	getColor(int v)
 		return 'Y';
 	return 'U';
 }
+
 /*
 **	@desc	function to print the cube
 */
@@ -166,7 +185,7 @@ void Cube::printCube() const
 	printf("(index, color)\n");
 	while (i < 48)
 	{
-		printf("([%d, %c]) ", i, getColor((int)this->cube[i]));
+		printf("([%d, %c]) ", i, getColor((int)cube[i]));
 		i++;
 		if (i % 8 == 0)
 			printf("\n");
@@ -181,18 +200,20 @@ void Cube::printCube() const
 bool Cube::operator==(const Cube &c) const
 {
 	for (int i = 0; i < 6; i++)
-		if (this->getFace((FACE)i) != c.getFace((FACE)i))
+		if (getFace((FACE)i) != c.getFace((FACE)i))
 			return false;
 	return true;
 }
 
 /*
 **	@desc	Function copies from given
+**	@param	const Cube *c, pointer to cube to copy to
+**	@return	pointer new filled cube
 */
 Cube &Cube::operator=(const Cube *c)
 {
-	memcpy((void *)&this->cube[0], (void *)&c->cube[0], 48);
-	memcpy((void *)&this->centers[0], (void *)&c->centers[0], 6);
+	memcpy((void *)&cube[0], (void *)&c->cube[0], 48);
+	memcpy((void *)&centers[0], (void *)&c->centers[0], 6);
 	return *this;
 }
 
@@ -233,21 +254,5 @@ void	Cube::applyMove(string move)
 	else if (move == "B'")
 		b(3);
 	else if (move == "D'")
-		d(3);
-}
-
-void	Cube::reverseMove(char move)
-{
-	if (move == 'U')
-		u(3);
-	else if (move == 'L')
-		l(3);
-	else if (move == 'F')
-		f(3);
-	else if (move == 'R')
-		r(3);
-	else if (move == 'B')
-		b(3);
-	else if (move == 'D')
 		d(3);
 }

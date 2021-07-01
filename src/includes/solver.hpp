@@ -13,20 +13,19 @@
 #ifndef SOLVER_H
 # define SOLVER_H
 
-# include "main.h"
-# include "cube.h"
+# include "main.hpp"
+# include "cube.hpp"
+# include "database.hpp"
 
 class Solver
 {
 	private:
-		Cube c;
+		Cube		c;
+		sqlite3*	sqldb;
+		Database	db;
 	public:
-		Solver(Cube initialState) {
-			c = initialState;
-		}
-		void printCube() {
-			c.printCube();
-		}
+		Solver(Cube cube, Database database, sqlite3* sqldatabase);
+		void		solve();
 };
 
 #endif
