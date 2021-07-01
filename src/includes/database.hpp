@@ -25,7 +25,7 @@ class Database
 {
 	private:
 		bool							allowedMoves[18];
-		bool							is_open;
+		bool							is_open = false;
 		unordered_map<int64_t, string>	phaseHash[5];
 		string							moves[6] = {"F","R","U","B","L","D"};
 
