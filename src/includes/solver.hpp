@@ -20,12 +20,13 @@
 class Solver
 {
 	private:
-		Cube		c;
+		Cube*		c;
 		sqlite3*	sqldb;
-		Database	db;
+		Database*	db;
 	public:
-		Solver(Cube cube, Database database, sqlite3* sqldatabase);
+		Solver(Cube* cube, Database* database, sqlite3* sqldatabase);
 		void		solve();
 };
+
 
 #endif

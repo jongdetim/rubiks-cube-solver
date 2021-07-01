@@ -24,11 +24,7 @@ void	Database::open_db()
 			cout << "error opening database " << sqlite3_errmsg(database) << endl;
 			exit(1);
 		}
-		else
-		{
-			is_open = true;
-			cout << "opened database successfully!\n";
-		}
+		is_open = true;
 	}
 }
 
@@ -145,7 +141,8 @@ void	Database::generate_db(Cube solved)
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
 
-	for (int phase = 0; phase < 3; phase++)
+
+	for (int phase = 0; phase < 4; phase++)
 	{
 		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
 		queue.push(solved);

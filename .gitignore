@@ -3,10 +3,10 @@ obj/
 
 # Ignore program name
 rubik
-
-# Ignore db file
 rubik.db
 
+*.code-workspace
+.*
 *.o
 .vscode
 a.out

@@ -12,7 +12,7 @@
 
 #include "solver.hpp"
 
-static void		apply_moves_db(Cube c, string move)
+static void		apply_moves_db(Cube *c, string move)
 {
 	int		amount;
 
@@ -20,27 +20,27 @@ static void		apply_moves_db(Cube c, string move)
 	switch (move[0])
 	{
 		case 'U':
-			c.u(amount);
+			c->u(amount);
 			break;
 		case 'L':
-			c.l(amount);
+			c->l(amount);
 			break;
 		case 'F':
-			c.f(amount);
+			c->f(amount);
 			break;
 		case 'R':
-			c.r(amount);
+			c->r(amount);
 			break;
 		case 'B':
-			c.b(amount);
+			c->b(amount);
 			break;
 		case 'D':
-			c.d(amount);
+			c->d(amount);
 			break;
 	}
 }
 
-static void     movestring_split(Cube c, string moves)
+static void     movestring_split(Cube* c, string moves)
 {
 	vector<string>	parsed_moves;
 	string			temp;
@@ -55,14 +55,14 @@ static void     movestring_split(Cube c, string moves)
 		{
 			parsed_moves.push_back(temp);
 			apply_moves_db(c, parsed_moves[n]);
-			c.path.append((parsed_moves[n]) + " ");
+			c->path.append((parsed_moves[n]) + " ");
 			n++;
 			temp = "";
 		}
 	}
 }
 
-Solver::Solver(Cube cube, Database database, sqlite3* sqldatabase) 
+Solver::Solver(Cube* cube, Database* database, sqlite3* sqldatabase) 
 {
     c = cube;
     db = database;
@@ -76,11 +76,9 @@ void	        Solver::solve()
 
 	for (int phase = 0; phase < 3; phase++)
 	{
-		cout << "hallo" << endl;
-		id = c.get_id(phase);
-		moves = db.get_value(phase, id);
-		printf("value %s, id %llu\n", moves.c_str(), id);
+		id = c->get_id(phase);
+		moves = db->get_value(phase, id);
 		movestring_split(c, moves);
 	}
-	cout << c.path << endl;
+	cout << c->path << endl;
 }
