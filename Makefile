@@ -16,7 +16,7 @@ SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC_DIR		=	src/includes/
 CFLAGS		=	-Wall -Wextra -Werror -std=c++17 -g
-CC			=	clang++
+CC			=	g++
 OBJS 		:=	$(SRCS_FILES:%=%.o)
 SRCS		=	$(addprefix $(SRC_DIR), $(SRCS_FILES))
 SRCS 		:=	$(SRCS:%=%.cpp)

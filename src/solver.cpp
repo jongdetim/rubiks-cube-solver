@@ -74,7 +74,7 @@ void	        Solver::solve()
 	string moves;
 	uint64_t id;
 
-	for (int phase = 0; phase < 3; phase++)
+	for (int phase = 0; phase < 4; phase++)
 	{
 		id = c->get_id(phase);
 		moves = db->get_value(phase, id);

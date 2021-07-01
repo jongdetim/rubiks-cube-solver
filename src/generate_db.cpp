@@ -77,8 +77,10 @@ void	Database::execute_sql(string sql, bool read)
 	else
 		rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 	if (rc != SQLITE_OK)
+	{
 		printf("SQL error: %s\n", messageError);
 		sqlite3_free(messageError);
+	}
 }
 
 int Database::create_db()
