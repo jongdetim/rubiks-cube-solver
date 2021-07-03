@@ -59,15 +59,36 @@ bool			checkMoves(vector<string> moves)
 	return true;
 }
 
-vector<string>	random_moves(int len = 10)
+string	random_moves(int len = 10)
 {
-	vector<string>	moves;
+	string	moves;
 	vector<string>	allowed = {"F","R","U","B","L","D"};
 
 	srand((int)time(nullptr));
 	for (int i = 0; i < len; i++)
-		moves.push_back(allowed[rand() % 6]);
+	{
+		if (i > 0)
+			moves += " ";
+		moves += allowed[rand() % 6];
+	}
 	return moves;
+}
+
+static bool	file_exists(char *db)
+{
+	if (FILE *file = fopen(db, "r")) {
+        fclose(file);
+        return true;
+    } else {
+        return false;
+    }   
+}
+
+static void	remove_db(const char *name)
+{
+	using std::remove;
+
+	remove(name);
 }
 
 int main(int ac, char **av)
@@ -77,11 +98,15 @@ int main(int ac, char **av)
 	Database		db;
 
 	// Argumentparsing bullshit
-	moves = random_moves();
 	argparse::ArgumentParser program("rubik");
 	program.add_argument("scramble")
 		.help("Scramble set to use")
-		.action([](const string& value) {return value;});
+		.action([](const string& value) 
+		{
+			if (value.empty())
+				return random_moves();
+			return value;
+		});
 	program.add_argument("-g", "--generate")
 		.help("Generate database")
 		.default_value(false)
@@ -97,9 +122,12 @@ int main(int ac, char **av)
 	if (program["-g"] == true || program["--generate"] == true)
 	{
 		cout << "Database generation mode\n";
+		if (file_exists((char*)"rubik.db"))
+			remove_db("rubik.db");
 		db.open_db();
 		db.create_db();
 		db.generate_db(c);
+		db.close_db();
 		exit(1);
 	}
 	// To solve a cube
@@ -117,11 +145,11 @@ int main(int ac, char **av)
 	for (auto move : moves) {
 		c.applyMove(move);
 	}
-	Solver s(&c, &db, db.database);
+	Solver s(&c, &db);
 	s.solve();
 	Cube kubus;
 	if (c == kubus)
-		printf("Cube is solved");
+		printf("Cube is solved\n");
 	return (0);
 }
 

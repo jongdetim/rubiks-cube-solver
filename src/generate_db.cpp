@@ -78,7 +78,7 @@ void	Database::execute_sql(string sql, bool read)
 		rc = sqlite3_exec(database, sql.c_str(), NULL, 0, &messageError);
 	if (rc != SQLITE_OK)
 		printf("SQL error: %s\n", messageError);
-		sqlite3_free(messageError);
+	sqlite3_free(messageError);
 }
 
 int Database::create_db()
@@ -123,10 +123,20 @@ string	Database::get_value(int phase, uint64_t key)
 		cout << string(sqlite3_errmsg(database)) << endl;
 		exit(1);
 	}
-	sqlite3_step(stmt);
-	string value = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+	int ret = sqlite3_step(stmt);
+	printf("ret: %d\n", ret);
+	const unsigned char *str;
+	string value;
+	str = sqlite3_column_text(stmt, 1);
+	// if (str)
+		value = string(reinterpret_cast<const char*>(str));
 	sqlite3_finalize(stmt);
 	return value;
+}
+
+void	Database::close_db()
+{
+	sqlite3_close(database);
 }
 
 void	Database::generate_db(Cube solved)
@@ -140,7 +150,6 @@ void	Database::generate_db(Cube solved)
 	open_db();
 	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 	// 4x loop
-
 
 	for (int phase = 0; phase < 4; phase++)
 	{

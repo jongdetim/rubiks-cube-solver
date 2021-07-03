@@ -39,6 +39,6 @@ class Database
 		void	disable_moves(int phase);
 		void	execute_sql(string sql, bool read);
 		sqlite3*						database;
-
+		void	close_db();
 };
 #endif

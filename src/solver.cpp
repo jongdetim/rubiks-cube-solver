@@ -60,13 +60,13 @@ static void     movestring_split(Cube* c, string moves)
 			temp = "";
 		}
 	}
+	printf("movestring\n");
 }
 
-Solver::Solver(Cube* cube, Database* database, sqlite3* sqldatabase) 
+Solver::Solver(Cube* cube, Database* database) 
 {
     c = cube;
     db = database;
-    sqldb = sqldatabase;
 }
 
 void	        Solver::solve()
@@ -74,11 +74,14 @@ void	        Solver::solve()
 	string moves;
 	uint64_t id;
 
-	for (int phase = 0; phase < 3; phase++)
+	for (int phase = 0; phase < 4; phase++)
 	{
 		id = c->get_id(phase);
+		printf("id: %llu\n", id);
 		moves = db->get_value(phase, id);
+		printf("move: %s\n", moves.c_str());
 		movestring_split(c, moves);
 	}
 	cout << c->path << endl;
+	db->close_db();
 }

@@ -21,10 +21,9 @@ class Solver
 {
 	private:
 		Cube*		c;
-		sqlite3*	sqldb;
 		Database*	db;
 	public:
-		Solver(Cube* cube, Database* database, sqlite3* sqldatabase);
+		Solver(Cube* cube, Database* database);
 		void		solve();
 };
 
