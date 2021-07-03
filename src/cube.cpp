@@ -66,13 +66,26 @@ uint64_t	Cube::get_id(int phase)
 */
 uint64_t	Cube::get_id_phase1()
 {
-	uint64_t id = 0; 
-	for (int edge = 0; edge < 11; edge++)
-	{
-		id <<= 1;
-		id += edgeOrientation[edge];
-	}
-	return id;
+	// uint64_t id = 0; 
+	// for (int edge = 0; edge < 11; edge++)
+	// {
+	// 	id <<= 1;
+	// 	id += edgeOrientation[edge];
+	// }
+	// return id;
+	// Generates 0..2047
+	return
+       edgeOrientation[0]  +
+       edgeOrientation[1]  * 2 +
+       edgeOrientation[2]  * 4 +
+       edgeOrientation[3]  * 8 +
+       edgeOrientation[4]  * 16 +
+       edgeOrientation[5]  * 32 +
+       edgeOrientation[6]  * 64 +
+       edgeOrientation[7]  * 128 +
+       edgeOrientation[8]  * 256 +
+       edgeOrientation[9]  * 512 +
+       edgeOrientation[10] * 1024;
 }
 
 /*
@@ -80,18 +93,19 @@ uint64_t	Cube::get_id_phase1()
 **	@return	phase id
 */
 uint64_t	Cube::get_id_phase2(){
-	uint64_t id = 0; 
-	for (int corner = 0; corner < 8; corner++)
-	{
-		id <<= 2;
-		id += cornerOrientation[corner];
-	}
-	for (int edge = 0; edge < 12; edge++){
-		id <<= 2;
-		if (edgePosition[edge] < 8)
-			id++;
-	}
-	return id;
+	// uint64_t id = 0; 
+	// for (int corner = 0; corner < 8; corner++)
+	// {
+	// 	id <<= 2;
+	// 	id += cornerOrientation[corner];
+	// }
+	// for (int edge = 0; edge < 12; edge++){
+	// 	id <<= 2;
+	// 	if (edgePosition[edge] < 8)
+	// 		id++;
+	// }
+	// return id;
+	// Generates (0..3^7 - 1) * 12C4 + (0..12C4 - 1) = 0..1082564
 }
 
 /*

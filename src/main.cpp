@@ -135,7 +135,8 @@ int main(int ac, char **av)
 	auto input = program.get<string>("scramble");
 	moves = parse(input);
 	for (auto move : moves)
-		printf("%s\n", move.c_str());
+		printf("%s ", move.c_str());
+	printf("\n");
 	try {
 		checkMoves(moves);
 	} catch (const char *msg) {
@@ -145,6 +146,10 @@ int main(int ac, char **av)
 	for (auto move : moves) {
 		c.applyMove(move);
 	}
+	// c.printCube();
+	// printf("%llu\n", c.get_id_phase4());
+	// exit(1);
+	printf("rows in phase 1 table: %d\n", db.rowcount_db(1));
 	Solver s(&c, &db);
 	s.solve();
 	Cube kubus;

@@ -123,8 +123,7 @@ string	Database::get_value(int phase, uint64_t key)
 		cout << string(sqlite3_errmsg(database)) << endl;
 		exit(1);
 	}
-	int ret = sqlite3_step(stmt);
-	printf("ret: %d\n", ret);
+	sqlite3_step(stmt);
 	const unsigned char *str;
 	string value;
 	str = sqlite3_column_text(stmt, 1);
