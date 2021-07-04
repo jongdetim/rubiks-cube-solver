@@ -13,6 +13,7 @@
 # define CUBE_H
 
 # include "main.hpp"
+# include "indexing.hpp"
 //						0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum FACE {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
