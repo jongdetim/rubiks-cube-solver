@@ -27,9 +27,9 @@ class Database
 		bool							allowedMoves[18];
 		bool							is_open = false;
 		unordered_map<int64_t, string>	phaseHash[5];
-		string							moves[6] = {"F","R","U","B","L","D"};
 
 	public:
+		string							moves[6] = {"F","R","U","B","L","D"};
 		void	open_db();
 		int		create_db();
 		int		read_db(int phase);

@@ -68,6 +68,7 @@ class Cube
 		uint64_t get_id_phase2();
 		uint64_t get_id_phase3();
 		uint64_t get_id_phase4();
+		uint64_t get_id_4_new();
 };
 
 #endif

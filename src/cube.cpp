@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube.hpp"
+#include <bitset>
 
 /*	
 **	@desc	Gets cube face as 64-bit int
@@ -32,10 +33,26 @@ bool Cube::isSolved() const
 		(getFace(FACE::UP) == 0x0000000000000000) &
 		(getFace(FACE::LEFT) == 0x0101010101010101) &
 		(getFace(FACE::FRONT) == 0x0202020202020202) &
-		(getFace(FACE::LEFT) == 0x0303030303030303) &
+		(getFace(FACE::RIGHT) == 0x0303030303030303) &
 		(getFace(FACE::BACK) == 0x0404040404040404) &
 		(getFace(FACE::DOWN) == 0x0505050505050505));
 }
+
+uint64_t	Cube::get_id_4_new()
+{
+	std::bitset<54> res;
+
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if ((int)cube[(i*8) + j] == i) 
+				res.set((size_t) ((i * 8) + j), 1);
+		}
+	}
+	return (uint64_t) res.to_ullong();
+}
+
 
 /*
 **	@desc	Controller function for getting phase id
@@ -53,7 +70,7 @@ uint64_t	Cube::get_id(int phase)
 		case 2:
 			return get_id_phase3();
 		case 3:
-			return get_id_phase4();
+			return get_id_4_new();
 		default:
 			cout << "error: impossible phase number" << endl;
 			exit(1);
@@ -66,26 +83,13 @@ uint64_t	Cube::get_id(int phase)
 */
 uint64_t	Cube::get_id_phase1()
 {
-	// uint64_t id = 0; 
-	// for (int edge = 0; edge < 11; edge++)
-	// {
-	// 	id <<= 1;
-	// 	id += edgeOrientation[edge];
-	// }
-	// return id;
-	// Generates 0..2047
-	return
-       edgeOrientation[0]  +
-       edgeOrientation[1]  * 2 +
-       edgeOrientation[2]  * 4 +
-       edgeOrientation[3]  * 8 +
-       edgeOrientation[4]  * 16 +
-       edgeOrientation[5]  * 32 +
-       edgeOrientation[6]  * 64 +
-       edgeOrientation[7]  * 128 +
-       edgeOrientation[8]  * 256 +
-       edgeOrientation[9]  * 512 +
-       edgeOrientation[10] * 1024;
+	uint64_t id = 0; 
+	for (int edge = 0; edge < 11; edge++)
+	{
+		id <<= 1;
+		id += edgeOrientation[edge];
+	}
+	return id;
 }
 
 /*
@@ -93,18 +97,18 @@ uint64_t	Cube::get_id_phase1()
 **	@return	phase id
 */
 uint64_t	Cube::get_id_phase2(){
-	// uint64_t id = 0; 
-	// for (int corner = 0; corner < 8; corner++)
-	// {
-	// 	id <<= 2;
-	// 	id += cornerOrientation[corner];
-	// }
-	// for (int edge = 0; edge < 12; edge++){
-	// 	id <<= 2;
-	// 	if (edgePosition[edge] < 8)
-	// 		id++;
-	// }
-	// return id;
+	uint64_t id = 0; 
+	for (int corner = 0; corner < 7; corner++)
+	{
+		id <<= 2;
+		id += cornerOrientation[corner];
+	}
+	for (int edge = 0; edge < 12; edge++){
+		id <<= 2;
+		if (edgePosition[edge] < 8)
+			id++;
+	}
+	return id;
 	// Generates (0..3^7 - 1) * 12C4 + (0..12C4 - 1) = 0..1082564
 }
 
@@ -116,7 +120,7 @@ uint64_t		Cube::get_id_phase3(){
 	string faces = "FRUBLD";
 
 	uint64_t id = 0;
-	for (int i = 0; i < 7; i++){
+	for (int i = 0; i < 8; i++){
 		for (int j = 0; j < 3; j++){
 			id <<= 1;
 			char t = cornerNames[cornerPosition[i]][(cornerOrientation[i] + j) % 3];
@@ -125,7 +129,7 @@ uint64_t		Cube::get_id_phase3(){
 					id++;
 		}	
 	}
-	for (int i = 0; i < 11; i++){
+	for (int i = 0; i < 12; i++){
 		for (int j = 0; j < 2; j++){
 			id <<= 1;
 			char t = edgeNames[edgePosition[i]][(edgeOrientation[i] + j) % 2];

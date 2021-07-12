@@ -78,6 +78,22 @@ void	        Solver::solve()
 		printf("phase: %d\n", phase + 1);
 		id = c->get_id(phase);
 		moves = db->get_value(phase, id);
+		while (moves == "NOT FOUND")
+		{
+			for (int i = 0; i < 6; i += 1)
+			{
+				cout << c->get_id(phase) << endl;
+				c->applyMove(db->moves[i] + "2");
+				id = c->get_id(phase);
+				cout << c->get_id(phase) << endl;
+				moves = db->get_value(phase, id);
+				if (moves == "NOT FOUND")
+					c->applyMove(db->moves[i] + "2");
+				else
+					c->path.append(moves);
+					break ;
+			}
+		}
 		movestring_split(c, moves);
 	}
 	printf("%s\nlen: %lu\n", c->path.c_str(), c->path.length() / 3);

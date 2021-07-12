@@ -115,6 +115,7 @@ string	Database::get_value(int phase, uint64_t key)
 {
 	sqlite3_stmt *stmt;
 	string sql = "SELECT * FROM PHASE" + to_string(phase + 1) + " WHERE KEY = " + to_string(key);
+	string value;
 
 	open_db();
 	int rc = sqlite3_prepare_v2(database, sql.c_str(), sql.length(), &stmt, nullptr);
@@ -123,14 +124,16 @@ string	Database::get_value(int phase, uint64_t key)
 		cout << string(sqlite3_errmsg(database)) << endl;
 		exit(1);
 	}
-	sqlite3_step(stmt);
-	const unsigned char *str;
-	string value;
-	str = sqlite3_column_text(stmt, 1);
-	// if (str)
-		value = string(reinterpret_cast<const char*>(str));
-	sqlite3_finalize(stmt);
-	return value;
+	rc = sqlite3_step(stmt);
+	if (rc == SQLITE_ROW)
+	{
+		value = string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+		sqlite3_finalize(stmt);
+		return value;
+	}
+	else
+		return "NOT FOUND";
+	
 }
 
 void	Database::close_db()
