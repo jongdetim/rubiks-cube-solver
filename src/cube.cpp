@@ -38,22 +38,6 @@ bool Cube::isSolved() const
 		(getFace(FACE::DOWN) == 0x0505050505050505));
 }
 
-uint64_t	Cube::get_id_4_new()
-{
-	std::bitset<54> res;
-
-	for (int i = 0; i < 6; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			if ((int)cube[(i*8) + j] == i) 
-				res.set((size_t) ((i * 8) + j), 1);
-		}
-	}
-	return (uint64_t) res.to_ullong();
-}
-
-
 /*
 **	@desc	Controller function for getting phase id
 **	@param	int phase: current phase
@@ -68,9 +52,9 @@ uint64_t	Cube::get_id(int phase)
 		case 1:
 			return get_id_phase2();
 		case 2:
-			return get_id_phase3();
+			return get_id_3_newer();
 		case 3:
-			return get_id_4_new();
+			return get_id_phase4();
 		default:
 			cout << "error: impossible phase number" << endl;
 			exit(1);
@@ -98,6 +82,7 @@ uint64_t	Cube::get_id_phase1()
 */
 uint64_t	Cube::get_id_phase2(){
 	uint64_t id = 0; 
+
 	for (int corner = 0; corner < 7; corner++)
 	{
 		id <<= 2;
@@ -118,17 +103,20 @@ uint64_t	Cube::get_id_phase2(){
 */
 uint64_t		Cube::get_id_phase3(){
 	string faces = "FRUBLD";
-
 	uint64_t id = 0;
-	for (int i = 0; i < 8; i++){
-		for (int j = 0; j < 3; j++){
-			id <<= 1;
-			char t = cornerNames[cornerPosition[i]][(cornerOrientation[i] + j) % 3];
-			if (!(t == cornerNames[i][j] ||
-				t == faces[(faces.find(cornerNames[i][j]) + 3) % 6]))
-					id++;
-		}	
-	}
+
+	// for (int e = 0; e < 12; e++)
+	// 	id |= ((edgePosition[e] > 7) ? 2 : (edgePosition[e] & 1)) << (2 * e);
+	// id <<= 24;
+	// for (int i = 0; i < 8; i++){
+	// 	for (int j = 0; j < 3; j++){
+	// 		id <<= 1;
+	// 		char t = cornerNames[cornerPosition[i]][(cornerOrientation[i] + j) % 3];
+	// 		if (!(t == cornerNames[i][j] ||
+	// 			t == faces[(faces.find(cornerNames[i][j]) + 3) % 6]))
+	// 				id++;
+	// 	}	
+	// }
 	for (int i = 0; i < 12; i++){
 		for (int j = 0; j < 2; j++){
 			id <<= 1;
@@ -138,7 +126,11 @@ uint64_t		Cube::get_id_phase3(){
 				id++;
 			}
 		}			
-	}	
+	}
+	// id <<= 24;
+	// for (int c = 0; c < 8; c++)
+	// 	id |= (cornerPosition[c] & 5) << (3 * c);
+
 	for (int i = 0; i < 8; i++)
 	{
 		id <<= 1;
@@ -149,9 +141,80 @@ uint64_t		Cube::get_id_phase3(){
 	for (int i = 0; i < 8; i++ )
 	{
 		for(int j = i + 1; j < 8; j++)
-			id ^= this->cornerPosition[i] > this->cornerPosition[j];
+			id ^= cornerPosition[i] > cornerPosition[j];
 	}	
 	return id;
+}
+
+uint64_t	Cube::get_id_3_newer()
+{
+	uint64_t id = 0;
+	// edge slices M & S    		   = 24 bits
+	// 4 keer true, 8 keer false.
+	// is 2, 1, of 0
+	for (int e = 0; e < 12; e++)
+		id |= ((edgePosition[e] > 7) ? 2 : (edgePosition[e] & 1)) << (2 * e);
+	// corner tetrads      			   = 24 bits
+	id <<= 24;
+	for (int c = 0; c < 8; c++)
+		id |= (cornerPosition[c] & 5) << (3 * c);
+	// parity check, altijd 0 of 1     = 1 bit
+	id <<= 1;
+	for (int i = 0; i < 8; i++)
+		for (int j = i + 1; j < 8; j++)
+			id ^= cornerPosition[i] > cornerPosition[j];
+	return id;
+}
+
+uint64_t	Cube::get_id_3_new()
+{
+	uint64_t id = 0;
+	// uint64_t ONE = 1;
+
+	for (int i = 0; i < 8; i++)
+	{
+		id <<= 1;
+		if (cornerPosition[i] % 4 != i % 4)
+			id++;
+	}	
+	id <<= 1;
+	for (int i = 0; i < 8; i++ )
+	{
+		for(int j = i + 1; j < 8; j++)
+			id ^= cornerPosition[i] > cornerPosition[j];
+	}
+
+	// for (int i = 0; i < 6; i++)
+	// {
+	// 	for (int j = 0; j < 8; j++)
+	// 	{
+	// 		int side = (int)cube[(i*8) + j];
+	// 		// cout << cube[(i*8) + j] << endl;
+	// 		// cout << "nummer " << i << endl;
+	// 		if (side == i || side == (i + 3) % 6)
+	// 		{
+	// 			int index = ((i * 8) + j) + 8;
+	// 			id |= ONE << index;
+	// 		}
+	// 	}
+	// }
+	cout << id << endl;
+	return id;
+}
+
+uint64_t	Cube::get_id_4_new()
+{
+	std::bitset<48> res;
+
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if ((int)cube[(i*8) + j] == i) 
+				res.set((size_t) ((i * 8) + j), 1);
+		}
+	}
+	return (uint64_t) res.to_ullong();
 }
 
 uint64_t	Cube::get_id_phase4(){
@@ -210,11 +273,11 @@ char	getColor(int v)
 	else if (v == 2)
 		return 'R';
 	else if (v == 3)
-		return 'B';
-	else if (v == 4)
-		return 'O';
-	else if (v == 5)
 		return 'Y';
+	else if (v == 4)
+		return 'B';
+	else if (v == 5)
+		return 'O';
 	return 'U';
 }
 

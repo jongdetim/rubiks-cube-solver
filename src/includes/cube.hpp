@@ -14,8 +14,8 @@
 
 # include "main.hpp"
 //						0      1     2     3     4       5
-enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-enum FACE {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
+enum FACE {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
 enum CORNER {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
 
@@ -69,6 +69,8 @@ class Cube
 		uint64_t get_id_phase3();
 		uint64_t get_id_phase4();
 		uint64_t get_id_4_new();
+		uint64_t get_id_3_new();
+		uint64_t get_id_3_newer();
 };
 
 #endif

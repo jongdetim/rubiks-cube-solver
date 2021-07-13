@@ -130,6 +130,9 @@ int main(int ac, char **av)
 		db.close_db();
 		exit(1);
 	}
+	int i = 0;
+	while (++i < 5)
+		db.rowcount_db(i);
 	// To solve a cube
 	cout << "Solver mode\n";
 	auto input = program.get<string>("scramble");
@@ -149,7 +152,6 @@ int main(int ac, char **av)
 	// c.printCube();
 	// printf("%llu\n", c.get_id_phase4());
 	// exit(1);
-	printf("rows in phase 1 table: %d\n", db.rowcount_db(1));
 	Solver s(&c, &db);
 	s.solve();
 	Cube kubus;

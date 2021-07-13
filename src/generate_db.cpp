@@ -179,6 +179,8 @@ void	Database::generate_db(Cube solved)
 						id = cur.get_id(phase);
 						if (phaseHash[phase].count(id) == 0)
 						{
+							// if (phase==2)
+							// 	cout << "new id found" << endl;
 							cur.path.insert(cur.path.begin(), '3' - times);
 							cur.path.insert(cur.path.begin(),  moves[move][0]);
 							string sql("INSERT INTO PHASE" + to_string(phase + 1) +
@@ -186,6 +188,8 @@ void	Database::generate_db(Cube solved)
 							execute_sql(sql, false);
 							phaseHash[phase][id] = cur.path;
 							queue.push(cur);
+							// if (phase==3)
+							// 	cout << cur.path << endl;
 							cur.path = cur.path.substr(2);
 						}
 					}

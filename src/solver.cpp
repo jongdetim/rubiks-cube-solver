@@ -80,6 +80,7 @@ void	        Solver::solve()
 		moves = db->get_value(phase, id);
 		while (moves == "NOT FOUND")
 		{
+			cout << "move not found in db! trying random move" << endl;
 			for (int i = 0; i < 6; i += 1)
 			{
 				cout << c->get_id(phase) << endl;
