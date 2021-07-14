@@ -149,6 +149,9 @@ uint64_t		Cube::get_id_phase3(){
 uint64_t	Cube::get_id_3_newer()
 {
 	uint64_t id = 0;
+
+	// 24 + 24 + 1 = 49 bits
+
 	// edge slices M & S    		   = 24 bits
 	// 4 keer true, 8 keer false.
 	// is 2, 1, of 0
@@ -169,7 +172,7 @@ uint64_t	Cube::get_id_3_newer()
 uint64_t	Cube::get_id_3_new()
 {
 	uint64_t id = 0;
-	// uint64_t ONE = 1;
+	uint64_t ONE = 1;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -177,28 +180,28 @@ uint64_t	Cube::get_id_3_new()
 		if (cornerPosition[i] % 4 != i % 4)
 			id++;
 	}	
+
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			int side = (int)cube[(i*8) + j];
+			// cout << cube[(i*8) + j] << endl;
+			// cout << "nummer " << i << endl;
+			if (side == i || side == (i + 3) % 6)
+			{
+				int index = ((i * 8) + j) + 8;
+				id |= ONE << index;
+			}
+		}
+	}
 	id <<= 1;
 	for (int i = 0; i < 8; i++ )
 	{
 		for(int j = i + 1; j < 8; j++)
 			id ^= cornerPosition[i] > cornerPosition[j];
 	}
-
-	// for (int i = 0; i < 6; i++)
-	// {
-	// 	for (int j = 0; j < 8; j++)
-	// 	{
-	// 		int side = (int)cube[(i*8) + j];
-	// 		// cout << cube[(i*8) + j] << endl;
-	// 		// cout << "nummer " << i << endl;
-	// 		if (side == i || side == (i + 3) % 6)
-	// 		{
-	// 			int index = ((i * 8) + j) + 8;
-	// 			id |= ONE << index;
-	// 		}
-	// 	}
-	// }
-	cout << id << endl;
+	// cout << id << endl;
 	return id;
 }
 
@@ -239,6 +242,7 @@ uint64_t	Cube::get_id_phase4(){
 			}
 		}			
 	}
+	// cout << id << endl;
 	return id;
 }
 

@@ -87,7 +87,7 @@ int Database::create_db()
 	for (int i = 0; i < 4; i++)
 	{
 		string sql = "CREATE TABLE PHASE" + to_string(i+1) + 
-		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT UNIQUE NOT NULL);";
+		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT UNIQUE NOT NULL) WITHOUT ROWID;";
 		execute_sql(sql, false);
 	}
 	return (0);
@@ -114,7 +114,7 @@ int	Database::rowcount_db(int phase)
 string	Database::get_value(int phase, uint64_t key)
 {
 	sqlite3_stmt *stmt;
-	string sql = "SELECT * FROM PHASE" + to_string(phase + 1) + " WHERE KEY = " + to_string(key);
+	string sql = "SELECT * FROM PHASE" + to_string(phase + 1) + " WHERE KEY = " + to_string((int64_t)key);
 	string value;
 
 	open_db();
@@ -184,7 +184,7 @@ void	Database::generate_db(Cube solved)
 							cur.path.insert(cur.path.begin(), '3' - times);
 							cur.path.insert(cur.path.begin(),  moves[move][0]);
 							string sql("INSERT INTO PHASE" + to_string(phase + 1) +
-							" (KEY,VALUE) VALUES(" + to_string(id) + ",'" + cur.path + "')");
+							" (KEY,VALUE) VALUES(" + to_string((int64_t)id) + ",'" + cur.path + "')");
 							execute_sql(sql, false);
 							phaseHash[phase][id] = cur.path;
 							queue.push(cur);

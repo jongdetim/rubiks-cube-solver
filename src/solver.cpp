@@ -81,7 +81,7 @@ void	        Solver::solve()
 		while (moves == "NOT FOUND")
 		{
 			cout << "move not found in db! trying random move" << endl;
-			for (int i = 0; i < 6; i += 1)
+			for (int i = 0; i < 6; i++)
 			{
 				cout << c->get_id(phase) << endl;
 				c->applyMove(db->moves[i] + "2");
@@ -91,8 +91,11 @@ void	        Solver::solve()
 				if (moves == "NOT FOUND")
 					c->applyMove(db->moves[i] + "2");
 				else
+				{
 					c->path.append(moves);
+					cout << moves << "  breaking..." << endl; 
 					break ;
+				}
 			}
 		}
 		movestring_split(c, moves);

@@ -16,8 +16,8 @@
 //						0      1     2     3     4       5
 enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
 enum FACE {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
-enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-enum CORNER {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
+enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
+enum CORNER {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 
 class Cube
 {
@@ -35,10 +35,10 @@ class Cube
 	public:
 		char	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		char 	edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		CORNER	cornerPosition[8] = {URF, UBR, DLF, DFR, ULB, UFL, DRB, DBL};
-		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, BR, BL, FL};
-		string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
-		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
+		CORNER	cornerPosition[8] = {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
+		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
+		string cornerNames[8] = {"URF", "UBR", "ULB", "UFL", "DFR", "DLF", "DBL", "DRB"};
+		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "FL", "BR", "BL"};
 		string path = "";
 		Cube( void );
 		Cube(const Cube *parent);
