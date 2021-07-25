@@ -2,10 +2,10 @@
 #	Docker file for rubik
 #
 
-FROM alpine
+FROM debian
 
-RUN apk --update add build-base bash sqlite-dev
-
+# RUN apk --update add build-base bash sqlite-dev
+RUN apt update ; apt upgrade ; apt install -y build-essential libsqlite3-dev
 ADD . /rubik
 
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
