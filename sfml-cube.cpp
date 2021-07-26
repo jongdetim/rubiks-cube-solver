@@ -4,14 +4,16 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <OpenGL/glext.h>
-#include <GLUT/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glext.h>
+// #include <GLUT/glut.h>
 #include <cmath>
 #include <iostream>
 
 // clang++ sfml-cube.cpp -I /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/include -L /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/lib/ -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -framework OpenGL -framework GLUT
+
+// g++ -I C:\Users\Tim\Downloads\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -std=c++17 -o output.exe
 
 void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar )
 {
@@ -73,10 +75,10 @@ void rotateFace(double x, double y, double z, char face)
             glVertex3f(x*cos(theta) - z*sin(theta), y, x*sin(theta) + z*cos(theta));
             break ;
         case 'U':
+			theta *= -1;
             glVertex3f(x, y*cos(theta) - z*sin(theta), y*sin(theta) + z*cos(theta));
             break ;
         case 'D':
-            theta *= -1;
             glVertex3f(x, y*cos(theta) - z*sin(theta), y*sin(theta) + z*cos(theta));
             break ;
 
@@ -106,8 +108,16 @@ void drawFace(std::string stickers, char face)
 
 int main()
 {
+	sf::ContextSettings settings;
+
+	settings.depthBits = 24;
+    settings.stencilBits = 8;
+    settings.antialiasingLevel = 12;
+    settings.majorVersion = 4;
+    settings.minorVersion = 6;
+	
     // create the window
-    sf::Window window(sf::VideoMode(800, 600), "Rubik", sf::Style::Default, sf::ContextSettings(32));
+    sf::Window window(sf::VideoMode(800, 600), "Rubik", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
     // activate the window
@@ -138,7 +148,7 @@ int main()
     // perspectiveGL(90.f, 1.f, 200.f, 300.0f);//fov, aspect, zNear, zFar
     // glLoadMatrixf(view1.getTransform().getMatrix());
     glLoadIdentity();
-    perspectiveGL(90.f, 1.f, 1.f, 300.0f);//fov, aspect, zNear, zFar
+    perspectiveGL(90.f, float(window.getSize().x) / window.getSize().y, 1.f, 300.0f);//fov, aspect, zNear, zFar
     // glLoadMatrixf(view1.getTransform().getMatrix());
         // glLoadIdentity();
 
@@ -163,6 +173,7 @@ int main()
                     break;
                 case sf::Event::Resized:
                     glViewport(0, 0, event.size.width, event.size.height);
+					break;
                 default:
                     break;
             }
@@ -176,7 +187,7 @@ int main()
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glTranslatef(0.f, 0.f, -200.f);
-        gluLookAt(1,1,0, 0,0,1, 0,1.f,0);
+        gluLookAt(0.5,0.5,0.5, 0,0,1, 0,1.f,0);
 
 
 		if(rotate)
@@ -204,7 +215,7 @@ int main()
             // glVertex3f( 50.f,  50.f, 50.f);
             // glVertex3f(-50.f,  50.f, 50.f);
             // glVertex3f(-50.f, -50.f, 50.f);
-            stickers = "CBBBCCCBC";
+            stickers = "BBBBBBBBB";
             drawFace(stickers, 'B');
 
             stickers = "RRRRRRRRR";
