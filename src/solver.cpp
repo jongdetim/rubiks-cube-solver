@@ -100,6 +100,6 @@ void	        Solver::solve()
 		}
 		movestring_split(c, moves);
 	}
-	printf("%s\nlen: %lu\n", c->path.c_str(), c->path.length() / 3);
+	printf("%s\nlen: %lu\n", c->path.c_str(), (unsigned long)(c->path.length() / 3));
 	db->close_db();
 }

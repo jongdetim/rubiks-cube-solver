@@ -1,7 +1,13 @@
-#include <SFML/Graphics.hpp>
+// #define SFML_STATIC
 
-clang++ sfml-test.cpp -I /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/include -L /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/lib/
--lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Main.hpp>
+
+// clang++ sfml-test.cpp -I /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/include -L /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/lib/
+// -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network
 
 int main()
 {

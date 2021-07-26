@@ -119,7 +119,9 @@ vi id(vi state)
 		// corner tetrads      			   = 24 bits
 		result[0] <<= 24;
 		for (int c = 0; c < 8; c++)
+		{
 			result[0] |= ((state[c + 12] - 12) & 5) << (3 * c);
+		}
 		// parity check, altijd 0 of 1     = 1 bit
 		result[0] <<= 1;
 		for (int i = 12; i < 20; i++)

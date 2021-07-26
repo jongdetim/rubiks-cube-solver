@@ -1,19 +1,25 @@
 #define GL_SILENCE_DEPRECATION
 
-#include <SFML/Window.hpp>
+// #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <GL/gl.h>
+// #include <SFML/System.hpp>
+// #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glext.h>
+// #include <GL/glext.h>
 // #include <GLUT/glut.h>
 #include <cmath>
-#include <iostream>
 
+// BUILDING ____________________________________
+
+// macos
 // clang++ sfml-cube.cpp -I /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/include -L /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/lib/ -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -framework OpenGL -framework GLUT
 
+// windows 32-bit
 // g++ -I C:\Users\Tim\Downloads\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -std=c++17 -o output.exe
+
+// windows 64-bit (let op verschillende .dll en .a libraries)
+// C:\"Program Files"\mingw-w64\x86_64-7.3.0-win32-seh-rt_v5-rev0\mingw64\bin\gcc -I C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -lstdc++ -o output.exe
 
 void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar )
 {
