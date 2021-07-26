@@ -21,6 +21,20 @@
 // windows 64-bit (let op verschillende .dll en .a libraries)
 // C:\"Program Files"\mingw-w64\x86_64-7.3.0-win32-seh-rt_v5-rev0\mingw64\bin\gcc -I C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -lstdc++ -o output.exe
 
+// globals, moeten naar een .hpp file en een class worden
+    bool rotate;
+	bool mousePressed;
+	float angle;
+	float paused_angle;
+	float mouse_y;
+	float mouse_x;
+	float mouse_yd;
+	float mouse_xd;
+	float previous_mouse_y;
+	float previous_mouse_x;
+	float y_angle;
+	float x_angle;
+
 void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar )
 {
     const GLdouble pi = 3.1415926535897932384626433832795;
@@ -33,6 +47,7 @@ void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFa
     glFrustum( -fW, fW, -fH, fH, zNear, zFar );
 }
 
+// veranderen in macros / defines
 void setColour(char colour)
 {
     switch ((char)colour)
@@ -87,9 +102,6 @@ void rotateFace(double x, double y, double z, char face)
         case 'D':
             glVertex3f(x, y*cos(theta) - z*sin(theta), y*sin(theta) + z*cos(theta));
             break ;
-
-
-
     }
 }
 
@@ -112,6 +124,23 @@ void drawFace(std::string stickers, char face)
     }
 }
 
+void reset_values(sf::Clock *clock)
+{
+	rotate = true;
+	mousePressed = false;
+	angle = 0.0;
+	paused_angle = 0.0;
+	mouse_y = 0.0;
+	mouse_x = 0.0;
+	mouse_yd = 0.0;
+	mouse_xd = 0.0;
+	previous_mouse_y = 0.0;
+	previous_mouse_x = 0.0;
+	y_angle = 0.0;
+	x_angle = 0.0;
+	clock->restart();
+}
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -130,11 +159,10 @@ int main()
     window.setActive(true);
 
     // Create a clock for measuring time elapsed
-    sf::Clock Clock;
+    sf::Clock clock;
 
-    bool rotate=true;
-    bool initial=true;
-	float angle;
+	// initialize vars
+	reset_values(&clock);
 
         //prepare OpenGL surface for HSR
 	glClearDepth(1.f);
@@ -142,23 +170,10 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
 
-    // sf::View view1(sf::FloatRect(200.f, 200.f, 300.f, 200.f));
-    // sf::View view1;
-    // view1.reset(sf::FloatRect(0, 0, 800, 600));
-    // view1.setRotation(10.f);
     //// Setup a perspective projection & Camera position
     glMatrixMode(GL_PROJECTION);
-    // glLoadMatrixf(view1.getTransform().getMatrix());
-    // std::cout << *(view1.getTransform().getMatrix()) << std::endl;
-    // glLoadIdentity();
-    // perspectiveGL(90.f, 1.f, 200.f, 300.0f);//fov, aspect, zNear, zFar
-    // glLoadMatrixf(view1.getTransform().getMatrix());
     glLoadIdentity();
     perspectiveGL(90.f, float(window.getSize().x) / window.getSize().y, 1.f, 300.0f);//fov, aspect, zNear, zFar
-    // glLoadMatrixf(view1.getTransform().getMatrix());
-        // glLoadIdentity();
-
-
 
     // load resources, initialize the OpenGL states, ...
 
@@ -173,8 +188,50 @@ int main()
             switch(event.type)
             {
                 case sf::Event::KeyPressed:
-                    if(event.key.code != sf::Keyboard::Escape) { break; }
-                case sf::Event::Closed:
+					if (event.key.code == sf::Keyboard::Space)
+					{
+						rotate = 1 - rotate;
+						if (rotate == true)
+							clock.restart();
+						else
+							paused_angle=angle;
+						break;
+					}
+					else if (event.key.code == sf::Keyboard::R)
+					{
+						reset_values(&clock);
+						break;
+					}
+					else if (event.key.code == sf::Keyboard::Escape)
+					{
+						running = false;
+						break;
+					}
+					else
+						break;
+				case sf::Event::MouseButtonPressed:
+					mousePressed = true;
+					previous_mouse_y = event.mouseButton.y;
+					previous_mouse_x = event.mouseButton.x;
+					break;
+				case sf::Event::MouseButtonReleased:
+					mousePressed = false;
+					break;
+				case sf::Event::MouseMoved:
+					if (mousePressed)
+					{
+						mouse_y = event.mouseMove.y;
+						mouse_x = event.mouseMove.x;
+						mouse_yd = previous_mouse_y - mouse_y;
+						mouse_xd = previous_mouse_x - mouse_x;
+						y_angle -= mouse_yd;
+						x_angle -= mouse_xd;
+						previous_mouse_y = event.mouseMove.y;
+						previous_mouse_x = event.mouseMove.x;
+						printf("mouse y angle: %f\nmouse x angle: %f\nangle: %f\n", y_angle, x_angle, angle);
+					}
+					break;
+				case sf::Event::Closed:
                     running = false;
                     break;
                 case sf::Event::Resized:
@@ -193,34 +250,21 @@ int main()
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glTranslatef(0.f, 0.f, -200.f);
-        gluLookAt(0.5,0.5,0.5, 0,0,1, 0,1.f,0);
-
+        gluLookAt(0.5,0.5,0.5, 0,0,0, 0,1.f,0);
 
 		if(rotate)
-			angle=Clock.getElapsedTime().asSeconds();
-		// glRotatef(angle * 30, 1.f, 0.f, 0.f);
-		glRotatef(angle * 30, 0.f, 1.f, 0.f);
-            // glRotatef(20.f, 1.f, 0.f, 0.f);
+			angle = paused_angle + clock.getElapsedTime().asSeconds();
+
+		// rotate cube from initial angle
+		glRotatef(y_angle/10, 1.f, 0.f, -1.f);
+		glRotatef((x_angle/10) + (angle*30), 0.f, 1.f, 0.f);
 
         // draw...
         glBegin(GL_QUADS);//draw some squares
-            // for (int i = 0; i < 9; i++)
-            // {
-            //     glColor3f(0,1,1); //cyan
-            //     glVertex3f( 50/3, 50.f, -50.f);
-            //     glVertex3f( 50/3,  50/3, -50.f);
-            //     glVertex3f( 50.f, 50/3, -50.f);
-            //     glVertex3f( 50.f,  50.f, -50.f);
-            // }
 
             std::string stickers = "YORBGWYOR";
             drawFace(stickers, 'F');
 
-            // glColor3f(0,0,1); //blue
-            // glVertex3f( 50.f, -50.f, 50.f);
-            // glVertex3f( 50.f,  50.f, 50.f);
-            // glVertex3f(-50.f,  50.f, 50.f);
-            // glVertex3f(-50.f, -50.f, 50.f);
             stickers = "BBBBBBBBB";
             drawFace(stickers, 'B');
 
