@@ -13,6 +13,8 @@
 #include "cube.hpp"
 #include "solver.hpp"
 #include "database.hpp"
+#include "visualizer.hpp"
+// #include "main.hpp"
 
 /*
 **	@desc:	Function splits up arguments into seperate strings
@@ -96,6 +98,7 @@ int main(int ac, char **av)
 	vector<string>	moves;
 	Cube			c;
 	Database		db;
+	string			solution;
 
 	// Argumentparsing bullshit
 	argparse::ArgumentParser program("rubik");
@@ -111,6 +114,10 @@ int main(int ac, char **av)
 		.help("Generate database")
 		.default_value(false)
 		.implicit_value(true);
+	program.add_argument("-v", "--visualizer")
+		.help("Turn off cube visualization")
+		.default_value(true)
+		.implicit_value(false);
 	try {
 		program.parse_args(ac, av);
 	} catch (const std::runtime_error& err) {
@@ -130,9 +137,9 @@ int main(int ac, char **av)
 		db.close_db();
 		exit(1);
 	}
-	int i = 0;
-	while (++i < 5)
-		db.rowcount_db(i);
+	// int i = 0;
+	// while (++i < 5)
+	// 	db.rowcount_db(i);
 	// To solve a cube
 	cout << "Solver mode\n";
 	auto input = program.get<string>("scramble");
@@ -149,14 +156,16 @@ int main(int ac, char **av)
 	for (auto move : moves) {
 		c.applyMove(move);
 	}
-	// c.printCube();
+	c.printCube();
 	// printf("%llu\n", c.get_id_phase4());
 	// exit(1);
-	Solver s(&c, &db);
-	s.solve();
+	Solver s(c, &db);
+	solution = s.solve();
 	Cube kubus;
-	if (c == kubus)
-		printf("Cube is solved\n");
+	// if (c == kubus)
+	// 	printf("Cube is solved\n");
+	if (program["-v"] == true || program["--visualizer"] == true)
+		visualizer(c, solution);
 	return (0);
 }
 

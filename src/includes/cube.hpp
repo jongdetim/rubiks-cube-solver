@@ -14,15 +14,18 @@
 
 # include "main.hpp"
 //						0      1     2     3     4       5
-enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
-enum FACE {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
+// enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
+// enum FACE : uint8_t {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
+// enum COLOR : uint8_t {WHITE, ORANGE, GREEN, RED, BLUE, YELLOW};
+// enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 enum CORNER {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 
 class Cube
 {
 	private:
-		array<COLOR, 48> cube;
 		array<COLOR, 6> centers;
 
 		// Rotations
@@ -33,13 +36,14 @@ class Cube
 		void rotSides90(int* arr);
 		void rotSides180(int* arr);
 	public:
+		array<COLOR, 48> cube;
 		char	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		char 	edgeOrientation[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		CORNER	cornerPosition[8] = {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 		string cornerNames[8] = {"URF", "UBR", "ULB", "UFL", "DFR", "DLF", "DBL", "DRB"};
 		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "FL", "BR", "BL"};
-		string path = "";
+		vector<string> path;
 		Cube( void );
 		Cube(const Cube *parent);
 
@@ -72,5 +76,7 @@ class Cube
 		uint64_t get_id_3_new();
 		uint64_t get_id_3_newer();
 };
+
+char	getColor(int v);
 
 #endif

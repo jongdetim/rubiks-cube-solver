@@ -20,9 +20,9 @@
 */
 void Cube::rot90(FACE f)
 {
-	uint32_t face = *(uint32_t *)&this->cube[(unsigned)f * 8];
-	asm volatile ("roll $16, %[face]" : [face] "+r" (face) : );
-	*(uint32_t *)&this->cube[(unsigned)f * 8] = face;
+	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+	asm ("rolq $16, %[face]" : [face] "+r" (face) : );
+	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
 }
 
 /*
@@ -33,9 +33,9 @@ void Cube::rot90(FACE f)
 */
 void Cube::rot180(FACE f)
 {
-	uint32_t face = *(uint32_t *)&this->cube[(unsigned)f * 8];
-	asm volatile ("roll $32, %[face]" : [face] "+r" (face) : );
-	*(uint32_t *)&this->cube[(unsigned)f * 8] = face;
+	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+	asm ("rolq $32, %[face]" : [face] "+r" (face) : );
+	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
 }
 
 /*
@@ -46,9 +46,9 @@ void Cube::rot180(FACE f)
 */
 void Cube::rot270(FACE f)
 {
-	uint32_t face = *(uint32_t *)&this->cube[(unsigned)f * 8];
-	asm volatile ("rorl $16, %[face]" : [face] "+r" (face) : );
-	*(uint32_t *)&this->cube[(unsigned)f * 8] = face;
+	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+	asm ("rorq $16, %[face]" : [face] "+r" (face) : );
+	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
 }
 
 /*

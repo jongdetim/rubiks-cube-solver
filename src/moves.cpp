@@ -22,8 +22,8 @@ Cube &Cube::u(int amount)
 	{
 		// deze zijn niet nodig om te solven, alleen om te printen
 		
-		rot90(FACE::UP);
-		rotSides90((int *)arr);
+		this->rot90(FACE::UP);
+		this->rotSides90((int *)arr);
 
 		char temp = edgeOrientation[UB];
 		edgeOrientation[UB] = edgeOrientation[UL];
@@ -60,8 +60,8 @@ Cube &Cube::l(int amount)
 	int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
 	for (int i = 0; i < amount; i++)
 	{
-		rot90(FACE::LEFT);
-		rotSides90((int *)arr);
+		this->rot90(FACE::LEFT);
+		this->rotSides90((int *)arr);
 
 		char temp = edgeOrientation[BL];
 		edgeOrientation[BL] = edgeOrientation[DL];
@@ -98,8 +98,8 @@ Cube &Cube::f(int amount)
 	int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
 	for (int i = 0; i < amount; i++)
 	{
-		rot90(FACE::FRONT);
-		rotSides90((int *)arr);
+		this->rot90(FACE::FRONT);
+		this->rotSides90((int *)arr);
 		
 		char temp = edgeOrientation[UF];
 		edgeOrientation[UF] = 1 - edgeOrientation[FL];
@@ -136,8 +136,8 @@ Cube &Cube::r(int amount)
 	int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
 	for (int i = 0; i < amount; i++)
 	{
-		rot90(FACE::RIGHT);
-		rotSides90((int *)arr);
+		this->rot90(FACE::RIGHT);
+		this->rotSides90((int *)arr);
 
 		char temp = edgeOrientation[FR];
 		edgeOrientation[FR] = edgeOrientation[DR];
@@ -174,8 +174,8 @@ Cube&		Cube::b(int amount)
 	int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
 	for (int i = 0; i < amount; i++)
 	{
-		rot90(FACE::BACK);
-		rotSides90((int*)arr);
+		this->rot90(FACE::BACK);
+		this->rotSides90((int*)arr);
 		
 		char temp = edgeOrientation[BR];
 		edgeOrientation[BR] = 1 - edgeOrientation[DB];
@@ -212,8 +212,8 @@ Cube&		Cube::d(int amount)
 	int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};
 	for (int i = 0; i < amount; i++)
 	{
-		rot90(FACE::DOWN);
-		rotSides90((int*)arr);
+		this->rot90(FACE::DOWN);
+		this->rotSides90((int*)arr);
 
 		char temp = edgeOrientation[DF];
 		edgeOrientation[DF] = edgeOrientation[DL];

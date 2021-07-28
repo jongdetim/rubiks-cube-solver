@@ -55,20 +55,21 @@ static void     movestring_split(Cube* c, string moves)
 		{
 			parsed_moves.push_back(temp);
 			apply_moves_db(c, parsed_moves[n]);
-			c->path.append((parsed_moves[n]) + " ");
+			// c->path.append((parsed_moves[n]) + " ");
 			n++;
 			temp = "";
 		}
 	}
+	c->path = parsed_moves;
 }
 
-Solver::Solver(Cube* cube, Database* database) 
+Solver::Solver(Cube cube, Database* database) 
 {
     c = cube;
     db = database;
 }
 
-void	        Solver::solve()
+string Solver::solve()
 {
 	string moves;
 	uint64_t id;
@@ -76,30 +77,31 @@ void	        Solver::solve()
 	for (int phase = 0; phase < 4; phase++)
 	{
 		printf("phase: %d\n", phase + 1);
-		id = c->get_id(phase);
+		id = c.get_id(phase);
 		moves = db->get_value(phase, id);
 		while (moves == "NOT FOUND")
 		{
 			cout << "move not found in db! trying random move" << endl;
 			for (int i = 0; i < 6; i++)
 			{
-				cout << c->get_id(phase) << endl;
-				c->applyMove(db->moves[i] + "2");
-				id = c->get_id(phase);
-				cout << c->get_id(phase) << endl;
+				cout << c.get_id(phase) << endl;
+				c.applyMove(db->moves[i] + "2");
+				id = c.get_id(phase);
+				cout << c.get_id(phase) << endl;
 				moves = db->get_value(phase, id);
 				if (moves == "NOT FOUND")
-					c->applyMove(db->moves[i] + "2");
+					c.applyMove(db->moves[i] + "2");
 				else
 				{
-					c->path.append(moves);
+					c.path.append(moves);
 					cout << moves << "  breaking..." << endl; 
 					break ;
 				}
 			}
 		}
-		movestring_split(c, moves);
+		movestring_split(&c, moves);
 	}
-	printf("%s\nlen: %lu\n", c->path.c_str(), (unsigned long)(c->path.length() / 3));
+	printf("%s\nlen: %lu\n", c.path.c_str(), (unsigned long)(c.path.length() / 3));
 	db->close_db();
+	return c.path;
 }

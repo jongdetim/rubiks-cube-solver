@@ -11,11 +11,13 @@
 # **************************************************************************** #
 
 NAME		=	rubik
-SRCS_FILES	=	cube moves rotate solver generate_db main
+SRCS_FILES	=	cube moves rotate solver generate_db visualizer main
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
-INC_DIR		=	src/includes/
-CFLAGS		=	-Wall -Wextra -Werror -std=c++17 -g -O2
+INC_DIR		=	src/includes/ -I ~/.brew/Cellar/sfml/2.5.1_1/include
+CFLAGS		=	-Wall -Wextra -Werror -std=c++17 -Ofast
+LDIR		=	~/.brew/Cellar/sfml/2.5.1_1/lib/
+LIBS		=	-lsqlite3 -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -framework OpenGL -framework GLUT
 CC			=	clang++
 OBJS 		:=	$(SRCS_FILES:%=%.o)
 SRCS		=	$(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -32,7 +34,7 @@ $(NAME): $(SRCS) $(INC)
 	@$(CC) -c $(CFLAGS) $(SRCS) -I $(INC_DIR)
 	@mkdir -p $(OBJ_DIR)
 	@mv $(OBJS) $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -lsqlite3 -o $(NAME) $(COBJ) -I $(INC_DIR)
+	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(COBJ) -I $(INC_DIR)
 	@echo "\033[0;32m[ + ] COMPILATION OF $(NAME) COMPLETE\033[0m"
 
 clean:

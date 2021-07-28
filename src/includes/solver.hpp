@@ -20,11 +20,11 @@
 class Solver
 {
 	private:
-		Cube*		c;
+		Cube		c;
 		Database*	db;
 	public:
-		Solver(Cube* cube, Database* database);
-		void		solve();
+		Solver(Cube cube, Database* database);
+		string		solve();
 };
 
 
