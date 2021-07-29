@@ -20,9 +20,9 @@
 */
 void Cube::rot90(FACE f)
 {
-	uint32_t face = *(uint32_t *)&this->cube[(unsigned)f * 8];
-	asm ("rol $16, %[face]" : [face] "+r" (face) : );
-	*(uint32_t *)&this->cube[(unsigned)f * 8] = face;
+	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+	asm ("rolq $16, %[face]" : [face] "+r" (face) : );
+	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
 }
 
 /*
