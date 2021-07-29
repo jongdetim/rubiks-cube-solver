@@ -24,8 +24,9 @@ class Solver
 		Database*	db;
 	public:
 		Solver(Cube cube, Database* database);
-		string		solve();
+		vector<string>		solve();
 };
 
+void		apply_moves_db(Cube *c, string move);
 
 #endif

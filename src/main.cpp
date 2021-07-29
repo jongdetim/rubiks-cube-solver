@@ -98,7 +98,7 @@ int main(int ac, char **av)
 	vector<string>	moves;
 	Cube			c;
 	Database		db;
-	string			solution;
+	vector<string>	solution;
 
 	// Argumentparsing bullshit
 	argparse::ArgumentParser program("rubik");

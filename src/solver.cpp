@@ -12,7 +12,7 @@
 
 #include "solver.hpp"
 
-static void		apply_moves_db(Cube *c, string move)
+void		apply_moves_db(Cube *c, string move)
 {
 	int		amount;
 
@@ -42,7 +42,6 @@ static void		apply_moves_db(Cube *c, string move)
 
 static void     movestring_split(Cube* c, string moves)
 {
-	vector<string>	parsed_moves;
 	string			temp;
 	int n = 0;
 
@@ -53,14 +52,12 @@ static void     movestring_split(Cube* c, string moves)
 		temp += moves[i];
 		if (temp.length() == 2)
 		{
-			parsed_moves.push_back(temp);
-			apply_moves_db(c, parsed_moves[n]);
-			// c->path.append((parsed_moves[n]) + " ");
+			c->path_vect.push_back(temp);
+			apply_moves_db(c, c->path_vect[n]);
 			n++;
 			temp = "";
 		}
 	}
-	c->path = parsed_moves;
 }
 
 Solver::Solver(Cube cube, Database* database) 
@@ -69,7 +66,7 @@ Solver::Solver(Cube cube, Database* database)
     db = database;
 }
 
-string Solver::solve()
+vector<string> Solver::solve()
 {
 	string moves;
 	uint64_t id;
@@ -93,7 +90,7 @@ string Solver::solve()
 					c.applyMove(db->moves[i] + "2");
 				else
 				{
-					c.path.append(moves);
+					c.path_vect.push_back(moves);
 					cout << moves << "  breaking..." << endl; 
 					break ;
 				}
@@ -101,7 +98,9 @@ string Solver::solve()
 		}
 		movestring_split(&c, moves);
 	}
-	printf("%s\nlen: %lu\n", c.path.c_str(), (unsigned long)(c.path.length() / 3));
+	for (int i = 0; i < c.path_vect.size(); i++)
+		printf("%s ", c.path_vect[i].c_str());
+	printf("len: %lu\n", c.path_vect.size());
 	db->close_db();
-	return c.path;
+	return c.path_vect;
 }

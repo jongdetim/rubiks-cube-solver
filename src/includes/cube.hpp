@@ -43,7 +43,8 @@ class Cube
 		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 		string cornerNames[8] = {"URF", "UBR", "ULB", "UFL", "DFR", "DLF", "DBL", "DRB"};
 		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "FL", "BR", "BL"};
-		vector<string> path;
+		string path;
+		vector<string> path_vect;
 		Cube( void );
 		Cube(const Cube *parent);
 

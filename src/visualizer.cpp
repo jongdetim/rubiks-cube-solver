@@ -224,15 +224,22 @@ int visualizer(Cube cube, vector<string> solution)
 	perspectiveGL(90.f, float(window.getSize().x) / window.getSize().y, 1.f, 300.0f); //fov, aspect, zNear, zFar
 
 	// load resources, initialize the OpenGL states, ...
+	
+	
+	auto it = std::begin(solution);
 
 	// run the main loop
 	bool running = true;
 	while (running)
 	{
-		if (ticker > 100)
+		if (ticker > 60)
 		{
 			ticker = 0;
-			cube.u(1);
+			if (it!=std::end(solution))
+			{
+				apply_moves_db(&cube, *it);
+				it++;
+			}
 		}
 		// handle events
 		sf::Event event;
@@ -314,7 +321,6 @@ int visualizer(Cube cube, vector<string> solution)
 
 		// draw...
 		glBegin(GL_QUADS); //draw some squares
-			(void)solution;
 			for (int i = 0; i < 6; i++)
 				drawFace(cube, (FACE)i);
 		glEnd();

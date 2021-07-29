@@ -17,10 +17,11 @@
 
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
-// #include <GL/glu.h>
-#include <OpenGL/glu.h>
+#include <GL/glu.h>
+// #include <OpenGL/glu.h>
 #include <cmath>
 #include "cube.hpp"
+#include "solver.hpp"
 
 void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 // veranderen in macros / defines
@@ -29,6 +30,6 @@ void rotateFace(float x, float y, float z, char face);
 void drawFace(Cube cube, char face);
 void drawLines();
 void reset_values(sf::Clock *clock);
-int visualizer(Cube cube, std::string solution);
+int visualizer(Cube cube, vector<string> solution);
 
 #endif

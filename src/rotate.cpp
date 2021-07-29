@@ -20,9 +20,9 @@
 */
 void Cube::rot90(FACE f)
 {
-	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
-	asm ("rolq $16, %[face]" : [face] "+r" (face) : );
-	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
+	uint32_t face = *(uint32_t *)&this->cube[(unsigned)f * 8];
+	asm ("rol $16, %[face]" : [face] "+r" (face) : );
+	*(uint32_t *)&this->cube[(unsigned)f * 8] = face;
 }
 
 /*
@@ -30,37 +30,37 @@ void Cube::rot90(FACE f)
 **	@param	FACE f, face to turn
 **	in:		0 1 2 3 4 5 6 7
 **	out:	4 5 6 7 0 1 2 3
-*/
-void Cube::rot180(FACE f)
-{
-	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
-	asm ("rolq $32, %[face]" : [face] "+r" (face) : );
-	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
-}
+// */
+// void Cube::rot180(FACE f)
+// {
+// 	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+// 	asm ("rolq $32, %[face]" : [face] "+r" (face) : );
+// 	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
+// }
 
-/*
-**	@desc	Function rotates face 270 degrees
-**	@param	FACE f, face to turn
-**	in:		0 1 2 3 4 5 6 7
-**	out:	2 3 4 5 6 7 0 1
-*/
-void Cube::rot270(FACE f)
-{
-	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
-	asm ("rorq $16, %[face]" : [face] "+r" (face) : );
-	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
-}
+// /*
+// **	@desc	Function rotates face 270 degrees
+// **	@param	FACE f, face to turn
+// **	in:		0 1 2 3 4 5 6 7
+// **	out:	2 3 4 5 6 7 0 1
+// */
+// void Cube::rot270(FACE f)
+// {
+// 	uint64_t face = *(uint64_t *)&this->cube[(unsigned)f * 8];
+// 	asm ("rorq $16, %[face]" : [face] "+r" (face) : );
+// 	*(uint64_t *)&this->cube[(unsigned)f * 8] = face;
+// }
 
-/*
-**	@desc	rotate sides by 180
-**	@param	int* arr, array[12] with indexes to be swapped 
-*/
-void Cube::rotSides180(int *arr)
-{
-	for (int j = 0; j < 12; j += 6)
-		for (int i = j; i < 3 + j; i++)
-			swap(this->cube[arr[i]], this->cube[arr[i + 3]]);
-}
+// /*
+// **	@desc	rotate sides by 180
+// **	@param	int* arr, array[12] with indexes to be swapped 
+// */
+// void Cube::rotSides180(int *arr)
+// {
+// 	for (int j = 0; j < 12; j += 6)
+// 		for (int i = j; i < 3 + j; i++)
+// 			swap(this->cube[arr[i]], this->cube[arr[i + 3]]);
+// }
 
 /*
 **	@desc	rotate sides by 90
