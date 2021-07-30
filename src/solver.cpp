@@ -37,11 +37,15 @@ void		apply_moves_db(Cube *c, string move)
 		case 'D':
 			c->d(amount);
 			break;
+		default:
+			cout << "ER GAAT IETS MIS" << endl;
 	}
+	cout << move << endl;
 }
 
 static void     movestring_split(Cube* c, string moves)
 {
+	vector<string>	parsed_moves;
 	string			temp;
 	int n = 0;
 
@@ -52,8 +56,9 @@ static void     movestring_split(Cube* c, string moves)
 		temp += moves[i];
 		if (temp.length() == 2)
 		{
+			parsed_moves.push_back(temp);
 			c->path_vect.push_back(temp);
-			apply_moves_db(c, c->path_vect[n]);
+			apply_moves_db(c, parsed_moves[n]);
 			n++;
 			temp = "";
 		}

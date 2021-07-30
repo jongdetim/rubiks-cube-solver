@@ -159,10 +159,8 @@ void	Database::generate_db(Cube solved)
 	{
 		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
 		queue.push(solved);
-		cur = queue.front();
-		cur.path = "";
-		id = cur.get_id(phase);
-		phaseHash[phase][id] = queue.front().path;
+		id = solved.get_id(phase);
+		phaseHash[phase][id] = "";
 		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
 		" (KEY,VALUE) VALUES(" + to_string(id) + ",'')";
 		execute_sql(sql, false);

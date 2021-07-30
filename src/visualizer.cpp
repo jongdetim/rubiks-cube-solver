@@ -6,7 +6,7 @@
 /*   By: tide-jon <tide-jon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 17:45:59 by tide-jon      #+#    #+#                 */
-/*   Updated: 2021/07/28 22:35:02 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/07/30 23:15:54 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,12 @@ void reset_values(sf::Clock *clock)
 	clock->restart();
 }
 
+string reverse_move(string move)
+{
+	move[1] = '4' - (move[1] - '0');
+	return move;
+}
+
 int visualizer(Cube cube, vector<string> solution)
 {
 	uint64_t ticker = 0;
@@ -216,7 +222,7 @@ int visualizer(Cube cube, vector<string> solution)
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 50) / 200);
+	glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
 
 	//// Setup a perspective projection & Camera position
 	glMatrixMode(GL_PROJECTION);
@@ -232,15 +238,6 @@ int visualizer(Cube cube, vector<string> solution)
 	bool running = true;
 	while (running)
 	{
-		if (ticker > 100)
-		{
-			ticker = 0;
-			if (it!=std::end(solution))
-			{
-				apply_moves_db(&cube, *it);
-				it++;
-			}
-		}
 		// handle events
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -255,20 +252,30 @@ int visualizer(Cube cube, vector<string> solution)
 						clock.restart();
 					else
 						paused_angle = angle;
-					break;
 				}
 				else if (event.key.code == sf::Keyboard::R)
 				{
 					reset_values(&clock);
-					break;
+				}
+				else if (event.key.code == sf::Keyboard::Right)
+				{
+					if (it!=std::end(solution))
+					{
+						apply_moves_db(&cube, *it);
+						it++;
+					}
+				}
+				else if (event.key.code == sf::Keyboard::Left)
+				{
+					if (it!=std::begin(solution))
+					{
+						it--;
+						apply_moves_db(&cube, reverse_move(*it));
+					}
 				}
 				else if (event.key.code == sf::Keyboard::Escape)
-				{
 					running = false;
-					break;
-				}
-				else
-					break;
+				break;
 			case sf::Event::MouseButtonPressed:
 				mousePressed = true;
 				previous_mouse_y = event.mouseButton.y;
@@ -296,7 +303,7 @@ int visualizer(Cube cube, vector<string> solution)
 				break;
 			case sf::Event::Resized:
 				glViewport(0, 0, event.size.width, event.size.height);
-				glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 50) / 200);
+				glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
 				break;
 			default:
 				break;

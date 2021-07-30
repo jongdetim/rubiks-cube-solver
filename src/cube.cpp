@@ -273,15 +273,15 @@ char	getColor(int v)
 	if (v == 0)
 		return 'W';
 	else if (v == 1)
-		return 'G';
+		return 'O';
 	else if (v == 2)
-		return 'R';
+		return 'G';
 	else if (v == 3)
-		return 'Y';
+		return 'R';
 	else if (v == 4)
 		return 'B';
 	else if (v == 5)
-		return 'O';
+		return 'Y';
 	return 'U';
 }
 

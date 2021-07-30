@@ -16,10 +16,9 @@
 //						0      1     2     3     4       5
 // enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
 // enum FACE : uint8_t {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
-// enum COLOR : uint8_t {WHITE, ORANGE, GREEN, RED, BLUE, YELLOW};
-// enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
-enum FACE : uint8_t {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
+enum COLOR : uint8_t {WHITE, ORANGE, GREEN, RED, BLUE, YELLOW};
+enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 enum CORNER {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 
@@ -40,7 +39,7 @@ class Cube
 		EDGE	edgePosition[12] = {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 		string cornerNames[8] = {"URF", "UBR", "ULB", "UFL", "DFR", "DLF", "DBL", "DRB"};
 		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "FL", "BR", "BL"};
-		string path;
+		string path = "";
 		vector<string> path_vect;
 		Cube( void );
 		Cube(const Cube *parent);
