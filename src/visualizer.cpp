@@ -194,7 +194,7 @@ int visualizer(Cube cube, vector<string> solution)
 	// settings.minorVersion = 1;
 
 	// create the window
-	sf::Window window(sf::VideoMode(1600, 1200), "Rubik", sf::Style::Default, settings);
+	sf::Window window(sf::VideoMode(1200, 900), "Rubik", sf::Style::Default, settings);
 	window.setVerticalSyncEnabled(true);
 
 	// activate the window
@@ -232,7 +232,7 @@ int visualizer(Cube cube, vector<string> solution)
 	bool running = true;
 	while (running)
 	{
-		if (ticker > 60)
+		if (ticker > 100)
 		{
 			ticker = 0;
 			if (it!=std::end(solution))

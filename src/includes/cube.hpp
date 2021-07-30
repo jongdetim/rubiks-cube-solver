@@ -18,8 +18,8 @@
 // enum FACE : uint8_t {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
 // enum COLOR : uint8_t {WHITE, ORANGE, GREEN, RED, BLUE, YELLOW};
 // enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum COLOR : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-enum FACE : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+enum COLOR : uint8_t {WHITE, GREEN, RED, YELLOW, BLUE, ORANGE};
+enum FACE : uint8_t {UP, FRONT, RIGHT, DOWN, BACK, LEFT};
 enum EDGE {UF, UR, UB, UL, DF, DR, DB, DL, FR, FL, BR, BL};
 enum CORNER {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 
@@ -30,11 +30,8 @@ class Cube
 
 		// Rotations
 		void rot90(FACE f);
-		void rot180(FACE f);
-		void rot270(FACE f);
-
 		void rotSides90(int* arr);
-		void rotSides180(int* arr);
+
 	public:
 		array<COLOR, 48> cube;
 		char	cornerOrientation[8] = {0, 0, 0, 0, 0, 0, 0, 0};

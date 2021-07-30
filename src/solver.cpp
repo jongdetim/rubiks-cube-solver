@@ -76,25 +76,11 @@ vector<string> Solver::solve()
 		printf("phase: %d\n", phase + 1);
 		id = c.get_id(phase);
 		moves = db->get_value(phase, id);
-		while (moves == "NOT FOUND")
+		if (moves == "NOT FOUND")
 		{
-			cout << "move not found in db! trying random move" << endl;
-			for (int i = 0; i < 6; i++)
-			{
-				cout << c.get_id(phase) << endl;
-				c.applyMove(db->moves[i] + "2");
-				id = c.get_id(phase);
-				cout << c.get_id(phase) << endl;
-				moves = db->get_value(phase, id);
-				if (moves == "NOT FOUND")
-					c.applyMove(db->moves[i] + "2");
-				else
-				{
-					c.path_vect.push_back(moves);
-					cout << moves << "  breaking..." << endl; 
-					break ;
-				}
-			}
+			cout << "move not found in db!" << endl;
+			// db->close_db();
+			break;
 		}
 		movestring_split(&c, moves);
 	}

@@ -137,9 +137,11 @@ int main(int ac, char **av)
 		db.close_db();
 		exit(1);
 	}
-	// int i = 0;
-	// while (++i < 5)
-	// 	db.rowcount_db(i);
+	// print size of db tables
+	int i = 0;
+	while (++i < 5)
+		db.rowcount_db(i);
+
 	// To solve a cube
 	cout << "Solver mode\n";
 	auto input = program.get<string>("scramble");
