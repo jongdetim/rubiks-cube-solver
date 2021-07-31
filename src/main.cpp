@@ -100,7 +100,7 @@ int main(int ac, char **av)
 	Database		db;
 	vector<string>	solution;
 
-	// Argumentparsing bullshit
+	// Argumentparsing
 	argparse::ArgumentParser program("rubik");
 	program.add_argument("scramble")
 		.help("Scramble set to use")
@@ -138,9 +138,9 @@ int main(int ac, char **av)
 		exit(1);
 	}
 	// print size of db tables
-	int i = 0;
-	while (++i < 5)
-		db.rowcount_db(i);
+	// int i = 0;
+	// while (++i < 5)
+	// 	db.rowcount_db(i);
 
 	// To solve a cube
 	cout << "Solver mode\n";
@@ -158,16 +158,18 @@ int main(int ac, char **av)
 	for (auto move : moves) {
 		c.applyMove(move);
 	}
-	c.printCube();
-	// printf("%llu\n", c.get_id_phase4());
-	// exit(1);
+	// c.printCube();
+
 	Solver s(c, &db);
 	solution = s.solve();
 	Cube kubus;
 	// if (c == kubus)
 	// 	printf("Cube is solved\n");
 	if (program["-v"] == true || program["--visualizer"] == true)
-		visualizer(c, solution);
+	{
+		Visualizer v(c, solution);
+		v.visualize();
+	}
 	return (0);
 }
 

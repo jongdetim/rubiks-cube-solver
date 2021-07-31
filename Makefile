@@ -3,39 +3,35 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: asulliva <asulliva@student.codam.nl>         +#+                      #
+#    By: tide-jon <tide-jon@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2021/04/11 17:24:28 by asulliva      #+#    #+#                  #
-#    Updated: 2021/06/22 17:17:57 by asulliva      ########   odam.nl          #
+#    Created: 2021/07/31 20:23:41 by tide-jon      #+#    #+#                  #
+#    Updated: 2021/07/31 20:23:41 by tide-jon      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	rubik
-SRCS_FILES	=	cube moves rotate solver generate_db visualizer main
-SRC_DIR		=	src/
-OBJ_DIR		=	obj/
-INC_DIR		=	src/includes/ -I ~/.brew/Cellar/sfml/2.5.1_1/include
+FILES		=	cube moves rotate solver generate_db visualizer main
+INC			=	src/includes/ -I ~/.brew/Cellar/sfml/2.5.1_1/include
 CFLAGS		=	-Wall -Wextra -Werror -std=c++17 -Ofast
 LDIR		=	~/.brew/Cellar/sfml/2.5.1_1/lib/
 LIBS		=	-lsqlite3 -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -framework OpenGL -framework GLUT
 CC			=	clang++
-OBJS 		:=	$(SRCS_FILES:%=%.o)
-SRCS		=	$(addprefix $(SRC_DIR), $(SRCS_FILES))
-SRCS 		:=	$(SRCS:%=%.cpp)
-COBJ		=	$(addprefix $(OBJ_DIR), $(OBJS))
-INC			=	$(addprefix $(INC_DIR), $(INC_FILES))
-INC			:=	$(INC:%=%.hpp)
-TEST_ARG	=	"U2"
+SRCS		=	$(FILES:%=src/%.cpp)
+OBJS		=	$(FILES:%=%.o)
 
 all: $(NAME)
 
-$(NAME): $(SRCS) $(INC)
-	@echo "\033[0;33m[ + ] -CREATING OBJECT FILES\033[0m"
-	@$(CC) -c $(CFLAGS) $(SRCS) -I $(INC_DIR)
-	@mkdir -p $(OBJ_DIR)
-	@mv $(OBJS) $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(COBJ) -I $(INC_DIR)
+$(NAME): $(OBJS)
+	# @echo "\033[0;33m[ + ] -CREATING OBJECT FILES\033[0m"
+	# @$(CC) $(CFLAGS) -c $(SRCS) -I $(INC_DIR)
+	# @mkdir -p $(OBJ_DIR)
+	# @mv $(OBJS) $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(OBJS) -I $(INC)
 	@echo "\033[0;32m[ + ] COMPILATION OF $(NAME) COMPLETE\033[0m"
+
+%.o : src/%.cpp src/includes/%.hpp
+				$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
 
 clean:
 	@rm -rf $(OBJ_DIR)
@@ -47,5 +43,4 @@ fclean: clean
 
 re: fclean all
 
-test: re
-	./$(NAME) $(TEST_ARG)
+.PHONY: clean fclean all re

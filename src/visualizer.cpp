@@ -6,51 +6,35 @@
 /*   By: tide-jon <tide-jon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 17:45:59 by tide-jon      #+#    #+#                 */
-/*   Updated: 2021/07/30 23:15:54 by anonymous     ########   odam.nl         */
+/*   Updated: 2021/07/31 19:29:06 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "visualizer.hpp"
 
-// BUILDING ____________________________________
-
-// macos
-// clang++ sfml-cube.cpp -I /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/include -L /Users/tide-jon/.brew/Cellar/sfml/2.5.1_1/lib/ -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -framework OpenGL -framework GLUT
-
-// windows 32-bit
-// g++ -I C:\Users\Tim\Downloads\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -std=c++17 -o output.exe
-
-// windows 64-bit (let op verschillende .dll en .a libraries)
-// C:\"Program Files"\mingw-w64\x86_64-7.3.0-win32-seh-rt_v5-rev0\mingw64\bin\gcc -I C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\include -L C:\Users\Tim\Downloads\SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit\SFML-2.5.1\lib sfml-cube.cpp -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lsfml-network -lopengl32 -lglu32 -lstdc++ -o output.exe
-
 // globals
-bool rotate;
-bool mousePressed;
-float angle;
-float paused_angle;
-float mouse_y;
-float mouse_x;
-float mouse_yd;
-float mouse_xd;
-float previous_mouse_y;
-float previous_mouse_x;
-float y_angle;
-float x_angle;
+float FOV = 90.f;
+int X_SIZE = 1200;
+int Y_SIZE = 900;
 
-void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
+Visualizer::Visualizer(Cube cube, vector<string> solution)
+{
+	this->cube = cube;
+	this->solution = solution;
+	this->it = std::begin(this->solution);
+}
+
+void Visualizer::perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
 	const GLdouble pi = 3.1415926535897932384626433832795;
 	GLdouble fW, fH;
 
-	//fH = tan( (fovY / 2) / 180 * pi ) * zNear;
 	fH = std::tan(fovY / 360 * pi) * zNear;
 	fW = fH * aspect;
-
 	glFrustum(-fW, fW, -fH, fH, zNear, zFar);
 }
 
-// veranderen in macros / defines
-void setColour(char colour)
+void Visualizer::setColour(char colour)
 {
 	switch ((char)colour)
 	{
@@ -72,16 +56,13 @@ void setColour(char colour)
 	case 'W':
 		glColor3f(1, 1, 1);
 		break;
-	case 'X':
-		glColor3f(0, 0, 0);
-		break;
 	default:
-		glColor3f(0, 1, 1);
+		glColor3f(0, 0, 0);
 		break;
 	}
 }
 
-void rotateFace(float x, float y, float z, FACE face)
+void Visualizer::rotateFace(float x, float y, float z, FACE face)
 {
 	float theta = 1.5707963268;
 	switch (face)
@@ -110,7 +91,7 @@ void rotateFace(float x, float y, float z, FACE face)
 	}
 }
 
-int spiralToRows(int i, int face)
+int Visualizer::spiralToRows(int i, int face)
 {
 	face *= 8;
 	if (i == 3 + face)
@@ -126,7 +107,7 @@ int spiralToRows(int i, int face)
 	return i;
 }
 
-void drawFace(Cube cube, FACE face)
+void Visualizer::drawFace(Cube cube, FACE face)
 {
 	int j = 0;
 	for (int i = 0; i < 9; i++)
@@ -145,7 +126,7 @@ void drawFace(Cube cube, FACE face)
 	}
 }
 
-void drawLines()
+void Visualizer::drawLines()
 {
 	setColour('X');
 
@@ -164,7 +145,19 @@ void drawLines()
 	}
 }
 
-void reset_values(sf::Clock *clock)
+void Visualizer::renderCube()
+{
+	glBegin(GL_QUADS);
+	for (int i = 0; i < 6; i++)
+		drawFace(cube, (FACE)i);
+	glEnd();
+
+	glBegin(GL_LINES);
+	drawLines();
+	glEnd();
+}
+
+void Visualizer::resetValues(sf::Clock *clock)
 {
 	rotate = true;
 	mousePressed = false;
@@ -181,139 +174,137 @@ void reset_values(sf::Clock *clock)
 	clock->restart();
 }
 
-string reverse_move(string move)
+string Visualizer::reverseMove(string move)
 {
 	move[1] = '4' - (move[1] - '0');
 	return move;
 }
 
-int visualizer(Cube cube, vector<string> solution)
+void Visualizer::handleKeyPressed()
 {
-	uint64_t ticker = 0;
-	for (int i = 0; i < 48; i++)
-		printf("%i", cube.cube[i]);
-	sf::ContextSettings settings;
-	settings.depthBits = 24;
-	settings.stencilBits = 8;
-	settings.antialiasingLevel = 12;
-	// settings.majorVersion = 4;
-	// settings.minorVersion = 1;
+	switch (event.key.code)
+	{
+	case sf::Keyboard::Space:
+		rotate = 1 - rotate;
+		if (rotate == true)
+			clock.restart();
+		else
+			paused_angle = angle;
+		break;
+	case sf::Keyboard::R:
+		resetValues(&clock);
+		break;
+	case sf::Keyboard::Right:
+		if (it != std::end(solution))
+		{
+			apply_moves_db(&cube, *it);
+			it++;
+		}
+		break;
+	case sf::Keyboard::Left:
+		if (it != std::begin(solution))
+		{
+			it--;
+			apply_moves_db(&cube, reverseMove(*it));
+		}
+		break;
+	case sf::Keyboard::Escape:
+		running = false;
+		break;
+	default:
+		break;
+	}
+}
 
-	// create the window
-	sf::Window window(sf::VideoMode(1200, 900), "Rubik", sf::Style::Default, settings);
-	window.setVerticalSyncEnabled(true);
+void Visualizer::handleEvent(sf::Window *window)
+{
+	while (window->pollEvent(event))
+	{
+		switch (event.type)
+		{
+		case sf::Event::KeyPressed:
+			handleKeyPressed();
+			break;
+		case sf::Event::MouseButtonPressed:
+			mousePressed = true;
+			previous_mouse_y = event.mouseButton.y;
+			previous_mouse_x = event.mouseButton.x;
+			break;
+		case sf::Event::MouseButtonReleased:
+			mousePressed = false;
+			break;
+		case sf::Event::MouseMoved:
+			if (mousePressed)
+			{
+				mouse_y = event.mouseMove.y;
+				mouse_x = event.mouseMove.x;
+				mouse_yd = previous_mouse_y - mouse_y;
+				mouse_xd = previous_mouse_x - mouse_x;
+				y_angle -= mouse_yd;
+				x_angle -= mouse_xd;
+				previous_mouse_y = event.mouseMove.y;
+				previous_mouse_x = event.mouseMove.x;
+			}
+			break;
+		case sf::Event::Closed:
+			running = false;
+			break;
+		case sf::Event::Resized:
+			glViewport(0, 0, event.size.width, event.size.height);
+			glLineWidth(((((float(window->getSize().x)) + (float(window->getSize().y))) / 2) - 70) / 200);
+			break;
+		default:
+			break;
+		}
+	}
+}
 
-	// activate the window
-	window.setActive(true);
-
-	// Create a clock for measuring time elapsed
-	sf::Clock clock;
-
-	// initialize vars
-	reset_values(&clock);
-
-	//prepare OpenGL surface for HSR
+void Visualizer::glSettings()
+{
 	glClearDepth(1.f);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
-	// glScaled(2,2,2);
-
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
-
-	//// Setup a perspective projection & Camera position
+	glLineWidth(((((float(X_SIZE)) + (float(Y_SIZE))) / 2) - 70) / 200);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	perspectiveGL(90.f, float(window.getSize().x) / window.getSize().y, 1.f, 300.0f); //fov, aspect, zNear, zFar
+	perspectiveGL(FOV, float(X_SIZE) / Y_SIZE, 1.f, 300.0f);
+}
 
-	// load resources, initialize the OpenGL states, ...
-	
-	
-	auto it = std::begin(solution);
+void Visualizer::createWindow(sf::Window *window)
+{
+	sf::ContextSettings settings;
+
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 12;
+
+	window->create(sf::VideoMode(X_SIZE, Y_SIZE), "Rubik", sf::Style::Default, settings);
+	window->setVerticalSyncEnabled(true);
+	window->setActive(true);
+}
+
+void Visualizer::visualize()
+{
+	sf::Window window;
+
+	// create window, initiate variables & prepare OpenGL settings and projection
+	createWindow(&window);
+	resetValues(&clock);
+	glSettings();
 
 	// run the main loop
-	bool running = true;
 	while (running)
 	{
-		// handle events
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			switch (event.type)
-			{
-			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::Space)
-				{
-					rotate = 1 - rotate;
-					if (rotate == true)
-						clock.restart();
-					else
-						paused_angle = angle;
-				}
-				else if (event.key.code == sf::Keyboard::R)
-				{
-					reset_values(&clock);
-				}
-				else if (event.key.code == sf::Keyboard::Right)
-				{
-					if (it!=std::end(solution))
-					{
-						apply_moves_db(&cube, *it);
-						it++;
-					}
-				}
-				else if (event.key.code == sf::Keyboard::Left)
-				{
-					if (it!=std::begin(solution))
-					{
-						it--;
-						apply_moves_db(&cube, reverse_move(*it));
-					}
-				}
-				else if (event.key.code == sf::Keyboard::Escape)
-					running = false;
-				break;
-			case sf::Event::MouseButtonPressed:
-				mousePressed = true;
-				previous_mouse_y = event.mouseButton.y;
-				previous_mouse_x = event.mouseButton.x;
-				break;
-			case sf::Event::MouseButtonReleased:
-				mousePressed = false;
-				break;
-			case sf::Event::MouseMoved:
-				if (mousePressed)
-				{
-					mouse_y = event.mouseMove.y;
-					mouse_x = event.mouseMove.x;
-					mouse_yd = previous_mouse_y - mouse_y;
-					mouse_xd = previous_mouse_x - mouse_x;
-					y_angle -= mouse_yd;
-					x_angle -= mouse_xd;
-					previous_mouse_y = event.mouseMove.y;
-					previous_mouse_x = event.mouseMove.x;
-					printf("mouse y angle: %f\nmouse x angle: %f\nangle: %f\n", y_angle, x_angle, angle);
-				}
-				break;
-			case sf::Event::Closed:
-				running = false;
-				break;
-			case sf::Event::Resized:
-				glViewport(0, 0, event.size.width, event.size.height);
-				glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
-				break;
-			default:
-				break;
-			}
-		}
+		handleEvent(&window);
 
 		// clear the buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Apply some transformations for the cube
+		// set up camera pov
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		glTranslatef(0.f, 0.f, -200.f);
@@ -326,22 +317,8 @@ int visualizer(Cube cube, vector<string> solution)
 		glRotatef(y_angle / 10, 1.f, 0.f, -1.f);
 		glRotatef((x_angle / 10) + (angle * 30), 0.f, 1.f, 0.f);
 
-		// draw...
-		glBegin(GL_QUADS); //draw some squares
-			for (int i = 0; i < 6; i++)
-				drawFace(cube, (FACE)i);
-		glEnd();
-
-		glBegin(GL_LINES);
-			drawLines();
-		glEnd();
-
-		// end the current frame (internally swaps the front and back buffers)
+		// draw the cube
+		renderCube();
 		window.display();
-		ticker++;
 	}
-
-	// release resources...
-
-	return 0;
 }

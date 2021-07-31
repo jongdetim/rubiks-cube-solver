@@ -38,7 +38,7 @@ void		apply_moves_db(Cube *c, string move)
 			c->d(amount);
 			break;
 		default:
-			cout << "ER GAAT IETS MIS" << endl;
+			cout << "ER GAAT IETS MIS: " << move << endl;
 	}
 	cout << move << endl;
 }
@@ -89,7 +89,7 @@ vector<string> Solver::solve()
 		}
 		movestring_split(&c, moves);
 	}
-	for (int i = 0; i < c.path_vect.size(); i++)
+	for (int i = 0; i < (int)c.path_vect.size(); i++)
 		printf("%s ", c.path_vect[i].c_str());
 	printf("len: %lu\n", c.path_vect.size());
 	db->close_db();
