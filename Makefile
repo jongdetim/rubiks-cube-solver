@@ -27,7 +27,7 @@ $(NAME): $(OBJS)
 	# @$(CC) $(CFLAGS) -c $(SRCS) -I $(INC_DIR)
 	# @mkdir -p $(OBJ_DIR)
 	# @mv $(OBJS) $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(OBJS) -I $(INC)
+	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(OBJS)
 	@echo "\033[0;32m[ + ] COMPILATION OF $(NAME) COMPLETE\033[0m"
 
 %.o : src/%.cpp src/includes/%.hpp
