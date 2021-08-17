@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.h                                             :+:    :+:            */
+/*   solver.h                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/04/11 17:27:37 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/04/11 17:27:37 by asulliva      ########   odam.nl         */
+/*   Created: 2021/04/08 15:17:09 by asulliva      #+#    #+#                 */
+/*   Updated: 2021/04/08 15:17:09 by asulliva      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef SOLVER_H
+# define SOLVER_H
 
-# include "src/cube/cube.h"
-# include "src/solver/solver.h"
-using std::find;
+# include "main.hpp"
+# include "cube.hpp"
+# include "database.hpp"
+
+class Solver
+{
+	private:
+		Cube		c;
+		Database*	db;
+	public:
+		Solver(Cube cube, Database* database);
+		vector<string>		solve();
+};
+
+void		apply_moves_db(Cube *c, string move);
 
 #endif
