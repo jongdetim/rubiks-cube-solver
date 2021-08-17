@@ -17,11 +17,19 @@
 
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
-#include <openGL/glu.h>
-// #include <OpenGL/glu.h>
+#include <SFML/Audio.hpp>
+#ifdef _WIN64
+	#include <GL/glu.h>
+#elif __APPLE__
+	#include <OpenGL/glu.h>
+#endif
 #include <cmath>
 #include "cube.hpp"
 #include "solver.hpp"
+
+#define FONT_PATH "data/nebulosa_display_solid.otf"
+#define	ICON_PATH "data/pngegg.png"
+#define	MUSIC_PATH "data/Outrun.ogg"
 
 class Visualizer
 {
@@ -44,6 +52,10 @@ class Visualizer
         sf::Event event;
         sf::Clock clock;
         vector<string>::iterator it;
+		sf::RenderWindow window;
+		array<sf::Text, 7>text;
+		sf::Font font;
+		sf::Music music;
 
 		void perspectiveGL(GLdouble, GLdouble, GLdouble, GLdouble);
 		void setColour(char);
@@ -51,13 +63,15 @@ class Visualizer
 		int spiralToRows(int, int);
 		void drawFace(Cube, FACE);
 		void drawLines();
-		void resetValues(sf::Clock*);
+		void resetValues();
 		string reverseMove(string);
         void renderCube();
-        void handleEvent(sf::Window*);
+        void handleEvent();
         void glSettings();
-        void createWindow(sf::Window*);
+        void createWindow();
         void handleKeyPressed();
+		void setText();
+		void playMusic();
 
 	public:
 		Visualizer(Cube, vector<string>);

@@ -157,7 +157,7 @@ void Visualizer::renderCube()
 	glEnd();
 }
 
-void Visualizer::resetValues(sf::Clock *clock)
+void Visualizer::resetValues()
 {
 	rotate = true;
 	mousePressed = false;
@@ -171,7 +171,7 @@ void Visualizer::resetValues(sf::Clock *clock)
 	previous_mouse_x = 0.0;
 	y_angle = 0.0;
 	x_angle = 0.0;
-	clock->restart();
+	clock.restart();
 }
 
 string Visualizer::reverseMove(string move)
@@ -192,7 +192,7 @@ void Visualizer::handleKeyPressed()
 			paused_angle = angle;
 		break;
 	case sf::Keyboard::R:
-		resetValues(&clock);
+		resetValues();
 		break;
 	case sf::Keyboard::Right:
 		if (it != std::end(solution))
@@ -211,14 +211,21 @@ void Visualizer::handleKeyPressed()
 	case sf::Keyboard::Escape:
 		running = false;
 		break;
+	case sf::Keyboard::M:
+		cout << music.Status::Playing << endl;
+		if (sf::Music::Playing == music.getStatus())
+			music.pause();
+		else
+			music.play();
+		break;
 	default:
 		break;
 	}
 }
 
-void Visualizer::handleEvent(sf::Window *window)
+void Visualizer::handleEvent()
 {
-	while (window->pollEvent(event))
+	while (window.pollEvent(event))
 	{
 		switch (event.type)
 		{
@@ -251,7 +258,7 @@ void Visualizer::handleEvent(sf::Window *window)
 			break;
 		case sf::Event::Resized:
 			glViewport(0, 0, event.size.width, event.size.height);
-			glLineWidth(((((float(window->getSize().x)) + (float(window->getSize().y))) / 2) - 70) / 200);
+			glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
 			break;
 		default:
 			break;
@@ -274,32 +281,84 @@ void Visualizer::glSettings()
 	perspectiveGL(FOV, float(X_SIZE) / Y_SIZE, 1.f, 300.0f);
 }
 
-void Visualizer::createWindow(sf::Window *window)
+void Visualizer::createWindow()
 {
 	sf::ContextSettings settings;
+	sf::Image icon;
 
 	settings.depthBits = 24;
 	settings.stencilBits = 8;
 	settings.antialiasingLevel = 12;
 
-	window->create(sf::VideoMode(X_SIZE, Y_SIZE), "Rubik", sf::Style::Default, settings);
-	window->setVerticalSyncEnabled(true);
-	window->setActive(true);
+	window.create(sf::VideoMode(X_SIZE, Y_SIZE), "Rubik", sf::Style::Default, settings);
+	window.setVerticalSyncEnabled(true);
+
+	icon.loadFromFile(ICON_PATH);
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	window.setActive(true);
+}
+
+void Visualizer::setText()
+{
+	array<string, 7> controls;
+	sf::FloatRect bounds;
+
+	controls[0] =
+		"Step through solution\n"
+		"Toggle auto rotation\n"
+		"Rotate cube\n"
+		"Toggle music\n"
+		"Reset\n"
+		"Exit\n";
+	controls[1] = "Arrow keys";
+	controls[2] = "Space";
+	controls[3] = "Drag mouse";
+	controls[4] = "M";
+	controls[5] = "R";
+	controls[6] = "Esc";
+
+	if (!font.loadFromFile(FONT_PATH))
+	{
+		cout << "error loading font!" << endl;
+		exit(1);
+	}
+	for (int i = 0; i < 7; i++)
+	{
+		text[i].setFont(font);
+		text[i].setCharacterSize(18);
+		text[i].setString(controls[i]);
+		if (i == 0)
+			text[i].setPosition(10, Y_SIZE - 155);
+		else
+		{
+			bounds = text[i].getLocalBounds();
+			text[i].setPosition(500 - bounds.width, Y_SIZE - (155 - 25 * (i - 1)));
+		}
+	}
+}
+
+void Visualizer::playMusic()
+{
+	if (!music.openFromFile(MUSIC_PATH))
+		return;
+	music.setLoop(true);
+	music.setVolume(20.f);
+	music.play();
 }
 
 void Visualizer::visualize()
 {
-	sf::Window window;
-
-	// create window, initiate variables & prepare OpenGL settings and projection
-	createWindow(&window);
-	resetValues(&clock);
+	// create window, initiate variables & prepare OpenGL settings and projection, text and audio
+	createWindow();
+	setText();
+	resetValues();
 	glSettings();
+	playMusic();
 
 	// run the main loop
 	while (running)
 	{
-		handleEvent(&window);
+		handleEvent();
 
 		// clear the buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -319,6 +378,13 @@ void Visualizer::visualize()
 
 		// draw the cube
 		renderCube();
+		window.pushGLStates();
+
+		// draw text
+		for (const auto& elem : text)
+			window.draw(elem);
+		window.popGLStates();
+
 		window.display();
 	}
 }
