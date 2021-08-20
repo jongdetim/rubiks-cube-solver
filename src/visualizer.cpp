@@ -134,13 +134,13 @@ void Visualizer::drawLines()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			rotateFace(-50.5, 50.5 - i * (101.0 / 3), 50.5, (FACE)j);
-			rotateFace(50.5, 50.5 - i * (101.0 / 3), 50.5, (FACE)j);
+			rotateFace(-50.3, 50.3 - i * (100.6 / 3), 50.3, (FACE)j);
+			rotateFace(50.3, 50.3 - i * (100.6 / 3), 50.3, (FACE)j);
 		}
 		for (int i = 0; i < 4; i++)
 		{
-			rotateFace(-50.5 + i * (101.0 / 3), 50.5, 50.5, (FACE)j);
-			rotateFace(-50.5 + i * (101.0 / 3), -50.5, 50.5, (FACE)j);
+			rotateFace(-50.3 + i * (100.6 / 3), 50.3, 50.3, (FACE)j);
+			rotateFace(-50.3 + i * (100.6 / 3), -50.3, 50.3, (FACE)j);
 		}
 	}
 }
@@ -258,7 +258,7 @@ void Visualizer::handleEvent()
 			break;
 		case sf::Event::Resized:
 			glViewport(0, 0, event.size.width, event.size.height);
-			glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 200);
+			glLineWidth(((((float(window.getSize().x)) + (float(window.getSize().y))) / 2) - 70) / 250);
 			break;
 		default:
 			break;
@@ -275,7 +275,7 @@ void Visualizer::glSettings()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(((((float(X_SIZE)) + (float(Y_SIZE))) / 2) - 70) / 200);
+	glLineWidth(((((float(X_SIZE)) + (float(Y_SIZE))) / 2) - 70) / 250);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	perspectiveGL(FOV, float(X_SIZE) / Y_SIZE, 1.f, 300.0f);
