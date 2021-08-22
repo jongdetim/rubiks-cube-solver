@@ -1,41 +1,58 @@
 #include "solver.hpp"
 
-void		apply_moves_db(Cube *c, string move)
+void print_formatted_move(string move)
 {
-	int		amount;
+	cout << move[0];
+	switch (move[1])
+	{
+	case '1':
+		cout << " ";
+		break;
+	case '2':
+		cout << "2 ";
+		break;
+	case '3':
+		cout << "' ";
+		break;
+	}
+}
+
+void apply_moves_db(Cube *c, string move)
+{
+	int amount;
 
 	amount = move[1] - '0';
 	switch (move[0])
 	{
-		case 'U':
-			c->u(amount);
-			break;
-		case 'L':
-			c->l(amount);
-			break;
-		case 'F':
-			c->f(amount);
-			break;
-		case 'R':
-			c->r(amount);
-			break;
-		case 'B':
-			c->b(amount);
-			break;
-		case 'D':
-			c->d(amount);
-			break;
-		default:
-			cout << "Trying impossible move: " << move << endl;
-			exit(1);
+	case 'U':
+		c->u(amount);
+		break;
+	case 'L':
+		c->l(amount);
+		break;
+	case 'F':
+		c->f(amount);
+		break;
+	case 'R':
+		c->r(amount);
+		break;
+	case 'B':
+		c->b(amount);
+		break;
+	case 'D':
+		c->d(amount);
+		break;
+	default:
+		cout << "Trying impossible move: " << move << endl;
+		exit(1);
 	}
-	cout << move << endl;
+	print_formatted_move(move);
 }
 
-static void     movestring_split(Cube* c, string moves)
+static void movestring_split(Cube *c, string moves)
 {
-	vector<string>	parsed_moves;
-	string			temp;
+	vector<string> parsed_moves;
+	string temp;
 	int n = 0;
 
 	if (moves == "")
@@ -54,10 +71,18 @@ static void     movestring_split(Cube* c, string moves)
 	}
 }
 
-Solver::Solver(Cube cube, Database* database) 
+Solver::Solver(Cube cube, Database *database)
 {
-    c = cube;
-    db = database;
+	c = cube;
+	db = database;
+}
+
+void print_solution(Cube c)
+{
+	cout << "\nsolution:" << endl;
+	for (int i = 0; i < (int)c.path_vect.size(); i++)
+		print_formatted_move(c.path_vect[i]);
+	printf("\nsolved in: %lu moves\n", (long)c.path_vect.size());
 }
 
 vector<string> Solver::solve()
@@ -67,7 +92,7 @@ vector<string> Solver::solve()
 
 	for (int phase = 0; phase < 4; phase++)
 	{
-		printf("phase: %d\n", phase + 1);
+		printf("\nPhase: %d\n", phase + 1);
 		id = c.get_id(phase);
 		moves = db->get_value(phase, id);
 		if (moves == "NOT FOUND")
@@ -77,9 +102,7 @@ vector<string> Solver::solve()
 		}
 		movestring_split(&c, moves);
 	}
-	for (int i = 0; i < (int)c.path_vect.size(); i++)
-		printf("%s ", c.path_vect[i].c_str());
-	printf("len: %lu\n", (long)c.path_vect.size());
+	print_solution(c);
 	db->close_db();
 	return c.path_vect;
 }

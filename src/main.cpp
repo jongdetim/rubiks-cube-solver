@@ -149,8 +149,6 @@ void handle_db(Database* db, Cube c)
 	db->open_db();
 	db->create_db();
 	db->generate_db(c);
-	// db->close_db();
-	// return 0;
 }
 
 int main(int ac, char **av)
@@ -164,9 +162,7 @@ int main(int ac, char **av)
 	parse_cmdline_args(ac, av, &program);
 
 	if (program["--generate"] == true)
-	{
 		handle_db(&db, c);
-	}
 	if (program.is_used("--random") == true)
 	{
 		int shuffles = stoi(program.get<string>("-r"));
