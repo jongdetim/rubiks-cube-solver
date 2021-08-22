@@ -16,6 +16,7 @@
 float FOV = 90.f;
 int X_SIZE = 1200;
 int Y_SIZE = 900;
+float MUSIC_VOLUME = 10.f;
 
 Visualizer::Visualizer(Cube cube, vector<string> solution)
 {
@@ -308,7 +309,7 @@ void Visualizer::setText()
 		"Toggle auto rotation\n"
 		"Rotate cube\n"
 		"Toggle music\n"
-		"Reset\n"
+		"Reset camera\n"
 		"Exit\n";
 	controls[1] = "Arrow keys";
 	controls[2] = "Space";
@@ -342,7 +343,7 @@ void Visualizer::playMusic()
 	if (!music.openFromFile(MUSIC_PATH))
 		return;
 	music.setLoop(true);
-	music.setVolume(20.f);
+	music.setVolume(MUSIC_VOLUME);
 	music.play();
 }
 

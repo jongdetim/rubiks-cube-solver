@@ -12,17 +12,11 @@
 
 #include "cube.hpp"
 
-
-/*
-** Up turns
-*/
 Cube &Cube::u(int amount)
 {
 	int arr[] = {16, 17, 18, 8, 9, 10, 32, 33, 34, 24, 25, 26};
 	for (int i = 0; i < amount; i++)
-	{
-		// deze zijn niet nodig om te solven, alleen om te printen
-		
+	{	
 		this->rot90(FACE::UP);
 		this->rotSides90((int *)arr);
 
@@ -53,9 +47,6 @@ Cube &Cube::u(int amount)
 	return *this;
 }
 
-/*
-** Left turns
-*/
 Cube &Cube::l(int amount)
 {
 	int arr[] = {0, 7, 6, 16, 23, 22, 40, 47, 46, 36, 35, 34};
@@ -91,9 +82,6 @@ Cube &Cube::l(int amount)
 	return *this;
 }
 
-/*
-**	Front turns
-*/
 Cube &Cube::f(int amount)
 {
 	int arr[] = {12, 11, 10, 6, 5, 4, 24, 31, 30, 42, 41, 40};
@@ -129,9 +117,6 @@ Cube &Cube::f(int amount)
 	return *this;
 }
 
-/*
-** Right turns
-*/
 Cube &Cube::r(int amount)
 {
 	int arr[] = {2, 3, 4, 38, 39, 32, 42, 43, 44, 18, 19, 20};
@@ -167,9 +152,6 @@ Cube &Cube::r(int amount)
 	return *this;
 }
 
-/*
-** Back turns
-*/
 Cube&		Cube::b(int amount)
 {
 	int		arr[] = {2, 1, 0, 8, 15, 14, 46, 45, 44, 28, 27, 26};
@@ -205,9 +187,6 @@ Cube&		Cube::b(int amount)
 	return *this;
 }
 
-/*
-** Back turns
-*/
 Cube&		Cube::d(int amount)
 {
 	int		arr[] = {14, 13, 12, 22, 21, 20, 30, 29, 28, 38, 37, 36};

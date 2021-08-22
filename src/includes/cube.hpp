@@ -25,11 +25,12 @@ enum CORNER {URF, UBR, ULB, UFL, DFR, DLF, DBL, DRB};
 class Cube
 {
 	private:
-		array<COLOR, 6> centers;
-
-		// Rotations
 		void rot90(FACE f);
 		void rotSides90(int* arr);
+		uint64_t get_id_phase1();
+		uint64_t get_id_phase2();
+		uint64_t get_id_phase3();
+		uint64_t get_id_phase4();
 
 	public:
 		array<COLOR, 48> cube;
@@ -41,17 +42,11 @@ class Cube
 		string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "FL", "BR", "BL"};
 		string path = "";
 		vector<string> path_vect;
-		Cube( void );
-		Cube(const Cube *parent);
 
+		Cube();
 		uint64_t getFace(FACE f) const;
 		bool isSolved() const;
-		void printCube() const;
-
-		// Compare cube
 		bool operator==(const Cube& c) const;
-
-		// Copy cube
 		Cube& operator=(const Cube* c);
 
 		// Moves
@@ -65,13 +60,6 @@ class Cube
 
 		// Unique state ID
 		uint64_t get_id(int phase);
-		uint64_t get_id_phase1();
-		uint64_t get_id_phase2();
-		uint64_t get_id_phase3();
-		uint64_t get_id_phase4();
-		uint64_t get_id_4_new();
-		uint64_t get_id_3_new();
-		uint64_t get_id_3_newer();
 };
 
 char	getColor(int v);

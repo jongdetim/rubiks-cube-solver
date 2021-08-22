@@ -11,34 +11,32 @@
 /* ************************************************************************** */
 
 #ifndef DATABASE_H
-# define DATABASE_H
+#define DATABASE_H
 
-# include "main.hpp"
-# include "cube.hpp"
+#include "main.hpp"
+#include "cube.hpp"
 
-// extern	string moves[6];
-// extern	unordered_map<int64_t, string> phaseHash[5];
-// extern	int phase;
-// extern	sqlite3* database;
+#define DB_NAME "rubik.db"
 
 class Database
 {
-	private:
-		bool							allowedMoves[18];
-		bool							is_open = false;
-		unordered_map<int64_t, string>	phaseHash[5];
+private:
+	bool allowedMoves[18];
+	bool is_open = false;
+	unordered_map<int64_t, string> phaseHash[5];
 
-	public:
-		string							moves[6] = {"F","R","U","B","L","D"};
-		void	open_db();
-		int		create_db();
-		int		read_db(int phase);
-		void	generate_db(Cube c);
-		int		rowcount_db(int phase);
-		string	get_value(int phase, uint64_t key);
-		void	disable_moves(int phase);
-		void	execute_sql(string sql, bool read);
-		sqlite3*						database;
-		void	close_db();
+public:
+	string moves[6] = {"F", "R", "U", "B", "L", "D"};
+	void open_db();
+	int create_db();
+	int read_db(int phase);
+	void generate_db(Cube c);
+	int rowcount_db(int phase);
+	string get_value(int phase, uint64_t key);
+	void disable_moves(int phase);
+	void execute_sql(string sql, bool read);
+	sqlite3 *database;
+	void close_db();
 };
+
 #endif

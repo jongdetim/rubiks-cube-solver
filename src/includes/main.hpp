@@ -44,7 +44,6 @@ using std::to_string;
 using std::endl;
 using std::unordered_map;
 
-
 string	random_moves(int);
 
 #endif

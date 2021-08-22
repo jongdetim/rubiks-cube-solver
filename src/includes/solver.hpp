@@ -13,7 +13,6 @@
 #ifndef SOLVER_H
 # define SOLVER_H
 
-# include "main.hpp"
 # include "cube.hpp"
 # include "database.hpp"
 

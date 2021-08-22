@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   solver.cpp                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: asulliva <asulliva@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2021/04/11 17:12:54 by asulliva      #+#    #+#                 */
-/*   Updated: 2021/04/11 17:12:54 by asulliva      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "solver.hpp"
 
 void		apply_moves_db(Cube *c, string move)
@@ -38,7 +26,8 @@ void		apply_moves_db(Cube *c, string move)
 			c->d(amount);
 			break;
 		default:
-			cout << "ER GAAT IETS MIS: " << move << endl;
+			cout << "Trying impossible move: " << move << endl;
+			exit(1);
 	}
 	cout << move << endl;
 }
@@ -84,14 +73,13 @@ vector<string> Solver::solve()
 		if (moves == "NOT FOUND")
 		{
 			cout << "move not found in db!" << endl;
-			// db->close_db();
-			break;
+			exit(1);
 		}
 		movestring_split(&c, moves);
 	}
 	for (int i = 0; i < (int)c.path_vect.size(); i++)
 		printf("%s ", c.path_vect[i].c_str());
-	printf("len: %lu\n", c.path_vect.size());
+	printf("len: %lu\n", (long)c.path_vect.size());
 	db->close_db();
 	return c.path_vect;
 }

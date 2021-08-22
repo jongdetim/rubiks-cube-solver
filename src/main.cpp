@@ -10,42 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "main.hpp"
 #include "cube.hpp"
 #include "solver.hpp"
 #include "database.hpp"
 #include "visualizer.hpp"
-// #include "main.hpp"
-
-/*
-**	@desc:	Function splits up arguments into seperate strings
-**	@param:	const string args: arguments given
-**	@ret:	vector<string> moves: vector with moves
-*/
-vector<string>	parse(string args)
-{
-	char			*token = std::strtok(const_cast<char*>(args.c_str()), " ");
-	vector<string>	moves;
-	while (token != nullptr) {
-		moves.push_back(string(token));
-		token = std::strtok(nullptr, " ");
-	}
-	return (moves);
-}
 
 /*
 **	@desc:	function checks if moves are legal
 **	@param:	vector<string> moves: move strings
 **	@ret:	bool, true if legal
 */
-bool			checkMoves(vector<string> moves)
+bool checkMoves(vector<string> moves)
 {
-	string			legalChars = "ULFRBD2' ";
-	string			noStart = "2'";
+	string legalChars = "ULFRBD2' ";
+	string noStart = "2'";
 
 	for (int i = 0; i < int(moves.size()); i++)
 	{
 		for (int j = 0; j < int(moves[i].size()); j++)
-		{	
+		{
 			if (find(legalChars.begin(), legalChars.end(), moves[i][j]) == legalChars.end())
 			{
 				printf("%c is illegal\n", moves[i][j]);
@@ -55,121 +39,150 @@ bool			checkMoves(vector<string> moves)
 		if ((find(noStart.begin(), noStart.end(), moves[i][0]) != noStart.end()) || moves[i].size() > 2)
 			throw "Illegal start character detected";
 		if (moves[i].size() > 1 && ((moves[i][0] == '\'' && moves[i][0] == '2') ||
-			(moves[i][1] != '\'' && moves[i][1] != '2')))
+									(moves[i][1] != '\'' && moves[i][1] != '2')))
 			throw "Illegal format detected";
 	}
 	return true;
 }
 
-string	random_moves(int len = 10)
+/*
+**	@desc:	Function splits up input string into a vector of movestrings
+**	@param:	const string args: arguments given
+**	@ret:	vector<string> moves: vector with moves
+*/
+void parse(string args, Cube* c)
 {
-	string	moves;
-	vector<string>	allowed = {"F","R","U","B","L","D"};
+	vector<string> moves;
+	char *token = std::strtok(const_cast<char*>(args.c_str()), " ");
+
+	while (token != nullptr)
+	{
+		moves.push_back(string(token));
+		token = std::strtok(nullptr, " ");
+	}
+	for (auto move : moves)
+		printf("%s ", move.c_str());
+	printf("\n");
+	try
+	{
+		checkMoves(moves);
+	}
+	catch (const char *msg)
+	{
+		std::cerr << msg << std::endl;
+		exit(1);
+	}
+	for (auto move : moves)
+		c->applyMove(move);
+}
+
+string random_moves(int len = 10)
+{
+	string moves;
+	vector<string> allowed =   {"F", "R", "U", "B", "L", "D", "F2", "R2", "U2",
+								"B2", "L2", "D2", "F'", "R'", "U'", "B'", "L'", "D'"};
 
 	srand((int)time(nullptr));
 	for (int i = 0; i < len; i++)
 	{
 		if (i > 0)
 			moves += " ";
-		moves += allowed[rand() % 6];
+		moves += allowed[rand() % 18];
 	}
 	return moves;
 }
 
-static bool	file_exists(char *db)
+static bool file_exists(char *db)
 {
-	if (FILE *file = fopen(db, "r")) {
-        fclose(file);
-        return true;
-    } else {
-        return false;
-    }   
+	if (FILE *file = fopen(db, "r"))
+	{
+		fclose(file);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
-static void	remove_db(const char *name)
+static void remove_db(const char *name)
 {
-	using std::remove;
+	std::remove(name);
+}
 
-	remove(name);
+void parse_cmdline_args(int ac, char **av, argparse::ArgumentParser* program)
+{
+	program->add_argument("scramble")
+		.help("Scramble set to use")
+		.default_value(string(""))
+		.action([](const string &value)
+				{
+					return value;
+				});
+	program->add_argument("-g", "--generate")
+		.help("Generate database")
+		.default_value(false)
+		.implicit_value(true);
+	program->add_argument("-v", "--visualizer")
+		.help("Turn off cube visualization")
+		.default_value(true)
+		.implicit_value(false);
+	program->add_argument("-r", "--random")
+		.help("Scramble the cube by a specified amount of random moves. Ignores scramble argument");
+	try
+	{
+		program->parse_args(ac, av);
+	}
+	catch (const std::runtime_error &err)
+	{
+		cout << err.what() << endl;
+		cout << *program;
+		exit(1);
+	}
+}
+
+void handle_db(Database* db, Cube c)
+{
+	cout << "Database generation mode\n";
+	if (file_exists((char *)DB_NAME))
+		remove_db(DB_NAME);
+	db->open_db();
+	db->create_db();
+	db->generate_db(c);
+	// db->close_db();
+	// return 0;
 }
 
 int main(int ac, char **av)
 {
-	vector<string>	moves;
-	Cube			c;
-	Database		db;
-	vector<string>	solution;
-
-	// Argumentparsing
+	Cube c;
+	Database db;
+	vector<string> solution;
+	string input;
 	argparse::ArgumentParser program("rubik");
-	program.add_argument("scramble")
-		.help("Scramble set to use")
-		.action([](const string& value) 
-		{
-			if (value.empty())
-				return random_moves();
-			return value;
-		});
-	program.add_argument("-g", "--generate")
-		.help("Generate database")
-		.default_value(false)
-		.implicit_value(true);
-	program.add_argument("-v", "--visualizer")
-		.help("Turn off cube visualization")
-		.default_value(true)
-		.implicit_value(false);
-	try {
-		program.parse_args(ac, av);
-	} catch (const std::runtime_error& err) {
-		cout << err.what() << endl;
-		cout << program;
-		exit(1);
-	}
-	// To generate database
-	if (program["-g"] == true || program["--generate"] == true)
-	{
-		cout << "Database generation mode\n";
-		if (file_exists((char*)"rubik.db"))
-			remove_db("rubik.db");
-		db.open_db();
-		db.create_db();
-		db.generate_db(c);
-		db.close_db();
-		exit(1);
-	}
-	// print size of db tables
-	// int i = 0;
-	// while (++i < 5)
-	// 	db.rowcount_db(i);
 
-	// To solve a cube
-	cout << "Solver mode\n";
-	auto input = program.get<string>("scramble");
-	moves = parse(input);
-	for (auto move : moves)
-		printf("%s ", move.c_str());
-	printf("\n");
-	try {
-		checkMoves(moves);
-	} catch (const char *msg) {
-		std::cerr << msg << std::endl;
-		exit(1);
+	parse_cmdline_args(ac, av, &program);
+
+	if (program["--generate"] == true)
+	{
+		handle_db(&db, c);
 	}
-	for (auto move : moves) {
-		c.applyMove(move);
+	if (program.is_used("--random") == true)
+	{
+		int shuffles = stoi(program.get<string>("-r"));
+		input = random_moves(shuffles);
 	}
-	// c.printCube();
+	else
+		input = program.get<string>("scramble");
+	parse(input, &c);
 
 	Solver s(c, &db);
 	solution = s.solve();
-	Cube kubus;
-	// if (c == kubus)
-	// 	printf("Cube is solved\n");
-	if (program["-v"] == true || program["--visualizer"] == true)
+
+	if (program["--visualizer"] == true)
 	{
 		Visualizer v(c, solution);
 		v.visualize();
 	}
 	return (0);
 }
-
