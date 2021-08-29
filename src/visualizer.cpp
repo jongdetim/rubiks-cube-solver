@@ -213,7 +213,6 @@ void Visualizer::handleKeyPressed()
 		running = false;
 		break;
 	case sf::Keyboard::M:
-		cout << music.Status::Playing << endl;
 		if (sf::Music::Playing == music.getStatus())
 			music.pause();
 		else
