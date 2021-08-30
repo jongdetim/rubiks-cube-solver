@@ -6,7 +6,7 @@
 /*   By: tide-jon <tide-jon@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 17:45:59 by tide-jon      #+#    #+#                 */
-/*   Updated: 2021/07/31 19:29:06 by tide-jon      ########   odam.nl         */
+/*   Updated: 2021/08/30 19:06:14 by tide-jon      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 // globals
 float FOV = 90.f;
-int X_SIZE = 1200;
-int Y_SIZE = 900;
+float X_SIZE = 2400.f;
+float Y_SIZE = 1800.f;
 float MUSIC_VOLUME = 10.f;
 
 Visualizer::Visualizer(Cube cube, vector<string> solution)
@@ -275,6 +275,8 @@ void Visualizer::glSettings()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	window.setSize(sf::Vector2u(X_SIZE, Y_SIZE));
+	glViewport(0, 0, X_SIZE, Y_SIZE);
 	glLineWidth(((((float(X_SIZE)) + (float(Y_SIZE))) / 2) - 70) / 250);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -288,9 +290,9 @@ void Visualizer::createWindow()
 
 	settings.depthBits = 24;
 	settings.stencilBits = 8;
-	settings.antialiasingLevel = 12;
+	settings.antialiasingLevel = 8;
 
-	window.create(sf::VideoMode(X_SIZE, Y_SIZE), "Rubik", sf::Style::Default, settings);
+	window.create(sf::VideoMode(1200, 900), "Rubik", sf::Style::Default, settings);
 	window.setVerticalSyncEnabled(true);
 
 	icon.loadFromFile(ICON_PATH);
@@ -328,11 +330,11 @@ void Visualizer::setText()
 		text[i].setCharacterSize(18);
 		text[i].setString(controls[i]);
 		if (i == 0)
-			text[i].setPosition(10, Y_SIZE - 155);
+			text[i].setPosition(10, (900) - 155);
 		else
 		{
 			bounds = text[i].getLocalBounds();
-			text[i].setPosition(500 - bounds.width, Y_SIZE - (155 - 25 * (i - 1)));
+			text[i].setPosition(500 - bounds.width, (900) - (155 - 25 * (i - 1)));
 		}
 	}
 }
