@@ -22,6 +22,8 @@
 	#include <GL/glu.h>
 #elif __APPLE__
 	#include <OpenGL/glu.h>
+#else
+	#include <GL/glu.h>
 #endif
 #include <cmath>
 #include "cube.hpp"
