@@ -40,6 +40,7 @@ $(OBJ_DIR)%.o : src/%.cpp Makefile $(INC) | changed
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -f changed
 	@echo "\033[0;31m[ - ] REMOVED OBJECT FILES\033[0m"
 
 fclean: clean
