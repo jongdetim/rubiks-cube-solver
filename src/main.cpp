@@ -78,18 +78,20 @@ void parse(string args, Cube* c)
 
 string random_moves(int len = 10)
 {
-	string moves;
-	vector<string> allowed =   {"F", "R", "U", "B", "L", "D", "F2", "R2", "U2",
+	string movestring;
+	vector<string> moves =   {"F", "R", "U", "B", "L", "D", "F2", "R2", "U2",
 								"B2", "L2", "D2", "F'", "R'", "U'", "B'", "L'", "D'"};
+	std::random_device rd;
+  	std::default_random_engine gen(rd());
+  	std::uniform_int_distribution<uint_fast8_t> dist(0, moves.size() - 1);
 
-	srand((int)time(nullptr));
 	for (int i = 0; i < len; i++)
 	{
 		if (i > 0)
-			moves += " ";
-		moves += allowed[rand() % 18];
+			movestring += " ";
+		movestring += moves[dist(gen)];
 	}
-	return moves;
+	return movestring;
 }
 
 static bool file_exists(char *db)
@@ -146,7 +148,6 @@ void handle_db(Database* db, Cube c)
 	cout << "Database generation mode\n";
 	if (file_exists((char *)DB_NAME))
 		remove_db(DB_NAME);
-	db->open_db();
 	db->create_db();
 	db->generate_db(c);
 }

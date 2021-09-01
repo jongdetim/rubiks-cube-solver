@@ -24,18 +24,23 @@ private:
 	bool allowedMoves[18];
 	bool is_open = false;
 	unordered_map<int64_t, string> phaseHash[5];
+	Cube cur;
+	queue<Cube> queue;
+	uint64_t id;
 
 public:
 	string moves[6] = {"F", "R", "U", "B", "L", "D"};
+	sqlite3 *database;
+
 	void open_db();
 	int create_db();
 	int read_db(int phase);
 	void generate_db(Cube c);
+	void bfs(int phase);
 	int rowcount_db(int phase);
 	string get_value(int phase, uint64_t key);
 	void disable_moves(int phase);
 	void execute_sql(string sql, bool read);
-	sqlite3 *database;
 	void close_db();
 };
 

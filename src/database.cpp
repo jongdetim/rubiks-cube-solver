@@ -143,57 +143,57 @@ void	Database::close_db()
 	sqlite3_close(database);
 }
 
+void	Database::bfs(int phase)
+{
+	while (!this->queue.empty())
+	{
+		int count = 0;
+		cur = this->queue.front();
+		this->queue.pop();
+		for (int move = 0; move < 6; move++)
+		{
+			for (int times = 0; times < 3; times++)
+			{
+				cur.applyMove(moves[move]);
+				if (allowedMoves[count] == true)
+				{
+					id = cur.get_id(phase);
+					if (phaseHash[phase].count(id) == 0)
+					{
+						cur.path.insert(cur.path.begin(), '3' - times);
+						cur.path.insert(cur.path.begin(),  moves[move][0]);
+						string sql("INSERT INTO PHASE" + to_string(phase + 1) +
+						" (KEY,VALUE) VALUES(" + to_string((int64_t)id) + ",'" + cur.path + "')");
+						execute_sql(sql, false);
+						phaseHash[phase][id] = cur.path;
+						this->queue.push(cur);
+						cur.path = cur.path.substr(2);
+					}
+				}
+				count++;
+			}
+			cur.applyMove(moves[move]);
+		}
+	}
+}
+
 void	Database::generate_db(Cube solved)
 {
-	Cube cur;
-	queue<Cube> queue;
-	uint64_t id;
-
-	for (int i = 0; i < 18; i++)
-		allowedMoves[i] = true;
+	std::fill(std::begin(allowedMoves), std::end(allowedMoves), true);
 	open_db();
-	sqlite3_exec(database, "BEGIN TRANSACTION;", NULL, NULL, NULL);
+	execute_sql("BEGIN TRANSACTION;", true);
 
 	for (int phase = 0; phase < 4; phase++)
 	{
 		cout << "generating lookup table for phase " + to_string(phase+1) + "...\n";
-		queue.push(solved);
+		this->queue.push(solved);
 		id = solved.get_id(phase);
 		phaseHash[phase][id] = "";
 		string sql = "INSERT INTO PHASE" + to_string(phase + 1) +
 		" (KEY,VALUE) VALUES(" + to_string(id) + ",'')";
 		execute_sql(sql, false);
-		while (!queue.empty())
-		{
-			int count = 0;
-			cur = queue.front();
-			queue.pop();
-			for (int move = 0; move < 6; move++)
-			{
-				for (int times = 0; times < 3; times++)
-				{
-					cur.applyMove(moves[move]);
-					if (allowedMoves[count] == true)
-					{
-						id = cur.get_id(phase);
-						if (phaseHash[phase].count(id) == 0)
-						{
-							cur.path.insert(cur.path.begin(), '3' - times);
-							cur.path.insert(cur.path.begin(),  moves[move][0]);
-							string sql("INSERT INTO PHASE" + to_string(phase + 1) +
-							" (KEY,VALUE) VALUES(" + to_string((int64_t)id) + ",'" + cur.path + "')");
-							execute_sql(sql, false);
-							phaseHash[phase][id] = cur.path;
-							queue.push(cur);
-							cur.path = cur.path.substr(2);
-						}
-					}
-					count++;
-				}
-				cur.applyMove(moves[move]);
-			}
-		}
+		bfs(phase);
 		disable_moves(phase);
 	}
-	sqlite3_exec(database, "COMMIT;", NULL, NULL, NULL);
+	execute_sql("COMMIT;", true);
 }

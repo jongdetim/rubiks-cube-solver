@@ -371,10 +371,9 @@ void Visualizer::visualize()
 		glTranslatef(0.f, 0.f, -200.f);
 		gluLookAt(0.5, 0.5, 0.5, 0, 0, 0, 0, 1.f, 0);
 
+		// rotate cube from initial angle
 		if (rotate)
 			angle = paused_angle + clock.getElapsedTime().asSeconds();
-
-		// rotate cube from initial angle
 		glRotatef(y_angle / 10, 1.f, 0.f, -1.f);
 		glRotatef((x_angle / 10) + (angle * 30), 0.f, 1.f, 0.f);
 
