@@ -150,6 +150,8 @@ void handle_db(Database* db, Cube c)
 		remove_db(DB_NAME);
 	db->create_db();
 	db->generate_db(c);
+	cout << DB_NAME << " generated" << endl;
+	exit(0);
 }
 
 int main(int ac, char **av)

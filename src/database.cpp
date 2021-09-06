@@ -124,6 +124,7 @@ string	Database::get_value(int phase, uint64_t key)
 	if (rc != SQLITE_OK)
 	{
 		cout << string(sqlite3_errmsg(database)) << endl;
+		cout << "please first build the database by running: ./rubik --generate" << endl;
 		exit(1);
 	}
 	rc = sqlite3_step(stmt);

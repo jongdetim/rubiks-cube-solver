@@ -1,4 +1,5 @@
 #include "solver.hpp"
+#include <filesystem>
 
 void print_formatted_move(string move)
 {
