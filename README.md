@@ -47,3 +47,5 @@ Valid sequence example:
 
 ### Return
 	The program will return on the standard output the move sequence to be applied to solve the mixed cube
+
+
