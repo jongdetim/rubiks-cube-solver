@@ -15,6 +15,7 @@ void print_formatted_move(string move)
 		cout << "' ";
 		break;
 	}
+	cout << std::flush;
 }
 
 void apply_moves_db(Cube *c, string move)

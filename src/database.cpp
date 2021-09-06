@@ -90,8 +90,8 @@ int Database::create_db()
 		"( KEY INT PRIMARY KEY NOT NULL, VALUE TEXT UNIQUE NOT NULL) WITHOUT ROWID;";
 		execute_sql(sql, false);
 	}
-	execute_sql("PRAGMA journal_mode=WAL", false);
-	execute_sql("PRAGMA synchronous=0", false);
+	// execute_sql("PRAGMA journal_mode=WAL", false);
+	// execute_sql("PRAGMA synchronous=0", false);
 	return (0);
 }
   

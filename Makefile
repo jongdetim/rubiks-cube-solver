@@ -27,16 +27,16 @@ OBJS		:=	$(addprefix $(OBJ_DIR),$(FILES:%=%.o))
 all: $(NAME)
 
 changed: $(SRCS) Makefile $(INC)
-	@echo "\033[0;33m[ + ] -CREATING OBJECT FILES\033[0m"
+	@echo "\033[0;33m[ + ] CREATING OBJECT FILES\033[0m"
 	@touch changed
 
 $(NAME): $(INC) $(OBJS)
-	$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(OBJS)
+	@$(CC) $(CFLAGS) -L $(LDIR) $(LIBS) -o $(NAME) $(OBJS)
 	@echo "\033[0;32m[ + ] COMPILATION OF $(NAME) COMPLETE\033[0m"
 
 $(OBJ_DIR)%.o : src/%.cpp Makefile $(INC) | changed
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $(word 1,$^) -o $@ -I $(INC_DIR) -I $(SFML_DIR)
+	@$(CC) $(CFLAGS) -c $(word 1,$^) -o $@ -I $(INC_DIR) -I $(SFML_DIR)
 
 clean:
 	@rm -rf $(OBJ_DIR)
@@ -49,4 +49,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean all re init
+.PHONY: clean fclean all re
