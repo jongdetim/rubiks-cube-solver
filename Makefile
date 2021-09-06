@@ -13,11 +13,11 @@
 NAME		:=	rubik
 FILES		:=	cube moves rotate solver database visualizer main
 INC_DIR		:=	./src/includes/
-SFML_DIR	:=	~/.brew/Cellar/sfml/2.5.1_1/include
+SFML_DIR	:=	~/.brew/include
 INC_FILES	:=	argparse cube database main solver visualizer
 INC			:=	$(addprefix $(INC_DIR),$(INC_FILES:%=%.hpp))
 CFLAGS		:=	-Wall -Wextra -Werror -std=c++17 -Ofast
-LDIR		:=	~/.brew/Cellar/sfml/2.5.1_1/lib/
+LDIR		:=	~/.brew/lib/
 LIBS		:=	-lsqlite3 -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -framework OpenGL -framework GLUT
 CC			:=	clang++
 OBJ_DIR		:=	./obj/
