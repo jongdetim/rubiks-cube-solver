@@ -1,4 +1,7 @@
 # Rubik
+
+https://github.com/jongdetim/rubiks-cube-solver/assets/49719019/bd7a3ca7-e6bb-4fe6-992b-08bfa156a958
+
 ## General use
 Program takes a mix as parameter
 
