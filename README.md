@@ -51,4 +51,7 @@ Valid sequence example:
 ### Return
 	The program will return on the standard output the move sequence to be applied to solve the mixed cube
 
+### Improvements ###
+- Animating rotational moves on the cube
+- I should've used mmap instead of sqlite
 
